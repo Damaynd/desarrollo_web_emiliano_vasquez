@@ -1,0 +1,50 @@
+.formulario {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.formulario div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: white;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+input,
+select,
+textarea,
+button {
+    padding: 8px;
+    border: 1px solid #666;
+    border-radius: 4px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    background-color: #111;
+    color: white;
+}
+
+input[type="submit"],
+button {
+    background-color: #0057b8;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #00408a;
+}
+
+.register-button {
+    text-align: center;
+}
