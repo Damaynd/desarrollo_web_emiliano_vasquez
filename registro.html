@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
 <head>
     <meta charset = "UTF-8">
     <title> Registro de usuarios </title>
@@ -11,22 +11,22 @@
 <h2>Complete los siguientes campos para crear su cuenta de usuario</h2>
 <form class = "formulario" action>
     <div>
-        <label for = "name"> Nombre Completo </label>
+        <label for = "name"> Nombre Completo: </label>
         <input type = "text" name = "name" id = "name" required>
     </div>
 
     <div>
-        <label for = "rut"> Documento de identificación (RUT) </label>
+        <label for = "rut"> Documento de identificación (RUT): </label>
         <input type = "text" name = "rut" id = "rut" required>
     </div>
 
    <div>
-       <label for = "email"> Dirección de correo electrónico </label>
+       <label for = "email"> Dirección de correo electrónico: </label>
        <input type = "email" name = "email" id = "email" required>
    </div>
 
     <div>
-        <label for = "rol"> Seleccion su rol </label>
+        <label for = "rol"> Seleccione su rol: </label>
         <select name = "roles" id = "rol">
             <option value = "e_postgrado"> Estudiante post-grado </option>
             <option value = "e_pregrado"> Estudiante pre-grado </option>
@@ -36,14 +36,16 @@
     </div>
 
     <div>
-        <label for = "password"> Contraseña </label>
+        <label for = "password"> Contraseña: </label>
         <input type = "password" name = "password" id = "password" required>
     </div>
     <div>
-        <label for = "pw_confirmation"> Confirme su contraseña</label>
+        <label for = "pw_confirmation"> Confirme su contraseña: </label>
         <input type = "password" name = "pw_confirmation" id = "pw_confirmation" required>
     </div>
+    <div class = "register-button">
     <input type = "submit" value = "Registrarme">
+    </div>
 </form>
 <script src = "navbar.js"></script>
 </body>
