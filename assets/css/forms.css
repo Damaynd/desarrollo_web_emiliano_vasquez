@@ -48,3 +48,14 @@ button:hover {
 .register-button {
     text-align: center;
 }
+
+.error-message {
+    color: #ff8a8a;
+    font-size: 0.9rem;
+    margin-top: 6px;
+    text-align: left;
+}
+
+.input-error {
+    border: 1px solid #ff8a8a;
+}
