@@ -21,16 +21,19 @@
     <div>
         <label for = "name"> Nombre Completo*: </label>
         <input type = "text" name = "name" id = "name" required>
+        <p class = "error-message" id = "error-name" hidden> </p>
     </div>
 
     <div>
         <label for = "rut"> Documento de identificación (RUT)*: </label>
         <input type = "text" name = "rut" id = "rut" required>
+        <p class = "error-message" id = "error-rut" hidden></p>
     </div>
 
    <div>
        <label for = "email"> Dirección de correo electrónico*: </label>
        <input type = "email" name = "email" id = "email" required>
+       <p class = "error-message" id = "error-email" hidden></p>
    </div>
 
     <div>
@@ -42,25 +45,30 @@
             <option value = "docente"> Docente </option>
             <option value = "funcionario"> Funcionario/a </option>
         </select>
+        <p class = "error-message" id = "error-rol" hidden></p>
     </div>
 
     <div id = "campo-carrera-container" style = "display: none;">
         <label for = "campo-carrera" id = "label-carrera"> Carrera o programa*: </label>
         <input type = "text" name = "campo-carrera" id = "campo-carrera">
+        <p class = "error-message" id = "error-campo-carrera" hidden></p>
     </div>
 
     <div id = "campo-departamento-container" style = "display: none;">
         <label for = "campo-departamento" id="label-departamento"> Departamento o unidad*: </label>
         <input type = "text" name = "campo-departamento" id = "campo-departamento">
+        <p class = "error-message" id = "error-campo-departamento" hidden></p>
     </div>
 
     <div>
         <label for = "password"> Contraseña*: </label>
         <input type = "password" name = "password" id = "password" required>
+        <p class = "error-message" id = "error-password" hidden></p>
     </div>
     <div>
         <label for = "pw_confirmation"> Confirme su contraseña*: </label>
         <input type = "password" name = "pw_confirmation" id = "pw_confirmation" required>
+        <p class = "error-message" id = "error-pw_confirmation" hidden></p>
     </div>
     <div class = "register-button">
     <input type = "submit" value = "Registrarme">
