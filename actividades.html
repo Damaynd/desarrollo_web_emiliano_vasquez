@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang = "es">
+<head>
+    <meta charset = "UTF-8">
+    <title> Registro de actividad </title>
+    <link rel ="stylesheet" href="assets/css/styles.css">
+    <link rel ="stylesheet" href="assets/css/navbar.css">
+    <link rel ="stylesheet" href="assets/css/forms.css">
+</head>
+<body>
+    <nav class = "navbar">
+        <a href = "index.html"> Inicio </a>
+        <a href = "registro.html"> Registro </a>
+        <a href = "actividades.html"> Actividad </a>
+        <a href = "miembros.html"> Miembros </a>
+        <a href = "estadisticas.html"> Estadísticas </a>
+        <a href = "contacto.html"> Contacto </a>
+    </nav>
+
+    <main>
+        <h1> Registro de actividad </h1>
+        <h2> Ingrese la información de la actividad que realiza </h2>
+
+        <form class = "formulario" id = "form-actividad" action = "#" novalidate>
+            <div>
+                <label for = "nombre-actividad"> Nombre de la actividad*: </label>
+                <input type = "text" id = "nombre-actividad" name = "nombre-actividad" required>
+                <p class = "error-message" id = "error-nombre-actividad" hidden></p>
+            </div>
+
+            <div>
+                <label for = "tipo-actividad"> Tipo de actividad*: </label>
+                <select id = "tipo-actividad" name = "tipo-actividad" required>
+                    <option value = ""> Seleccione una opción </option>
+                    <option value = "artistica"> Artística </option>
+                    <option value = "deportiva"> Deportiva </option>
+                    <option value = "tecnologica"> Tecnológica </option>
+                    <option value = "social"> Social </option>
+                    <option value = "recreativa"> Recreativa </option>
+                </select>
+                <p class = "error-message" id = "error-tipo-actividad" hidden></p>
+            </div>
+
+            <div>
+                <label for = "descripcion-actividad"> Descripción breve*: </label>
+                <textarea id = "descripcion-actividad" name = "descripcion-actividad" rows = "4" required></textarea>
+                <p class = "error-message" id = "error-descripcion-actividad" hidden></p>
+            </div>
+
+            <fieldset class = "dias-fieldset">
+                <legend> Días en que realiza la actividad*: </legend>
+
+                <label><input type = "checkbox" name = "dias" value = "lunes"> Lunes </label>
+                <label><input type = "checkbox" name = "dias" value = "martes"> Martes </label>
+                <label><input type = "checkbox" name = "dias" value = "miercoles"> Miércoles </label>
+                <label><input type = "checkbox" name = "dias" value = "jueves"> Jueves </label>
+                <label><input type = "checkbox" name = "dias" value = "viernes"> Viernes </label>
+                <label><input type = "checkbox" name = "dias" value = "sabado"> Sábado </label>
+                <label><input type = "checkbox" name = "dias" value = "domingo"> Domingo </label>
+
+                <p class = "error-message" id = "error-dias" hidden></p>
+            </fieldset>
+
+            <div>
+                <label for = "hora-inicio"> Hora de inicio*: </label>
+                <input type = "time" id = "hora-inicio" name = "hora-inicio" required>
+                <p class = "error-message" id = "error-hora-inicio" hidden></p>
+            </div>
+
+            <div>
+                <label for = "hora-termino"> Hora de término*: </label>
+                <input type = "time" id = "hora-termino" name = "hora-termino" required>
+                <p class = "error-message" id = "error-hora-termino" hidden></p>
+            </div>
+
+            <div>
+                <label for = "archivo-actividad"> Foto o video de la actividad*: </label>
+                <input type = "file" id = "archivo-actividad" name = "archivo-actividad" accept = "image/*,video/*" required>
+                <p class = "error-message" id = "error-archivo-actividad" hidden></p>
+            </div>
+
+
+            <div class = "register-button">
+                <input type = "submit" value = "Registrar actividad">
+            </div>
+        </form>
+    </main>
+
+    <script src = "assets/js/actividades.js"></script>
+</body>
+</html>

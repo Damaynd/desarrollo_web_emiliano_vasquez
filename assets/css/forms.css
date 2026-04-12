@@ -59,3 +59,20 @@ button:hover {
 .input-error {
     border: 1px solid #ff8a8a;
 }
+
+.dias-fieldset {
+    border: 1px solid #666;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+
+.dias-fieldset legend {
+    padding: 0 6px;
+}
+
+.dias-fieldset label {
+    display: block;
+    text-align: left;
+    margin-bottom: 6px;
+}
