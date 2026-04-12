@@ -7,7 +7,7 @@ const diasActividadInputs = document.querySelectorAll('input[name="dias"]');
 const horaInicioInput = document.getElementById("hora-inicio");
 const horaTerminoInput = document.getElementById("hora-termino");
 const archivoActividadInput = document.getElementById("archivo-actividad");
-const enlaceActividadInput = document.getElementById("enlace-actividad");
+
 
 function mostrarError(input, errorId, mensaje) {
     const errorElement = document.getElementById(errorId);
@@ -37,21 +37,12 @@ function limpiarTodosLosErroresActividad() {
     limpiarError(horaInicioInput, "error-hora-inicio");
     limpiarError(horaTerminoInput, "error-hora-termino");
     limpiarError(archivoActividadInput, "error-archivo-actividad");
-    limpiarError(enlaceActividadInput, "error-enlace-actividad");
 }
 
 function hayDiaSeleccionado() {
     return Array.from(diasActividadInputs).some(dia => dia.checked);
 }
 
-function enlaceValido(enlace) {
-    try {
-        new URL(enlace);
-        return true;
-    } catch {
-        return false;
-    }
-}
 
 formActividad.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -64,7 +55,6 @@ formActividad.addEventListener("submit", function (event) {
     const descripcionActividad = descripcionActividadInput.value.trim();
     const horaInicio = horaInicioInput.value;
     const horaTermino = horaTerminoInput.value;
-    const enlaceActividad = enlaceActividadInput.value.trim();
     const archivoSeleccionado = archivoActividadInput.files.length > 0;
 
     if (nombreActividad.length < 3) {
@@ -104,11 +94,6 @@ formActividad.addEventListener("submit", function (event) {
 
     if (!archivoSeleccionado) {
         mostrarError(archivoActividadInput, "error-archivo-actividad", "Debe adjuntar al menos una foto o video.");
-        formularioValido = false;
-    }
-
-    if (!enlaceValido(enlaceActividad)) {
-        mostrarError(enlaceActividadInput, "error-enlace-actividad", "Ingrese un enlace válido.");
         formularioValido = false;
     }
 
