@@ -6,11 +6,9 @@ const eInput = document.getElementById("email");
 const rSelect = document.getElementById("rol");
 const pwInput = document.getElementById("password");
 const pwConfirmInput = document.getElementById("pw_confirmation");
-
 const careerCont = document.getElementById("campo-carrera-container");
 const careerInput = document.getElementById("campo-carrera");
 const careerLabel = document.getElementById("label-carrera");
-
 const deptoCont = document.getElementById("campo-departamento-container");
 const deptoInput = document.getElementById("campo-departamento");
 const deptoLabel = document.getElementById("label-departamento");
@@ -107,7 +105,7 @@ function rValido(rut) {
     return dv === dvEsperado;
 }
 
-function passwordValida(password) {
+function pwValida(password) {
     return password.length >= 8;
 }
 
@@ -156,7 +154,7 @@ form.addEventListener("submit", function (event) {
         formEsValido = false;
     }
 
-    if (!passwordValida(password)) {
+    if (!pwValida(password)) {
         showErr(pwInput, "error-password", "La contraseña debe tener al menos 8 caracteres !");
         formEsValido = false;
     }
