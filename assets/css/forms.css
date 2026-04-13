@@ -32,7 +32,7 @@ textarea {
     color: white;
 }
 
-input[type="submit"],
+input[type = "submit"],
 button {
     background-color: #0057b8;
     color: white;
@@ -40,7 +40,7 @@ button {
     cursor: pointer;
 }
 
-input[type="submit"]:hover,
+input[type = "submit"]:hover,
 button:hover {
     background-color: #00408a;
 }
