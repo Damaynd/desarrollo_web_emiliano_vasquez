@@ -1,0 +1,53 @@
+.filtros-miembros {
+    max-width: 900px;
+    margin: 0 auto 24px auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filtros-miembros div {
+    min-width: 220px;
+}
+
+.tabla-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tabla-miembros {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    color: white;
+}
+
+.tabla-miembros th,
+.tabla-miembros td {
+    border: 1px solid #666;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabla-miembros th {
+    background-color: #0057b8;
+}
+
+.paginacion {
+    margin: 24px auto 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.paginacion button {
+    padding: 8px 14px;
+}
+
+.paginacion span {
+    color: white;
+}
