@@ -1,55 +1,55 @@
-const datosMiembros = [
-    { etiqueta: "Pregrado", valor: 12 },
-    { etiqueta: "Postgrado", valor: 6 },
-    { etiqueta: "Docentes", valor: 5 },
-    { etiqueta: "Funcionarios/as", valor: 4 }
+const dMem = [
+    {etiqueta: "Pregrado", valor: 12},
+    {etiqueta: "Postgrado", valor: 6},
+    {etiqueta: "Docentes", valor: 5},
+    {etiqueta: "Funcionarios/as", valor: 4}
 ];
 
-const datosActividades = [
-    { etiqueta: "Artísticas", valor: 7 },
-    { etiqueta: "Deportivas", valor: 10 },
-    { etiqueta: "Tecnológicas", valor: 5 },
-    { etiqueta: "Sociales", valor: 4 },
-    { etiqueta: "Recreativas", valor: 8 }
+const dAct = [
+    {etiqueta: "Artísticas", valor: 7},
+    {etiqueta: "Deportivas", valor: 10},
+    {etiqueta: "Tecnológicas", valor: 5},
+    {etiqueta: "Sociales", valor: 4},
+    {etiqueta: "Recreativas", valor: 8}
 ];
 
-const datosDias = [
-    { etiqueta: "Lunes", valor: 6 },
-    { etiqueta: "Miércoles", valor: 9 },
-    { etiqueta: "Viernes", valor: 11 },
-    { etiqueta: "Sábado", valor: 7 }
+const dDay = [
+    {etiqueta: "Lunes", valor: 6},
+    {etiqueta: "Miércoles", valor: 9},
+    {etiqueta: "Viernes", valor: 11},
+    {etiqueta: "Sábado", valor: 7}
 ];
 
-function renderGraficoBarras(containerId, datos) {
+function rendBars(containerId, datos) {
     const container = document.getElementById(containerId);
-    const maxValor = Math.max(...datos.map(dato => dato.valor));
+    const maxVal = Math.max(...datos.map(dato => dato.valor));
 
     container.innerHTML = "";
 
     datos.forEach(dato => {
-        const fila = document.createElement("div");
-        fila.className = "barra-item";
+        const row = document.createElement("div");
+        row.className = "barra-item";
 
-        const etiqueta = document.createElement("div");
-        etiqueta.className = "barra-etiqueta";
-        etiqueta.textContent = dato.etiqueta;
+        const label = document.createElement("div");
+        label.className = "barra-etiqueta";
+        label.textContent = dato.etiqueta;
 
-        const barraWrapper = document.createElement("div");
-        barraWrapper.className = "barra-wrapper";
+        const barWrap = document.createElement("div");
+        barWrap.className = "barra-wrapper";
 
-        const barra = document.createElement("div");
-        barra.className = "barra";
-        barra.style.width = `${(dato.valor / maxValor) * 100}%`;
-        barra.textContent = dato.valor;
+        const bar = document.createElement("div");
+        bar.className = "barra";
+        bar.style.width = `${(dato.valor / maxVal) * 100}%`;
+        bar.textContent = dato.valor;
 
-        barraWrapper.appendChild(barra);
-        fila.appendChild(etiqueta);
-        fila.appendChild(barraWrapper);
+        barWrap.appendChild(bar);
+        row.appendChild(label);
+        row.appendChild(barWrap);
 
-        container.appendChild(fila);
+        container.appendChild(row);
     });
 }
 
-renderGraficoBarras("grafico-miembros", datosMiembros);
-renderGraficoBarras("grafico-actividades", datosActividades);
-renderGraficoBarras("grafico-dias", datosDias);
+rendBars("grafico-miembros", dMem);
+rendBars("grafico-actividades", dAct);
+rendBars("grafico-dias", dDay);

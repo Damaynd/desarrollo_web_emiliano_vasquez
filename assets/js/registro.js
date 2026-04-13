@@ -1,80 +1,82 @@
 const form = document.getElementById("form-registro");
 
-const nameInput = document.getElementById("name");
-const rutInput = document.getElementById("rut");
-const emailInput = document.getElementById("email");
-const rolSelect = document.getElementById("rol");
-const passwordInput = document.getElementById("password");
-const pwConfirmationInput = document.getElementById("pw_confirmation");
+const nInput = document.getElementById("name");
+const rInput = document.getElementById("rut");
+const eInput = document.getElementById("email");
+const rSelect = document.getElementById("rol");
+const pwInput = document.getElementById("password");
+const pwConfirmInput = document.getElementById("pw_confirmation");
 
-const carreraContainer = document.getElementById("campo-carrera-container");
-const carreraInput = document.getElementById("campo-carrera");
-const carreraLabel = document.getElementById("label-carrera");
+const careerCont = document.getElementById("campo-carrera-container");
+const careerInput = document.getElementById("campo-carrera");
+const careerLabel = document.getElementById("label-carrera");
 
-const departamentoContainer = document.getElementById("campo-departamento-container");
-const departamentoInput = document.getElementById("campo-departamento");
-const departamentoLabel = document.getElementById("label-departamento");
+const deptoCont = document.getElementById("campo-departamento-container");
+const deptoInput = document.getElementById("campo-departamento");
+const deptoLabel = document.getElementById("label-departamento");
 
-function actualizarCamposPorRol() {
-    const rol = rolSelect.value;
+function actFieldsByRole() {
 
-    carreraContainer.style.display = "none";
-    departamentoContainer.style.display = "none";
-
-    carreraInput.value = "";
-    departamentoInput.value = "";
+    const rol = rSelect.value;
+    careerCont.style.display = "none";
+    deptoCont.style.display = "none";
+    careerInput.value = "";
+    deptoInput.value = "";
 
     if (rol === "e_pregrado") {
-        carreraContainer.style.display = "block";
-        carreraLabel.textContent = "Carrera *";
+        careerCont.style.display = "block";
+        careerLabel.textContent = "Carrera *";
+
     } else if (rol === "e_postgrado") {
-        carreraContainer.style.display = "block";
-        carreraLabel.textContent = "Programa *";
+        careerCont.style.display = "block";
+        careerLabel.textContent = "Programa *";
+
     } else if (rol === "docente") {
-        departamentoContainer.style.display = "block";
-        departamentoLabel.textContent = "Departamento *";
+        deptoCont.style.display = "block";
+        deptoLabel.textContent = "Departamento *";
+
     } else if (rol === "funcionario") {
-        departamentoContainer.style.display = "block";
-        departamentoLabel.textContent = "Unidad o área *";
+        deptoCont.style.display = "block";
+        deptoLabel.textContent = "Unidad o área *";
     }
 }
 
-function mostrarError(input, errorId, mensaje) {
+function showErr(input, errorId, mensaje) {
     const errorElement = document.getElementById(errorId);
     errorElement.textContent = mensaje;
     errorElement.hidden = false;
     input.classList.add("input-error");
 }
 
-function limpiarError(input, errorId) {
+function cleanErr(input, errorId) {
     const errorElement = document.getElementById(errorId);
     errorElement.textContent = "";
     errorElement.hidden = true;
     input.classList.remove("input-error");
 }
 
-function limpiarTodosLosErrores() {
-    limpiarError(nameInput, "error-name");
-    limpiarError(rutInput, "error-rut");
-    limpiarError(emailInput, "error-email");
-    limpiarError(rolSelect, "error-rol");
-    limpiarError(carreraInput, "error-campo-carrera");
-    limpiarError(departamentoInput, "error-campo-departamento");
-    limpiarError(passwordInput, "error-password");
-    limpiarError(pwConfirmationInput, "error-pw_confirmation");
+function globalCleanErr() {
+    cleanErr(nInput, "error-name");
+    cleanErr(rInput, "error-rut");
+    cleanErr(eInput, "error-email");
+    cleanErr(rSelect, "error-rol");
+    cleanErr(careerInput, "error-campo-carrera");
+    cleanErr(deptoInput, "error-campo-departamento");
+    cleanErr(pwInput, "error-password");
+    cleanErr(pwConfirmInput, "error-pw_confirmation");
 }
 
-function emailValido(email) {
+function eValido(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
-function limpiarRut(rut) {
+function cleanRut(rut) {
     return rut.replace(/\./g, "").replace(/-/g, "").toUpperCase();
 }
 
-function rutValido(rut) {
-    const rutLimpio = limpiarRut(rut);
+function rValido(rut) {
+    const rutLimpio = cleanRut(rut);
 
     if (!/^[0-9]+[0-9K]$/.test(rutLimpio)) {
         return false;
@@ -111,66 +113,66 @@ function passwordValida(password) {
 
 form.addEventListener("submit", function (event) {
     event.preventDefault();
-    limpiarTodosLosErrores();
+    globalCleanErr();
 
-    let formularioValido = true;
+    let formEsValido = true;
 
-    const nombre = nameInput.value.trim();
-    const rut = rutInput.value.trim();
-    const email = emailInput.value.trim();
-    const rol = rolSelect.value;
-    const carrera = carreraInput.value.trim();
-    const departamento = departamentoInput.value.trim();
-    const password = passwordInput.value;
-    const pwConfirmation = pwConfirmationInput.value;
+    const nombre = nInput.value.trim();
+    const rut = rInput.value.trim();
+    const email = eInput.value.trim();
+    const rol = rSelect.value;
+    const carrera = careerInput.value.trim();
+    const departamento = deptoInput.value.trim();
+    const password = pwInput.value;
+    const pwConfirmation = pwConfirmInput.value;
 
     if (nombre.length < 3) {
-        mostrarError(nameInput, "error-name", "Ingrese un nombre completo válido.");
-        formularioValido = false;
+        showErr(nInput, "error-name", "Ingrese un nombre completo válido.");
+        formEsValido = false;
     }
 
-    if (!rutValido(rut)) {
-        mostrarError(rutInput, "error-rut", "Ingrese un RUT válido.");
-        formularioValido = false;
+    if (!rValido(rut)) {
+        showErr(rInput, "error-rut", "Ingrese un RUT válido !");
+        formEsValido = false;
     }
 
-    if (!emailValido(email)) {
-        mostrarError(emailInput, "error-email", "Ingrese un correo electrónico válido.");
-        formularioValido = false;
+    if (!eValido(email)) {
+        showErr(eInput, "error-email", "Ingrese un correo electrónico válido !");
+        formEsValido = false;
     }
 
     if (rol === "") {
-        mostrarError(rolSelect, "error-rol", "Seleccione un rol.");
-        formularioValido = false;
+        showErr(rSelect, "error-rol", "Seleccione un rol !");
+        formEsValido = false;
     }
 
     if ((rol === "e_pregrado" || rol === "e_postgrado") && carrera === "") {
-        mostrarError(carreraInput, "error-campo-carrera", "Complete este campo.");
-        formularioValido = false;
+        showErr(careerInput, "error-campo-carrera", "Complete este campo !");
+        formEsValido = false;
     }
 
     if ((rol === "docente" || rol === "funcionario") && departamento === "") {
-        mostrarError(departamentoInput, "error-campo-departamento", "Complete este campo.");
-        formularioValido = false;
+        showErr(deptoInput, "error-campo-departamento", "Complete este campo !");
+        formEsValido = false;
     }
 
     if (!passwordValida(password)) {
-        mostrarError(passwordInput, "error-password", "La contraseña debe tener al menos 8 caracteres.");
-        formularioValido = false;
+        showErr(pwInput, "error-password", "La contraseña debe tener al menos 8 caracteres !");
+        formEsValido = false;
     }
 
     if (pwConfirmation !== password) {
-        mostrarError(pwConfirmationInput, "error-pw_confirmation", "Las contraseñas no coinciden.");
-        formularioValido = false;
+        showErr(pwConfirmInput, "error-pw_confirmation", "Las contraseñas no coinciden !");
+        formEsValido = false;
     }
 
-    if (formularioValido) {
-        alert("Formulario enviado correctamente.");
+    if (formEsValido) {
+        alert("Formulario enviado correctamente !");
         form.reset();
-        actualizarCamposPorRol();
-        limpiarTodosLosErrores();
+        actFieldsByRole();
+        globalCleanErr();
     }
 });
 
-rolSelect.addEventListener("change", actualizarCamposPorRol);
-actualizarCamposPorRol();
+rSelect.addEventListener("change", actFieldsByRole);
+actFieldsByRole();

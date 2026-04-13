@@ -1,65 +1,65 @@
 const miembros = [
     {
         nombre: "Ana Pérez",
-        correo: "ana.perez@uc.cl",
+        correo: "ana.perez@dcc.uchile.cl",
         tipo: "pregrado",
         detalle: "Ingeniería Civil en Computación"
     },
     {
         nombre: "Diego Soto",
-        correo: "diego.soto@uc.cl",
+        correo: "diego.soto@dcc.uchile.cl",
         tipo: "postgrado",
         detalle: "Magíster en Ciencia de Datos"
     },
     {
         nombre: "María González",
-        correo: "maria.gonzalez@uc.cl",
+        correo: "maria.gonzalez@dcc.uchile.cl",
         tipo: "docente",
         detalle: "Departamento de Computación"
     },
     {
         nombre: "Carlos Rojas",
-        correo: "carlos.rojas@uc.cl",
+        correo: "carlos.rojas@dcc.uchile.cl",
         tipo: "funcionario",
         detalle: "Unidad de Calidad de Vida"
     },
     {
         nombre: "Fernanda López",
-        correo: "fernanda.lopez@uc.cl",
+        correo: "fernanda.lopez@dcc.uchile.cl",
         tipo: "pregrado",
         detalle: "Ingeniería Civil"
     },
     {
         nombre: "Tomás Herrera",
-        correo: "tomas.herrera@uc.cl",
+        correo: "tomas.herrera@dcc.uchile.cl",
         tipo: "postgrado",
         detalle: "Doctorado en Computación"
     },
     {
         nombre: "Paula Muñoz",
-        correo: "paula.munoz@uc.cl",
+        correo: "paula.munoz@dcc.uchile.cl",
         tipo: "docente",
         detalle: "Departamento de Matemáticas"
     },
     {
         nombre: "Jorge Navarro",
-        correo: "jorge.navarro@uc.cl",
+        correo: "jorge.navarro@dcc.uchile.cl",
         tipo: "funcionario",
         detalle: "Secretaría Académica"
     }
 ];
 
-const filtroTipo = document.getElementById("filtro-tipo");
-const ordenMiembros = document.getElementById("orden-miembros");
-const tablaBody = document.getElementById("tabla-miembros-body");
-const btnAnterior = document.getElementById("btn-anterior");
-const btnSiguiente = document.getElementById("btn-siguiente");
-const paginaActualSpan = document.getElementById("pagina-actual");
+const fTipo = document.getElementById("filtro-tipo");
+const orderMems = document.getElementById("orden-miembros");
+const tBody = document.getElementById("tabla-miembros-body");
+const bttnPrev = document.getElementById("btn-anterior");
+const bttnNext = document.getElementById("btn-siguiente");
+const pagActSpan = document.getElementById("pagina-actual");
 
-const miembrosPorPagina = 4;
-let paginaActual = 1;
+const memsPerPage = 4;
+let pagAct = 1;
 
-function obtenerTextoTipo(tipo) {
+function obtTextCareer(tipo) {
     if (tipo === "pregrado") return "Estudiante de pregrado";
     if (tipo === "postgrado") return "Estudiante de postgrado";
     if (tipo === "docente") return "Docente";
@@ -67,23 +67,23 @@ function obtenerTextoTipo(tipo) {
     return tipo;
 }
 
-function obtenerMiembrosProcesados() {
+function obtMemsProc() {
     let resultado = [...miembros];
 
-    const tipoSeleccionado = filtroTipo.value;
-    const ordenSeleccionado = ordenMiembros.value;
+    const tSel = fTipo.value;
+    const orderSel = orderMems.value;
 
-    if (tipoSeleccionado !== "todos") {
-        resultado = resultado.filter(miembro => miembro.tipo === tipoSeleccionado);
+    if (tSel !== "todos") {
+        resultado = resultado.filter(miembro => miembro.tipo === tSel);
     }
 
-    if (ordenSeleccionado === "nombre-asc") {
+    if (orderSel === "nombre-asc") {
         resultado.sort((a, b) => a.nombre.localeCompare(b.nombre));
-    } else if (ordenSeleccionado === "nombre-desc") {
+    } else if (orderSel === "nombre-desc") {
         resultado.sort((a, b) => b.nombre.localeCompare(a.nombre));
-    } else if (ordenSeleccionado === "correo-asc") {
+    } else if (orderSel === "correo-asc") {
         resultado.sort((a, b) => a.correo.localeCompare(b.correo));
-    } else if (ordenSeleccionado === "correo-desc") {
+    } else if (orderSel === "correo-desc") {
         resultado.sort((a, b) => b.correo.localeCompare(a.correo));
     }
 
@@ -91,64 +91,64 @@ function obtenerMiembrosProcesados() {
 }
 
 function renderTabla() {
-    const miembrosProcesados = obtenerMiembrosProcesados();
-    const totalPaginas = Math.max(1, Math.ceil(miembrosProcesados.length / miembrosPorPagina));
+    const memsProc = obtMemsProc();
+    const totalPags = Math.max(1, Math.ceil(memsProc.length / memsPerPage));
 
-    if (paginaActual > totalPaginas) {
-        paginaActual = totalPaginas;
+    if (pagAct > totalPags) {
+        pagAct = totalPags;
     }
 
-    const inicio = (paginaActual - 1) * miembrosPorPagina;
-    const fin = inicio + miembrosPorPagina;
-    const miembrosPagina = miembrosProcesados.slice(inicio, fin);
+    const inicio = (pagAct - 1) * memsPerPage;
+    const fin = inicio + memsPerPage;
+    const memsPage = memsProc.slice(inicio, fin);
 
-    tablaBody.innerHTML = "";
+    tBody.innerHTML = "";
 
-    if (miembrosPagina.length === 0) {
+    if (memsPage.length === 0) {
         const fila = document.createElement("tr");
         fila.innerHTML = `<td colspan="4">No hay miembros para mostrar.</td>`;
-        tablaBody.appendChild(fila);
+        tBody.appendChild(fila);
     } else {
-        miembrosPagina.forEach(miembro => {
+        memsPage.forEach(miembro => {
             const fila = document.createElement("tr");
 
             fila.innerHTML = `
                 <td>${miembro.nombre}</td>
                 <td>${miembro.correo}</td>
-                <td>${obtenerTextoTipo(miembro.tipo)}</td>
+                <td>${obtTextCareer(miembro.tipo)}</td>
                 <td>${miembro.detalle}</td>
             `;
 
-            tablaBody.appendChild(fila);
+            tBody.appendChild(fila);
         });
     }
 
-    paginaActualSpan.textContent = `Página ${paginaActual} de ${totalPaginas}`;
-    btnAnterior.disabled = paginaActual === 1;
-    btnSiguiente.disabled = paginaActual === totalPaginas;
+    pagActSpan.textContent = `Página ${pagAct} de ${totalPags}`;
+    bttnPrev.disabled = pagAct === 1;
+    bttnNext.disabled = pagAct === totalPags;
 }
 
-filtroTipo.addEventListener("change", function () {
-    paginaActual = 1;
+fTipo.addEventListener("change", function () {
+    pagAct = 1;
     renderTabla();
 });
 
-ordenMiembros.addEventListener("change", function () {
-    paginaActual = 1;
+orderMems.addEventListener("change", function () {
+    pagAct = 1;
     renderTabla();
 });
 
-btnAnterior.addEventListener("click", function () {
-    if (paginaActual > 1) {
-        paginaActual--;
+bttnPrev.addEventListener("click", function () {
+    if (pagAct > 1) {
+        pagAct--;
         renderTabla();
     }
 });
 
-btnSiguiente.addEventListener("click", function () {
-    const totalPaginas = Math.max(1, Math.ceil(obtenerMiembrosProcesados().length / miembrosPorPagina));
-    if (paginaActual < totalPaginas) {
-        paginaActual++;
+bttnNext.addEventListener("click", function () {
+    const totalPaginas = Math.max(1, Math.ceil(obtMemsProc().length / memsPerPage));
+    if (pagAct < totalPaginas) {
+        pagAct++;
         renderTabla();
     }
 });

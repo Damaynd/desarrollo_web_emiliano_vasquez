@@ -15,13 +15,13 @@
     line-height: 1.5;
 }
 
-.home-all {
+.home-secs {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 24px;
 }
 
-.home-secs {
+.home-sec {
     background-color: #111;
     border: 1px solid #666;
     border-radius: 8px;
@@ -29,11 +29,11 @@
     text-align: center;
 }
 
-.home-secs h2 {
+.home-sec h2 {
     margin-bottom: 16px;
 }
 
-.home-secs p {
+.home-sec p {
     margin-bottom: 20px;
     line-height: 1.4;
 }

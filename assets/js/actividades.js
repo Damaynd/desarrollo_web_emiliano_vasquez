@@ -1,15 +1,15 @@
 const formActividad = document.getElementById("form-actividad");
 
-const nombreActividadInput = document.getElementById("nombre-actividad");
-const tipoActividadInput = document.getElementById("tipo-actividad");
-const descripcionActividadInput = document.getElementById("descripcion-actividad");
-const diasActividadInputs = document.querySelectorAll('input[name="dias"]');
-const horaInicioInput = document.getElementById("hora-inicio");
-const horaTerminoInput = document.getElementById("hora-termino");
-const archivoActividadInput = document.getElementById("archivo-actividad");
+const nActInput = document.getElementById("nombre-actividad");
+const tActInput = document.getElementById("tipo-actividad");
+const descrActInput = document.getElementById("descripcion-actividad");
+const daysActInput = document.querySelectorAll('input[name="dias"]');
+const t0Input = document.getElementById("hora-inicio");
+const tfInput = document.getElementById("hora-termino");
+const archActInput = document.getElementById("archivo-actividad");
 
 
-function mostrarError(input, errorId, mensaje) {
+function showError(input, errorId, mensaje) {
     const errorElement = document.getElementById(errorId);
     errorElement.textContent = mensaje;
     errorElement.hidden = false;
@@ -19,7 +19,7 @@ function mostrarError(input, errorId, mensaje) {
     }
 }
 
-function limpiarError(input, errorId) {
+function clearError(input, errorId) {
     const errorElement = document.getElementById(errorId);
     errorElement.textContent = "";
     errorElement.hidden = true;
@@ -29,77 +29,77 @@ function limpiarError(input, errorId) {
     }
 }
 
-function limpiarTodosLosErroresActividad() {
-    limpiarError(nombreActividadInput, "error-nombre-actividad");
-    limpiarError(tipoActividadInput, "error-tipo-actividad");
-    limpiarError(descripcionActividadInput, "error-descripcion-actividad");
-    limpiarError(null, "error-dias");
-    limpiarError(horaInicioInput, "error-hora-inicio");
-    limpiarError(horaTerminoInput, "error-hora-termino");
-    limpiarError(archivoActividadInput, "error-archivo-actividad");
+function globalCleanErrAct() {
+    clearError(nActInput, "error-nombre-actividad");
+    clearError(tActInput, "error-tipo-actividad");
+    clearError(descrActInput, "error-descripcion-actividad");
+    clearError(null, "error-dias");
+    clearError(t0Input, "error-hora-inicio");
+    clearError(tfInput, "error-hora-termino");
+    clearError(archActInput, "error-archivo-actividad");
 }
 
-function hayDiaSeleccionado() {
-    return Array.from(diasActividadInputs).some(dia => dia.checked);
+function daySelected() {
+    return Array.from(daysActInput).some(dia => dia.checked);
 }
 
 
 formActividad.addEventListener("submit", function (event) {
     event.preventDefault();
-    limpiarTodosLosErroresActividad();
+    globalCleanErrAct();
 
-    let formularioValido = true;
+    let esValido = true;
 
-    const nombreActividad = nombreActividadInput.value.trim();
-    const tipoActividad = tipoActividadInput.value;
-    const descripcionActividad = descripcionActividadInput.value.trim();
-    const horaInicio = horaInicioInput.value;
-    const horaTermino = horaTerminoInput.value;
-    const archivoSeleccionado = archivoActividadInput.files.length > 0;
+    const nAct = nActInput.value.trim();
+    const tAct = tActInput.value;
+    const descrAct = descrActInput.value.trim();
+    const t0 = t0Input.value;
+    const tf = tfInput.value;
+    const archivo = archActInput.files.length > 0;
 
-    if (nombreActividad.length < 3) {
-        mostrarError(nombreActividadInput, "error-nombre-actividad", "Ingrese un nombre válido.");
-        formularioValido = false;
+    if (nAct.length < 3) {
+        showError(nActInput, "error-nombre-actividad", "Ingrese un nombre válido.");
+        esValido = false;
     }
 
-    if (tipoActividad === "") {
-        mostrarError(tipoActividadInput, "error-tipo-actividad", "Seleccione un tipo de actividad.");
-        formularioValido = false;
+    if (tAct === "") {
+        showError(tActInput, "error-tipo-actividad", "Seleccione un tipo de actividad.");
+        esValido = false;
     }
 
-    if (descripcionActividad.length < 10) {
-        mostrarError(descripcionActividadInput, "error-descripcion-actividad", "Ingrese una descripción más completa.");
-        formularioValido = false;
+    if (descrAct.length < 10) {
+        showError(descrActInput, "error-descripcion-actividad", "Ingrese una descripción más completa.");
+        esValido = false;
     }
 
-    if (!hayDiaSeleccionado()) {
-        mostrarError(null, "error-dias", "Seleccione al menos un día.");
-        formularioValido = false;
+    if (!daySelected()) {
+        showError(null, "error-dias", "Seleccione al menos un día.");
+        esValido = false;
     }
 
-    if (horaInicio === "") {
-        mostrarError(horaInicioInput, "error-hora-inicio", "Ingrese una hora de inicio.");
-        formularioValido = false;
+    if (t0 === "") {
+        showError(t0Input, "error-hora-inicio", "Ingrese una hora de inicio.");
+        esValido = false;
     }
 
-    if (horaTermino === "") {
-        mostrarError(horaTerminoInput, "error-hora-termino", "Ingrese una hora de término.");
-        formularioValido = false;
+    if (tf === "") {
+        showError(tfInput, "error-hora-termino", "Ingrese una hora de término.");
+        esValido = false;
     }
 
-    if (horaInicio !== "" && horaTermino !== "" && horaTermino <= horaInicio) {
-        mostrarError(horaTerminoInput, "error-hora-termino", "La hora de término debe ser posterior a la de inicio.");
-        formularioValido = false;
+    if (t0 !== "" && tf !== "" && tf <= t0) {
+        showError(tfInput, "error-hora-termino", "La hora de término debe ser posterior a la de inicio.");
+        esValido = false;
     }
 
-    if (!archivoSeleccionado) {
-        mostrarError(archivoActividadInput, "error-archivo-actividad", "Debe adjuntar al menos una foto o video.");
-        formularioValido = false;
+    if (!archivo) {
+        showError(archActInput, "error-archivo-actividad", "Debe adjuntar al menos una foto o video.");
+        esValido = false;
     }
 
-    if (formularioValido) {
+    if (esValido) {
         alert("Actividad registrada correctamente.");
         formActividad.reset();
-        limpiarTodosLosErroresActividad();
+        globalCleanErrAct();
     }
 });
