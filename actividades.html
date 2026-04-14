@@ -58,7 +58,6 @@
             <fieldset class = "dias-fieldset">
 
                 <legend> Días en que realiza la actividad*: </legend>
-
                 <label><input type = "checkbox" name = "dias" value = "lunes"> Lunes </label>
                 <label><input type = "checkbox" name = "dias" value = "martes"> Martes </label>
                 <label><input type = "checkbox" name = "dias" value = "miercoles"> Miércoles </label>
@@ -91,6 +90,14 @@
                 <label for = "archivo-actividad"> Foto o video de la actividad*: </label>
                 <input type = "file" id = "archivo-actividad" name = "archivo-actividad" accept = "image/*,video/*" required>
                 <p class = "error-message" id = "error-archivo-actividad" hidden></p>
+
+            </div>
+
+            <div>
+
+                <label for = "enlace-actividad"> Enlace a contenido propio*: </label>
+                <input type = "url" id = "enlace-actividad" name = "enlace-actividad" placeholder = "https://..." required>
+                <p class = "error-message" id = "error-enlace-actividad" hidden></p>
 
             </div>
 
