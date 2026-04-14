@@ -15,29 +15,6 @@
     line-height: 1.5;
 }
 
-.home-secs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
-}
-
-.home-sec {
-    background-color: #111;
-    border: 1px solid #666;
-    border-radius: 8px;
-    padding: 24px;
-    text-align: center;
-}
-
-.home-sec h2 {
-    margin-bottom: 16px;
-}
-
-.home-sec p {
-    margin-bottom: 20px;
-    line-height: 1.4;
-}
-
 .home-link {
     display: inline-block;
     padding: 10px 16px;

@@ -69,40 +69,9 @@ function eValido(email) {
     return regex.test(email);
 }
 
-function cleanRut(rut) {
-    return rut.replace(/\./g, "").replace(/-/g, "").toUpperCase();
-}
-
 function rValido(rut) {
-    const rutLimpio = cleanRut(rut);
-
-    if (!/^[0-9]+[0-9K]$/.test(rutLimpio)) {
-        return false;
-    }
-
-    const cuerpo = rutLimpio.slice(0, -1);
-    const dv = rutLimpio.slice(-1);
-
-    let suma = 0;
-    let multiplo = 2;
-
-    for (let i = cuerpo.length - 1; i >= 0; i--) {
-        suma += Number(cuerpo[i]) * multiplo;
-        multiplo = multiplo === 7 ? 2 : multiplo + 1;
-    }
-
-    const resto = 11 - (suma % 11);
-    let dvEsperado = "";
-
-    if (resto === 11) {
-        dvEsperado = "0";
-    } else if (resto === 10) {
-        dvEsperado = "K";
-    } else {
-        dvEsperado = String(resto);
-    }
-
-    return dv === dvEsperado;
+    const regex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/;
+    return regex.test(rut);
 }
 
 function pwValida(password) {

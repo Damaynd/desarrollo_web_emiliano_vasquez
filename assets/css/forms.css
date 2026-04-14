@@ -4,15 +4,15 @@
     padding: 20px;
 }
 
-.formulario div {
-    margin-bottom: 20px;
-}
-
-label {
+.formulario label {
     display: block;
     color: white;
     margin-bottom: 8px;
     text-align: center;
+}
+
+.formulario div {
+    margin-bottom: 20px;
 }
 
 input,

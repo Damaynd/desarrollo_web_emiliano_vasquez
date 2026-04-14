@@ -11,18 +11,30 @@ body {
     font-family: Arial, sans-serif;
 }
 
-h1,
-h2,
-h3,
-p {
+h1, h2, h3, p {
     color: white;
     text-align: center;
     margin-bottom: 20px;
 }
 
-main,
-.contenido {
-    max-width: 500px;
-    margin: 0 auto;
+main {
     padding: 20px;
+}
+
+.page-main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.section {
+    background-color: #111;
+    border: 1px solid #666;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+}
+
+.formulario {
+    max-width: 500px;
 }
