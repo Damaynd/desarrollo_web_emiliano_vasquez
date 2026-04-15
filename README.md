@@ -25,7 +25,7 @@ de validación de los formularios.
 - `actividades.html`: formulario para que los miembros informen actividades.
 - `miembros.html`: listado de miembros con filtro, ordenamiento y paginación.
 - `estadisticas.html`: visualización de métricas mediante gráficas sencillas.
-- `contacto.html`: mi información de contacto :p .
+- `contacto.html`: mi información de contacto :p.
 
 ## Árbol del proyecto
 
@@ -63,6 +63,51 @@ sino que también por su correspondiente archivo JavaScript.
 Los datos mostrados tanto en la página de miembros como en la página de estadísticas, son creados,
 ya que según lo que entendí y comentó el profesor en el foro, tenían que ser estáticos para prototipar
 la interfaz, más allá de la persistencia de datos.
+
+## Lógica del código y validaciones
+
+Las validaciones principales están implementadas en JS, usando `addEventListener("submit", ...)` para interceptar el
+envío de los formularios. En caso de error evitamos el envío con `event.preventDefault()` y se muestran mensajes
+específicos bajo cada campo.
+
+En el formulario de registro se validan los siguientes datos:
+
+- **Nombre completo:** debe tener al menos 3 caracteres.
+
+- **RUT:** se exige el formato `12.345.678-9`. No se valida el dígito verificador, ya que el objetivo del prototipo es
+controlar el formato de entrada y no implementar una verificación completa de identidad.
+
+- **Correo electrónico:** se valida con una expresión regular simple para verificar que tenga estructura de email.
+
+- **Rol:** el usuario debe seleccionar un tipo de miembro.
+
+- **Carrera/programa o departamento/unidad:** el campo cambia dinámicamente según el rol seleccionado.
+
+- **Contraseña:** debe tener al menos 8 caracteres.
+
+- **Confirmación de contraseña:** debe coincidir con la contraseña ingresada.
+
+En el formulario de actividades se validan:
+
+- **Nombre de actividad:** mínimo 3 caracteres.
+
+- **Tipo de actividad:** debe seleccionarse una categoría.
+
+- **Descripción:** mínimo 10 caracteres.
+
+- **Días:** debe seleccionarse al menos un día.
+
+- **Horario:** la hora de término debe ser posterior a la hora de inicio.
+
+- **Archivo:** debe adjuntarse al menos una foto o video.
+
+- **Enlace:** debe comenzar con `http://` o `https://`.
+
+Los mensajes de error se encuentran definidos en el HTML con el atributo `hidden` y se muestran u ocultan desde JS.
+Para destacar los campos inválidos, agregamos dinámicamente la clase `input-error`.
+
+En las páginas de miembros y estadísticas se usan datos estáticos definidos en JS.
+Esto nos permite emular filtros, ordenamientos y gráficos sin utilizar nada desde el backend ni almacenamiento.
 
 ## Cómo ejecutar
 
