@@ -5,6 +5,7 @@ const rInput = document.getElementById("rut");
 const eInput = document.getElementById("email");
 const rSelect = document.getElementById("rol");
 const pwInput = document.getElementById("password");
+const enlaceActInput = document.getElementById("enlace-actividad");
 const pwConfirmInput = document.getElementById("pw_confirmation");
 const careerCont = document.getElementById("campo-carrera-container");
 const careerInput = document.getElementById("campo-carrera");
@@ -40,20 +41,25 @@ function actFieldsByRole() {
 }
 
 function showErr(input, errorId, mensaje) {
+
     const errorElement = document.getElementById(errorId);
     errorElement.textContent = mensaje;
     errorElement.hidden = false;
     input.classList.add("input-error");
+
 }
 
 function cleanErr(input, errorId) {
+
     const errorElement = document.getElementById(errorId);
     errorElement.textContent = "";
     errorElement.hidden = true;
     input.classList.remove("input-error");
+
 }
 
 function globalCleanErr() {
+
     cleanErr(nInput, "error-name");
     cleanErr(rInput, "error-rut");
     cleanErr(eInput, "error-email");
@@ -62,28 +68,40 @@ function globalCleanErr() {
     cleanErr(deptoInput, "error-campo-departamento");
     cleanErr(pwInput, "error-password");
     cleanErr(pwConfirmInput, "error-pw_confirmation");
+
 }
 
 function eValido(email) {
+
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
+
+}
+
+function enlaceValido(enlace) {
+
+    return enlace.startsWith("http://") || enlace.startsWith("https://");
+
 }
 
 function rValido(rut) {
+
     const regex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/;
     return regex.test(rut);
+
 }
 
 function pwValida(password) {
+
     return password.length >= 8;
+
 }
 
 form.addEventListener("submit", function (event) {
+
     event.preventDefault();
     globalCleanErr();
-
     let formEsValido = true;
-
     const nombre = nInput.value.trim();
     const rut = rInput.value.trim();
     const email = eInput.value.trim();
@@ -91,6 +109,7 @@ form.addEventListener("submit", function (event) {
     const carrera = careerInput.value.trim();
     const departamento = deptoInput.value.trim();
     const password = pwInput.value;
+    const enlace = enlaceActInput.value.trim();
     const pwConfirmation = pwConfirmInput.value;
 
     if (nombre.length < 3) {
@@ -106,6 +125,11 @@ form.addEventListener("submit", function (event) {
     if (!eValido(email)) {
         showErr(eInput, "error-email", "Ingrese un correo electrónico válido !");
         formEsValido = false;
+    }
+
+    if (!enlaceValido(enlace)) {
+        showError(enlaceActInput, "error-enlace-actividad", "Ingrese un enlace válido !");
+        esValido = false;
     }
 
     if (rol === "") {
