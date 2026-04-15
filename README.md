@@ -111,4 +111,4 @@ Esto nos permite emular filtros, ordenamientos y gráficos sin utilizar nada des
 
 ## Cómo ejecutar
 
-Abrir index.html directamente en su navegador de preferencia. No es necesario instalar dependencias ni levantar un servidor.
+Abrir `index.html` directamente en su navegador de preferencia. No es necesario instalar dependencias ni levantar un servidor.
