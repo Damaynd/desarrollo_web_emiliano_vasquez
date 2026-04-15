@@ -6,6 +6,7 @@ const daysActInput = document.querySelectorAll('input[name = "dias"]');
 const t0Input = document.getElementById("hora-inicio");
 const tfInput = document.getElementById("hora-termino");
 const archActInput = document.getElementById("archivo-actividad");
+const enlaceActInput = document.getElementById("enlace-actividad");
 
 
 function showError(input, errorId, mensaje) {
@@ -38,12 +39,19 @@ function globalCleanErrAct() {
     clearError(t0Input, "error-hora-inicio");
     clearError(tfInput, "error-hora-termino");
     clearError(archActInput, "error-archivo-actividad");
+    clearError(enlaceActInput, "error-enlace-actividad");
 
 }
 
 function daySelected() {
 
     return Array.from(daysActInput).some(dia => dia.checked);
+
+}
+
+function enlaceValido(enlace) {
+
+    return enlace.startsWith("http://") || enlace.startsWith("https://");
 
 }
 
@@ -59,6 +67,7 @@ formActividad.addEventListener("submit", function (event) {
     const t0 = t0Input.value;
     const tf = tfInput.value;
     const archivo = archActInput.files.length > 0;
+    const enlace = enlaceActInput.value.trim();
 
     if (nAct.length < 3) {
         showError(nActInput, "error-nombre-actividad", "Ingrese un nombre válido !");
@@ -100,9 +109,16 @@ formActividad.addEventListener("submit", function (event) {
         esValido = false;
     }
 
+    if (!enlaceValido(enlace)) {
+        showError(enlaceActInput, "error-enlace-actividad", "Ingrese un enlace válido.");
+        esValido = false;
+    }
+
     if (esValido) {
         alert("Actividad registrada correctamente.");
         formActividad.reset();
         globalCleanErrAct();
     }
+
+
 });

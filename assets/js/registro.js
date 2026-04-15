@@ -5,7 +5,6 @@ const rInput = document.getElementById("rut");
 const eInput = document.getElementById("email");
 const rSelect = document.getElementById("rol");
 const pwInput = document.getElementById("password");
-const enlaceActInput = document.getElementById("enlace-actividad");
 const pwConfirmInput = document.getElementById("pw_confirmation");
 const careerCont = document.getElementById("campo-carrera-container");
 const careerInput = document.getElementById("campo-carrera");
@@ -78,12 +77,6 @@ function eValido(email) {
 
 }
 
-function enlaceValido(enlace) {
-
-    return enlace.startsWith("http://") || enlace.startsWith("https://");
-
-}
-
 function rValido(rut) {
 
     const regex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/;
@@ -109,7 +102,6 @@ form.addEventListener("submit", function (event) {
     const carrera = careerInput.value.trim();
     const departamento = deptoInput.value.trim();
     const password = pwInput.value;
-    const enlace = enlaceActInput.value.trim();
     const pwConfirmation = pwConfirmInput.value;
 
     if (nombre.length < 3) {
@@ -125,11 +117,6 @@ form.addEventListener("submit", function (event) {
     if (!eValido(email)) {
         showErr(eInput, "error-email", "Ingrese un correo electrónico válido !");
         formEsValido = false;
-    }
-
-    if (!enlaceValido(enlace)) {
-        showError(enlaceActInput, "error-enlace-actividad", "Ingrese un enlace válido !");
-        esValido = false;
     }
 
     if (rol === "") {
