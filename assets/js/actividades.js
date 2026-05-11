@@ -10,6 +10,7 @@ const enlaceActInput = document.getElementById("enlace-actividad");
 
 
 function showError(input, errorId, mensaje) {
+
     const errorElement = document.getElementById(errorId);
     errorElement.textContent = mensaje;
     errorElement.hidden = false;
