@@ -5,9 +5,9 @@
 
     <meta charset = "UTF-8">
     <title> Miembros </title>
-    <link rel = "stylesheet" href = "assets/css/styles.css">
-    <link rel = "stylesheet" href = "assets/css/navbar.css">
-    <link rel = "stylesheet" href = "assets/css/tables.css">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/styles.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/navbar.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/tables.css') }}">
 
 </head>
 
@@ -15,12 +15,12 @@
 
 <nav class = "navbar">
 
-    <a href = "index.html"> Inicio </a>
-    <a href = "registro.html"> Registro </a>
-    <a href = "actividades.html"> Actividades </a>
-    <a href = "miembros.html"> Miembros </a>
-    <a href = "estadisticas.html"> Estadísticas </a>
-    <a href = "contacto.html"> Contacto </a>
+    <a href = "{{ url_for('index') }}"> Inicio </a>
+    <a href = "{{ url_for('registro') }}"> Registro </a>
+    <a href = "{{ url_for('actividades') }}"> Actividades </a>
+    <a href = "{{ url_for('miembros') }}"> Miembros </a>
+    <a href = "{{ url_for('estadisticas') }}"> Estadísticas </a>
+    <a href = "{{ url_for('contacto') }}"> Contacto </a>
 
 </nav>
 
@@ -80,6 +80,6 @@
         </section>
         
     </main>
-    <script src = "assets/js/miembros.js"></script>
+    <script src = "{{ url_for('static', filename = 'js/miembros.js') }}"></script>
 </body>
 </html>
