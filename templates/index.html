@@ -5,9 +5,9 @@
 
     <meta charset = "UTF-8">
     <title> Inicio </title>
-    <link rel = "stylesheet" href = "assets/css/styles.css">
-    <link rel = "stylesheet" href = "assets/css/navbar.css">
-    <link rel = "stylesheet" href = "assets/css/index.css">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/styles.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/navbar.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/index.css') }}">
 
 </head>
 
@@ -15,12 +15,12 @@
 
 <nav class = "navbar">
 
-    <a href = "index.html"> Inicio </a>
-    <a href = "registro.html"> Registro </a>
-    <a href = "actividades.html"> Actividades </a>
-    <a href = "miembros.html"> Miembros </a>
-    <a href = "estadisticas.html"> Estadísticas </a>
-    <a href = "contacto.html"> Contacto </a>
+    <a href = "{{ url_for('index') }}"> Inicio </a>
+    <a href = "{{ url_for('registro') }}"> Registro </a>
+    <a href = "{{ url_for('actividades') }}"> Actividades </a>
+    <a href = "{{ url_for('miembros') }}"> Miembros </a>
+    <a href = "{{ url_for('estadisticas') }}"> Estadísticas </a>
+    <a href = "{{ url_for('contacto') }}"> Contacto </a>
 
 </nav>
 
@@ -42,7 +42,7 @@
                 <p>
                     Permite ingresar la información básica de estudiantes, docentes y funcionarios/as.
                 </p>
-                <a class = "home-link" href = "registro.html"> Ir a registro </a>
+                <a class = "home-link" href = "{{ url_for('registro') }}"> Ir a registro </a>
 
             </article>
 
@@ -52,7 +52,7 @@
                 <p>
                     Permite informar actividades artísticas, deportivas, sociales, etc.
                 </p>
-                <a class = "home-link" href = "actividades.html"> Ir a actividades </a>
+                <a class = "home-link" href = "{{ url_for('actividades') }}"> Ir a actividades </a>
 
             </article>
 
@@ -62,7 +62,7 @@
                 <p>
                     Permite consultar miembros registrados, filtrar por tipo y ordenar resultados.
                 </p>
-                <a class = "home-link" href = "miembros.html"> Ir a miembros </a>
+                <a class = "home-link" href = "{{ url_for('miembros') }}"> Ir a miembros </a>
 
             </article>
 
@@ -72,7 +72,7 @@
                 <p>
                     Presenta indicadores visuales sobre miembros y actividades registradas.
                 </p>
-                <a class = "home-link" href = "estadisticas.html"> Ir a estadísticas </a>
+                <a class = "home-link" href = "{{ url_for('estadisticas') }}"> Ir a estadísticas </a>
 
             </article>
         </section>
