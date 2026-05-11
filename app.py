@@ -6,6 +6,21 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route("/test-db")
+def test_db():
+
+    session = SessionLocal()
+
+    try:
+
+        result = session.execute(text("SELECT 1"))
+        value = result.scalar()
+        return f"Conexión OK. Resultado: {value}"
+
+    finally:
+        
+        session.close()
+
 @app.route("/registro")
 def registro():
     return render_template("registro.html")
