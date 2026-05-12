@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from sqlalchemy import text
 from database.db import SessionLocal
+from database.models import Region, Comuna, Miembro
 
 app = Flask(__name__)
 
@@ -21,6 +22,28 @@ def test_db():
 
     finally:
 
+        session.close()
+
+@app.route("/test-regiones")
+def test_regiones():
+
+    session = SessionLocal()
+
+    try:
+
+        regiones = session.query(Region).limit(5).all()
+        salida = "<h1>Regiones cargadas</h1><ul>"
+
+        for region in regiones:
+
+            salida += f"<li>{region.id} - {region.nombre}</li>"
+
+        salida += "</ul>"
+
+        return salida
+
+    finally:
+        
         session.close()
 
 @app.route("/registro")
