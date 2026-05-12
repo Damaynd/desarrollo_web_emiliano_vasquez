@@ -1,27 +1,12 @@
-<!DOCTYPE html>
-<html lang = "es">
+{% extends "base.html" %}
 
-<head>
+{% block title %} Registro de usuarios {% endblock %}
 
-    <meta charset = "UTF-8">
-    <title> Registro de usuarios </title>
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/styles.css') }}">
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/navbar.css') }}">
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/forms.css') }}">
+{% block extra_css %}
+<link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/forms.css') }}">
+{% endblock %}
 
-</head>
-
-<body>
-
-<nav class = "navbar">
-
-    <a href = "{{ url_for('index') }}"> Inicio </a>
-    <a href = "{{ url_for('registro') }}"> Registro y Actividades </a>
-    <a href = "{{ url_for('miembros') }}"> Miembros </a>
-    <a href = "{{ url_for('estadisticas') }}"> Estadísticas </a>
-    <a href = "{{ url_for('contacto') }}"> Contacto </a>
-
-</nav>
+{% block content %}
 
     <main>
 
@@ -222,5 +207,4 @@
         </form>
     </main>
     <script src = "{{ url_for('static', filename = 'js/registro.js') }}" ></script>
-</body>
-</html>
+{% endblock %}

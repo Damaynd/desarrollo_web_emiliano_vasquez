@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html lang = "es">
-<head>
-    <meta charset = "UTF-8">
-    <title> Detalle de miembro </title>
-    <link rel = "stylesheet" href = "{{ url_for('static', filename='css/styles.css') }}">
-    <link rel = "stylesheet" href = "{{ url_for('static', filename='css/navbar.css') }}">
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %} Detalle de miembro {% endblock %}
 
-<nav class = "navbar">
-    <a href = "{{ url_for('index') }}"> Inicio </a>
-    <a href = "{{ url_for('registro') }}"> Registro y Actividades </a>
-    <a href = "{{ url_for('miembros') }}"> Miembros </a>
-    <a href = "{{ url_for('estadisticas') }}"> Estadísticas </a>
-    <a href = "{{ url_for('contacto') }}"> Contacto </a>
-</nav>
-
+{% block content %}
 <main class = "page-main">
     
     <section class = "section">
@@ -79,6 +65,4 @@
         {% endif %}
     </section>
 </main>
-
-</body>
-</html>
+{% endblock %}

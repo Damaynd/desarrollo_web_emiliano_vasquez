@@ -1,37 +1,17 @@
-<!DOCTYPE html>
-<html lang = "es">
-<head>
+{% extends "base.html" %}
+{% block title %} Contacto {% endblock %}
 
-    <meta charset = "UTF-8">
-    <title> Contacto </title>
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/styles.css') }}">
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/navbar.css') }}">
+{% block content %}
+<main class = "page-main">
+    <section class = "section">
 
-</head>
-
-<body>
-
-<nav class = "navbar">
-
-    <a href = "{{ url_for('index') }}"> Inicio </a>
-    <a href = "{{ url_for('registro') }}"> Registro y Actividades </a>
-    <a href = "{{ url_for('miembros') }}"> Miembros </a>
-    <a href = "{{ url_for('estadisticas') }}"> Estadísticas </a>
-    <a href = "{{ url_for('contacto') }}"> Contacto </a>
-
-</nav>
-
-    <main class = "page-main">
-        <section class = "section">
-
-            <h1>Contacto</h1>
-            <h2>Información del desarrollador</h2>
-            <p><strong>Nombre completo:</strong> Emiliano Vásquez Parada</p>
-            <p><strong>Correo electrónico:</strong> evasquez@dcc.uchile.cl</p>
-            <p><strong>Teléfono:</strong> +56 9 7874 9167</p>
-            <p><strong>Curso:</strong> CC5002 Desarrollo de Aplicaciones Web</p>
+        <h1> Contacto </h1>
+        <h2> Información del desarrollador </h2>
+        <p><strong>Nombre completo:</strong> Emiliano Vásquez Parada </p>
+        <p><strong>Correo electrónico:</strong> evasquez@dcc.uchile.cl </p>
+        <p><strong>Teléfono:</strong> +56 9 7874 9167 </p>
+        <p><strong>Curso:</strong> CC5002 Desarrollo de Aplicaciones Web </p>
 
         </section>
     </main>
-</body>
-</html>
+{% endblock %}
