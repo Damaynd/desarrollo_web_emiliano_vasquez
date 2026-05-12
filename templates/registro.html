@@ -29,12 +29,16 @@
         <h1> Registro de miembros y actividades </h1>
         <h2> Complete los siguientes campos para crear su cuenta </h2>
 
+        {% if errores.get('general') %}
+            <p class = "error-message"> {{ errores['general'] }} </p>
+        {% endif %}
+
         <form class = "formulario" method= "POST" enctype = "multipart/form-data" novalidate>
 
             <div>
 
-                <label for = "name"> Nombre Completo*: </label>
-                <input type = "text" name = "name" id = "name" required>
+                <label for = "nombre"> Nombre Completo*: </label>
+                <input type = "text" name = "nombre" id = "nombre" value = "{{ datos.get('nombre', '') }}" required>
 
                 {% if errores.get('nombre') %}
                     <p class = "error-message"> {{ errores['nombre'] }} </p>
@@ -45,7 +49,7 @@
             <div>
 
                 <label for = "email"> Dirección de correo electrónico*: </label>
-                <input type = "email" name = "email" id = "email" required>
+                <input type = "email" name = "email" id = "email" value = "{{ datos.get('email', '') }}" required>
 
                 {% if errores.get('email') %}
                     <p class = "error-message"> {{ errores['email'] }} </p>
@@ -56,7 +60,7 @@
             <div>
 
                 <label for = "telefono"> Ingrese su teléfono*: </label>
-                <input type = "text" name = "telefono" id = "telefono" required>
+                <input type = "text" name = "telefono" id = "telefono" value = "{{ datos.get('telefono', '') }}" required>
 
                 {% if errores.get('telefono') %}
                     <p class = "error-message"> {{ errores['telefono'] }} </p>
@@ -95,7 +99,7 @@
             <div>
 
                 <label for = "nombre_actividad"> Nombre de la actividad*: </label>
-                <input type = "text" name = "nombre_actividad" id = "nombre_actividad" required>
+                <input type = "text" name = "nombre_actividad" id = "nombre_actividad" value = "{{ datos.get('nombre_actividad', '') }}" required>
 
                 {% if errores.get('nombre_actividad') %}
                     <p class = "error-message"> {{ errores['nombre_actividad'] }} </p>
@@ -132,33 +136,28 @@
             </div>
 
             <div>
-
-                <label for = "dias"> Días* </label>
                 <fieldset class = "dias-fieldset">
-
                     <legend> Días* </legend>
+                    <label><input type = "checkbox" name = "dias" value = "lunes"
+                        {% if 'lunes' in dias_seleccionados %} checked {% endif %}> Lunes </label>
 
-                <label><input type = "checkbox" name = "dias" value = "lunes"
-                    {% if 'lunes' in dias_seleccionados %} checked {% endif %}> Lunes </label>
+                    <label><input type = "checkbox" name = "dias" value = "martes"
+                        {% if 'martes' in dias_seleccionados %} checked {% endif %}> Martes </label>
 
-                <label><input type = "checkbox" name = "dias" value = "martes"
-                    {% if 'martes' in dias_seleccionados %} checked {% endif %}> Martes </label>
-
-                <label><input type = "checkbox" name = "dias" value = "miércoles"
-                    {% if 'miércoles' in dias_seleccionados %} checked {% endif %}> Miércoles </label>
+                    <label><input type = "checkbox" name = "dias" value = "miércoles"
+                        {% if 'miércoles' in dias_seleccionados %} checked {% endif %}> Miércoles </label>
                     
-                <label><input type = "checkbox" name = "dias" value = "jueves"
-                    {% if 'jueves' in dias_seleccionados %} checked {% endif %}> Jueves </label>
+                    <label><input type = "checkbox" name = "dias" value = "jueves"
+                        {% if 'jueves' in dias_seleccionados %} checked {% endif %}> Jueves </label>
 
-                <label><input type = "checkbox" name = "dias" value = "viernes"
-                    {% if 'viernes' in dias_seleccionados %} checked {% endif %}> Viernes </label>
+                    <label><input type = "checkbox" name = "dias" value = "viernes"
+                        {% if 'viernes' in dias_seleccionados %} checked {% endif %}> Viernes </label>
 
-                {% if errores.get('dias') %}
-                    <p class = "error-message">{{ errores.get('dias') }}</p>
-                {% endif %}
-
-            </fieldset>
-
+                    {% if errores.get('dias') %}
+                        <p class = "error-message">{{ errores.get('dias') }}</p>
+                    {% endif %}                
+                </fieldset>
+            </div>
             <div>
 
                 <label for = "hora_inicio"> Hora de inicio*: </label>
@@ -199,6 +198,6 @@
 
         </form>
     </main>
-    <script src = "{{ url_for('static', filename = 'js/registro.js') }}" ></script>
+    <!--script src = "{{ url_for('static', filename = 'js/registro.js') }}" ></script-->
 </body>
 </html>
