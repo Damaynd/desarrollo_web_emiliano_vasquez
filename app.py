@@ -7,7 +7,23 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    
+    session = SessionLocal()
+
+    try:
+
+        miembros = session.query(Miembro)
+        .order_by(Miembro.fecha_registro.desc())
+        .limit(5)
+        .all()
+
+        return render_template("index.html", miembros = miembros)
+
+    finally:
+        
+        session.close()
+
+    
 
 @app.route("/test-db")
 def test_db():
@@ -43,7 +59,7 @@ def test_regiones():
         return salida
 
     finally:
-        
+
         session.close()
 
 @app.route("/registro")

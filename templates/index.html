@@ -75,6 +75,36 @@
                 <a class = "home-link" href = "{{ url_for('estadisticas') }}"> Ir a estadísticas </a>
 
             </article>
+
+            <article class = "section">
+
+                <h2> Contacto </h2>
+                <p>
+                    Información de contacto del desarrollador.
+                </p>
+                <a class = "home-link" href = "{{ url_for('contacto') }}"> Ir a contacto </a>
+
+            </article>
+
+            <article class = "section">
+
+                <h2> Últimos cinco miembros registrados: </h2>
+
+                {% if miembros %}
+
+                    <ul>
+                        {% for miembro in miembros %}
+                            <li> {{ miembro.nombre }} ({{ miembro.email }}) </li>
+                        {% endfor %}
+                    </ul>
+
+                {% else %}
+
+                    <p> No hay miembros registrados aún ! </p>
+
+                {% endif %}
+            </article>
+
         </section>
     </main>
 </body>
