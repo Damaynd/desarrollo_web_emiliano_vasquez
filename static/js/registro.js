@@ -1,116 +1,110 @@
-const form = document.getElementById("form-registro");
+const form = document.querySelector(".formulario");
 
-const nInput = document.getElementById("name");
-const rInput = document.getElementById("rut");
+const nInput = document.getElementById("nombre");
 const eInput = document.getElementById("email");
-const rSelect = document.getElementById("rol");
-const pwInput = document.getElementById("password");
-const pwConfirmInput = document.getElementById("pw_confirmation");
-const careerCont = document.getElementById("campo-carrera-container");
-const careerInput = document.getElementById("campo-carrera");
-const careerLabel = document.getElementById("label-carrera");
-const deptoCont = document.getElementById("campo-departamento-container");
-const deptoInput = document.getElementById("campo-departamento");
-const deptoLabel = document.getElementById("label-departamento");
-
-function actFieldsByRole() {
-
-    const rol = rSelect.value;
-    careerCont.style.display = "none";
-    deptoCont.style.display = "none";
-    careerInput.value = "";
-    deptoInput.value = "";
-
-    if (rol === "e_pregrado") {
-        careerCont.style.display = "block";
-        careerLabel.textContent = "Carrera *";
-
-    } else if (rol === "e_postgrado") {
-        careerCont.style.display = "block";
-        careerLabel.textContent = "Programa *";
-
-    } else if (rol === "docente") {
-        deptoCont.style.display = "block";
-        deptoLabel.textContent = "Departamento *";
-
-    } else if (rol === "funcionario") {
-        deptoCont.style.display = "block";
-        deptoLabel.textContent = "Unidad o área *";
-    }
-}
+const tInput = document.getElementById("telefono");
+const cSelect = document.getElementById("comuna_id");
+const nActInput = document.getElementById("nombre_actividad");
+const tActSelect = document.getElementById("tipo_actividad");
+const dActInput = document.getElementById("descripcion_actividad");
+const daysInputs = document.querySelectorAll('input[name="dias"]');
+const h0Input = document.getElementById("hora_inicio");
+const hfInput = document.getElementById("hora_termino");
+const fotoInput = document.getElementById("foto");
 
 function showErr(input, errorId, mensaje) {
 
     const errorElement = document.getElementById(errorId);
+    if (!errorElement) return;
+
     errorElement.textContent = mensaje;
     errorElement.hidden = false;
-    input.classList.add("input-error");
 
+    if (input) {
+        input.classList.add("input-error");
+    }
 }
 
 function cleanErr(input, errorId) {
 
     const errorElement = document.getElementById(errorId);
+    if (!errorElement) return;
+
     errorElement.textContent = "";
     errorElement.hidden = true;
-    input.classList.remove("input-error");
 
+    if (input) {
+        input.classList.remove("input-error");
+    }
 }
 
 function globalCleanErr() {
 
-    cleanErr(nInput, "error-name");
-    cleanErr(rInput, "error-rut");
+    cleanErr(nInput, "error-nombre");
     cleanErr(eInput, "error-email");
-    cleanErr(rSelect, "error-rol");
-    cleanErr(careerInput, "error-campo-carrera");
-    cleanErr(deptoInput, "error-campo-departamento");
-    cleanErr(pwInput, "error-password");
-    cleanErr(pwConfirmInput, "error-pw_confirmation");
-
+    cleanErr(tInput, "error-telefono");
+    cleanErr(cSelect, "error-comuna_id");
+    cleanErr(nActInput, "error-nombre_actividad");
+    cleanErr(tActSelect, "error-tipo_actividad");
+    cleanErr(dActInput, "error-descripcion_actividad");
+    cleanErr(null, "error-dias");
+    cleanErr(h0Input, "error-hora_inicio");
+    cleanErr(hfInput, "error-hora_termino");
+    cleanErr(fotoInput, "error-foto");
 }
 
 function eValido(email) {
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
-
 }
 
-function rValido(rut) {
+function tValido(telefono) {
 
-    const regex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/;
-    return regex.test(rut);
-
+    const regex = /^\d{8,}$/;
+    return regex.test(telefono);
+    
 }
 
-function pwValida(password) {
+function diasSeleccionados() {
 
-    return password.length >= 8;
+    return Array.from(daysInputs).some(dia => dia.checked);
+}
 
+function archivosValidos(files) {
+
+    const extensionesValidas = ["png", "jpg", "jpeg", "webp", "gif"];
+
+    for (const file of files) {
+        const partes = file.name.split(".");
+        const extension = partes[partes.length - 1].toLowerCase();
+
+        if (!extensionesValidas.includes(extension)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 form.addEventListener("submit", function (event) {
 
-    event.preventDefault();
     globalCleanErr();
     let formEsValido = true;
+
     const nombre = nInput.value.trim();
-    const rut = rInput.value.trim();
     const email = eInput.value.trim();
-    const rol = rSelect.value;
-    const carrera = careerInput.value.trim();
-    const departamento = deptoInput.value.trim();
-    const password = pwInput.value;
-    const pwConfirmation = pwConfirmInput.value;
+    const telefono = tInput.value.trim();
+    const comuna = cSelect.value;
+    const nombreActividad = nActInput.value.trim();
+    const tipoActividad = tActSelect.value;
+    const descripcionActividad = dActInput.value.trim();
+    const horaInicio = h0Input.value;
+    const horaTermino = hfInput.value;
+    const archivos = fotoInput.files;
 
     if (nombre.length < 3) {
-        showErr(nInput, "error-name", "Ingrese un nombre completo válido.");
-        formEsValido = false;
-    }
-
-    if (!rValido(rut)) {
-        showErr(rInput, "error-rut", "Ingrese un RUT válido !");
+        showErr(nInput, "error-nombre", "Ingrese un nombre completo válido.");
         formEsValido = false;
     }
 
@@ -119,38 +113,63 @@ form.addEventListener("submit", function (event) {
         formEsValido = false;
     }
 
-    if (rol === "") {
-        showErr(rSelect, "error-rol", "Seleccione un rol !");
+    if (!telefono) {
+        showErr(tInput, "error-telefono", "Ingrese un teléfono !");
+        formEsValido = false;
+    } else if (!tValido(telefono)) {
+        showErr(tInput, "error-telefono", "Ingrese un teléfono válido !");
         formEsValido = false;
     }
 
-    if ((rol === "e_pregrado" || rol === "e_postgrado") && carrera === "") {
-        showErr(careerInput, "error-campo-carrera", "Complete este campo !");
+    if (comuna === "") {
+        showErr(cSelect, "error-comuna_id", "Seleccione una comuna !");
         formEsValido = false;
     }
 
-    if ((rol === "docente" || rol === "funcionario") && departamento === "") {
-        showErr(deptoInput, "error-campo-departamento", "Complete este campo !");
+    if (nombreActividad.length < 3) {
+        showErr(nActInput, "error-nombre_actividad", "Ingrese un nombre de actividad válido !");
         formEsValido = false;
     }
 
-    if (!pwValida(password)) {
-        showErr(pwInput, "error-password", "La contraseña debe tener al menos 8 caracteres !");
+    if (tipoActividad === "") {
+        showErr(tActSelect, "error-tipo_actividad", "Seleccione un tipo de actividad !");
         formEsValido = false;
     }
 
-    if (pwConfirmation !== password) {
-        showErr(pwConfirmInput, "error-pw_confirmation", "Las contraseñas no coinciden !");
+    if (descripcionActividad.length < 10) {
+        showErr(dActInput, "error-descripcion_actividad", "Ingrese una descripción más completa !");
         formEsValido = false;
     }
 
-    if (formEsValido) {
-        alert("Formulario enviado correctamente !");
-        form.reset();
-        actFieldsByRole();
-        globalCleanErr();
+    if (!diasSeleccionados()) {
+        showErr(null, "error-dias", "Seleccione al menos un día !");
+        formEsValido = false;
+    }
+
+    if (horaInicio === "") {
+        showErr(h0Input, "error-hora_inicio", "Ingrese una hora de inicio !");
+        formEsValido = false;
+    }
+
+    if (horaTermino === "") {
+        showErr(hfInput, "error-hora_termino", "Ingrese una hora de término !");
+        formEsValido = false;
+    }
+
+    if (horaInicio !== "" && horaTermino !== "" && horaTermino <= horaInicio) {
+        showErr(hfInput, "error-hora_termino", "La hora de término debe ser posterior a la de inicio !");
+        formEsValido = false;
+    }
+
+    if (archivos.length === 0) {
+        showErr(fotoInput, "error-foto", "Debe adjuntar al menos una foto !");
+        formEsValido = false;
+    } else if (!archivosValidos(archivos)) {
+        showErr(fotoInput, "error-foto", "Formato de archivo no permitido !");
+        formEsValido = false;
+    }
+
+    if (!formEsValido) {
+        event.preventDefault();
     }
 });
-
-rSelect.addEventListener("change", actFieldsByRole);
-actFieldsByRole();

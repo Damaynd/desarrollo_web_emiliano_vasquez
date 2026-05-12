@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 import uuid
 from werkzeug.utils import secure_filename
+from math import ceil
 
 app = Flask(__name__)
 
@@ -51,45 +52,6 @@ def index():
             .all())
 
         return render_template("index.html", miembros = miembros)
-
-    finally:
-
-        session.close()
-
-    
-
-@app.route("/test-db")
-def test_db():
-
-    session = SessionLocal()
-
-    try:
-
-        result = session.execute(text("SELECT 1"))
-        value = result.scalar()
-        return f"Conexión OK. Resultado: {value}"
-
-    finally:
-
-        session.close()
-
-@app.route("/test-regiones")
-def test_regiones():
-
-    session = SessionLocal()
-
-    try:
-
-        regiones = session.query(Region).limit(5).all()
-        salida = "<h1>Regiones cargadas</h1><ul>"
-
-        for region in regiones:
-
-            salida += f"<li>{region.id} - {region.nombre}</li>"
-
-        salida += "</ul>"
-
-        return salida
 
     finally:
 
@@ -284,9 +246,6 @@ def registro():
     finally:
         session.close()
 
-@app.route("/actividades")
-def actividades():
-    return render_template("actividades.html")
 
 @app.route("/miembros")
 def miembros():
@@ -327,7 +286,7 @@ def miembros():
 
 @app.route("/miembros/<int:id>")
 def detalle_miembro(id):
-    
+
     session = SessionLocal()
 
     try:
