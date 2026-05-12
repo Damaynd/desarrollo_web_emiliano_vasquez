@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+from sqlalchemy import text
+from database.db import SessionLocal
 
 app = Flask(__name__)
 
@@ -18,7 +20,7 @@ def test_db():
         return f"Conexión OK. Resultado: {value}"
 
     finally:
-        
+
         session.close()
 
 @app.route("/registro")
