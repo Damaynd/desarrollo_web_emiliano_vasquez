@@ -7,7 +7,7 @@ DB_PASSWORD = "programacionweb"
 DB_HOST = "localhost"
 DB_PORT = 3306
 
-DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
 
 engine = create_engine(DATABASE_URL, echo = True)
 
