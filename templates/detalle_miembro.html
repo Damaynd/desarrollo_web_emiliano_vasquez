@@ -5,64 +5,85 @@
 {% block content %}
 <main class = "page-main">
     
-    <section class = "section">
+    <section class = "section member-detail-card">
 
         <h1> Detalle de miembro </h1>
 
-        <p><strong> Nombre: </strong> {{ miembro.nombre }}</p>
-        <p><strong> Correo: </strong> {{ miembro.email }}</p>
-        <p><strong> Teléfono: </strong> {{ miembro.telefono }}</p>
-        <p><strong> Comuna: </strong> {{ miembro.comuna.nombre }}</p>
-        <p><strong> Fecha de registro: </strong> {{ miembro.fecha_registro.strftime('%d-%m-%Y %H:%M') }}</p>
+        <div class = "member-detail-grid">
+
+            <p><strong> Nombre: </strong> {{ miembro.nombre }}</p>
+            <p><strong> Correo: </strong> {{ miembro.email }}</p>
+            <p><strong> Teléfono: </strong> {{ miembro.telefono }}</p>
+            <p><strong> Comuna: </strong> {{ miembro.comuna.nombre }}</p>
+            <p><strong> Fecha de registro: </strong> {{ miembro.fecha_registro.strftime('%d-%m-%Y %H:%M') }}</p>
+
+        </div>
 
     </section>
 
-    <section class = "section">
+    <section class = "member-activities">
+
         <h2> Actividades registradas </h2>
 
         {% if miembro.actividades %}
 
-            {% for actividad in miembro.actividades %}
+            <div class = "activity-list">
 
-                <article class="section">
+                {% for actividad in miembro.actividades %}
 
-                    <p><strong> Nombre: </strong> {{ actividad.nombre }}</p>
-                    <p><strong> Tipo: </strong> {{ actividad.tipo }}</p>
-                    <p><strong> Día: </strong> {{ actividad.dia }}</p>
-                    <p><strong> Hora de inicio: </strong> {{ actividad.hora_inicio }}</p>
-                    <p><strong> Duración: </strong> {{ actividad.duracion }}</p>
-                    <p><strong> Descripción: </strong> {{ actividad.descripcion }}</p>
+                    <article class = "section activity-card">
 
-                    {% if actividad.fotos %}
+                        <h3>{{ actividad.nombre }}</h3>
 
-                        <h3> Fotos </h3>
+                        <div class = "activity-meta">
 
-                        <ul>
-                            {% for foto in actividad.fotos %}
+                            <p><strong> Tipo: </strong> {{ actividad.tipo }}</p>
+                            <p><strong> Día: </strong> {{ actividad.dia }}</p>
+                            <p><strong> Hora de inicio: </strong> {{ actividad.hora_inicio }}</p>
+                            <p><strong> Duración: </strong> {{ actividad.duracion }}</p>
 
-                                <li>
+                        </div>
 
-                                    <a href = "{{ url_for('static', filename=foto.ruta_archivo) }}" target = "_blank">
-                                        {{ foto.nombre_archivo }}
-                                    </a>
+                        <p class = "activity-description">
+                            <strong> Descripción: </strong> {{ actividad.descripcion }}
+                        </p>
 
-                                </li>
+                        {% if actividad.fotos %}
 
-                            {% endfor %}
+                            <h4> Fotos </h4>
 
-                        </ul>
+                            <ul class = "activity-files">
 
-                    {% endif %}
+                                {% for foto in actividad.fotos %}
 
-                </article>
+                                    <li>
 
-            {% endfor %}
+                                        <a href = "{{ url_for('static', filename=foto.ruta_archivo) }}" target = "_blank">
+                                            {{ foto.nombre_archivo }}
+                                        </a>
 
+                                    </li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        {% endif %}
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
         {% else %}
 
-            <p>Este miembro no tiene actividades registradas.</p>
+            <section class = "section">
+                <p>Este miembro no tiene actividades registradas.</p>
+            </section>
 
         {% endif %}
+
     </section>
 </main>
+
 {% endblock %}

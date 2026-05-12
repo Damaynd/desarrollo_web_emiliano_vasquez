@@ -80,15 +80,18 @@
 
                 {% if miembros %}
 
-                    <ul>
+                    <ul class = "last-members">
                         {% for miembro in miembros %}
-                            <li> {{ miembro.nombre }} ({{ miembro.email }}) </li>
+                            <li>
+                                <span class = "member-name"> {{ miembro.nombre }} </span>
+                                <span class = "member-email"> ({{ miembro.email }}) </span>
+                            </li>
                         {% endfor %}
                     </ul>
 
                 {% else %}
 
-                    <p> No hay miembros registrados aún ! </p>
+                    <p class = "no-members"> No hay miembros registrados aún ! </p>
 
                 {% endif %}
             </article>
