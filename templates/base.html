@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang = "es">
+<head>
+    <meta charset = "UTF-8">
+    <title>{% block title %} Aplicación {% endblock %}</title>
+
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/styles.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/navbar.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    {% include "partials/navbar.html" %}
+
+    {% block content %}{% endblock %}
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>
