@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from database.db import SessionLocal
-from database.models import Region, Comuna, Miembro, Actividad, Foto
-from sqlalchemy import text
+from database.models import Comuna, Miembro, Actividad, Foto
 from datetime import datetime
 from pathlib import Path
 import uuid
@@ -233,7 +232,7 @@ def registro():
 
             app.logger.exception("Error al guardar el registro")
 
-            errores["general"] = f"Hubo un error al procesar su registro: {str(e)}"
+            errores["general"] = f"Hubo un error al procesar su registro u u"
 
             return render_template(
                 "registro.html",

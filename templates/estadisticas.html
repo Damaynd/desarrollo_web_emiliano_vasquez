@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+
 {% block title %} Estadísticas {% endblock %}
+
 {% block extra_css %}
 <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/stats.css') }}">
 {% endblock %}
+
 {% block content %}
     <main>
 
@@ -26,11 +29,15 @@
 
             <article class = "section">
 
-                <h3>Días con más actividades</h3>
+                <h3> Días con más actividades </h3>
                 <div id = "grafico-dias" class = "grafico-barras"></div>
 
             </article>
         </section>
     </main>
+
+    {% block extra_js %}
     <script src = "{{ url_for('static', filename = 'js/estadisticas.js') }}"></script>
+    {% endblock %}
+    
 {% endblock %}
