@@ -101,48 +101,48 @@ def registro():
         ]
 
         if len(nombre) < 3:
-            errores["nombre"] = "Ingrese un nombre válido."
+            errores["nombre"] = "Ingrese un nombre válido >8("
 
         if "@" not in email or "." not in email:
-            errores["email"] = "Ingrese un correo válido."
+            errores["email"] = "Ingrese un correo válido >8("
 
         if not telefono:
-            errores["telefono"] = "Ingrese un teléfono."
+            errores["telefono"] = "Ingrese un teléfono >8("
         elif not telefono.isdigit() or len(telefono) < 8:
-            errores["telefono"] = "Ingrese un teléfono válido."
+            errores["telefono"] = "Ingrese un teléfono válido >8("
 
         if not comuna_id:
-            errores["comuna_id"] = "Seleccione una comuna."
+            errores["comuna_id"] = "Seleccione una comuna >8("
 
         if len(nombre_actividad) < 3:
-            errores["nombre_actividad"] = "Ingrese un nombre de actividad válido."
+            errores["nombre_actividad"] = "Ingrese un nombre de actividad válido >8("
 
         if not tipo_actividad:
-            errores["tipo_actividad"] = "Seleccione un tipo de actividad."
+            errores["tipo_actividad"] = "Seleccione un tipo de actividad >8("
 
         if len(descripcion_actividad) < 10:
-            errores["descripcion_actividad"] = "Ingrese una descripción más completa."
+            errores["descripcion_actividad"] = "Ingrese una descripción más completa >8("
 
         if not dias:
-            errores["dias"] = "Seleccione al menos un día."
+            errores["dias"] = "Seleccione al menos un día para la actividad >8("
 
         if not hora_inicio:
-            errores["hora_inicio"] = "Ingrese una hora de inicio."
+            errores["hora_inicio"] = "Ingrese una hora de inicio >8("
 
         if not hora_termino:
-            errores["hora_termino"] = "Ingrese una hora de término."
+            errores["hora_termino"] = "Ingrese una hora de término >8("
 
         if hora_inicio and hora_termino and hora_termino <= hora_inicio:
-            errores["hora_termino"] = "La hora de término debe ser posterior a la de inicio."
+            errores["hora_termino"] = "La hora de término debe ser posterior a la de inicio >8("
 
         if not archivos:
-            errores["foto"] = "Debe adjuntar al menos una foto."
+            errores["foto"] = "Debe adjuntar al menos una foto >8("
         else:
 
             for archivo in archivos:
 
                 if not archivo_permitido(archivo.filename):
-                    errores["foto"] = "Formato de archivo no permitido."
+                    errores["foto"] = "Formato de archivo no permitido >8("
                     break
 
         if errores:
@@ -233,14 +233,14 @@ def registro():
 
             app.logger.exception("Error al guardar el registro")
 
-            errores["general"] = f"{type(e).__name__}: {e}"
+            errores["general"] = f"Hubo un error al procesar su registro: {str(e)}"
 
             return render_template(
                 "registro.html",
-                comunas=comunas,
-                errores=errores,
-                datos=request.form,
-                dias_seleccionados=dias
+                comunas = comunas,
+                errores = errores,
+                datos = request.form,
+                dias_seleccionados = dias
         )
 
     finally:
@@ -252,7 +252,7 @@ def miembros():
     session = SessionLocal()
 
     try:
-        page = request.args.get("page", 1, type=int)
+        page = request.args.get("page", 1, type = int)
         per_page = 5
 
         total_miembros = session.query(Miembro).count()
@@ -275,9 +275,9 @@ def miembros():
 
         return render_template(
             "miembros.html",
-            miembros=miembros,
-            page=page,
-            total_pages=total_pages
+            miembros = miembros,
+            page = page,
+            total_pages = total_pages
         )
 
     finally:
