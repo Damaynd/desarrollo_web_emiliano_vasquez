@@ -1,85 +1,75 @@
 <!DOCTYPE html>
-<html lang = "es">
-
+<html lang="es">
 <head>
-
-    <meta charset = "UTF-8">
-    <title> Miembros </title>
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/styles.css') }}">
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/navbar.css') }}">
-    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/tables.css') }}">
-
+    <meta charset="UTF-8">
+    <title>Miembros</title>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='css/styles.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='css/tables.css') }}">
 </head>
 
 <body>
 
-<nav class = "navbar">
-
+<nav class="navbar">
     <a href = "{{ url_for('index') }}"> Inicio </a>
     <a href = "{{ url_for('registro') }}"> Registro </a>
     <a href = "{{ url_for('actividades') }}"> Actividades </a>
     <a href = "{{ url_for('miembros') }}"> Miembros </a>
     <a href = "{{ url_for('estadisticas') }}"> Estadísticas </a>
     <a href = "{{ url_for('contacto') }}"> Contacto </a>
-
 </nav>
 
-    <main>
+<main>
+    <h1> Listado de miembros </h1>
+    <h2> Consulta de miembros registrados </h2>
 
-        <h1> Listado de miembros </h1>
-        <h2> Consulta de miembros registrados </h2>
-
-        <section class = "filtros-miembros">
-
-            <div>
-                <label for = "filtro-tipo"> Filtrar por tipo: </label>
-
-                <select id = "filtro-tipo">
-                    <option value = "todos"> Todos </option>
-                    <option value = "pregrado"> Estudiante de pregrado </option>
-                    <option value = "postgrado"> Estudiante de postgrado </option>
-                    <option value = "docente"> Docente </option>
-                    <option value = "funcionario"> Funcionario/a </option>
-                </select>
-
-            </div>
-
-            <div>
-                <label for = "orden-miembros"> Ordenar por: </label>
-
-                <select id = "orden-miembros">
-                    <option value = "nombre-asc"> Nombre (A-Z) </option>
-                    <option value = "nombre-desc"> Nombre (Z-A) </option>
-                    <option value = "correo-asc"> Correo (A-Z) </option>
-                    <option value = "correo-desc"> Correo (Z-A) </option>
-                </select>
-
-            </div>
-        </section>
-
-        <section class = "tabla-section">
-
-            <table class = "tabla-miembros">
-                <thead>
+    <section class = "tabla-section">
+        <table class = "tabla-miembros">
+            <thead>
+                <tr>
+                    <th> Nombre </th>
+                    <th> Correo </th>
+                    <th> Teléfono </th>
+                    <th> Comuna </th>
+                    <th> Fecha de registro </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if miembros %}
+                    {% for miembro in miembros %}
+                        <tr>
+                            <td>
+                                <a href = "{{ url_for('detalle_miembro', id=miembro.id) }}">
+                                    {{ miembro.nombre }}
+                                </a>
+                            </td>
+                            <td>{{ miembro.email }}</td>
+                            <td>{{ miembro.telefono }}</td>
+                            <td>{{ miembro.comuna.nombre }}</td>
+                            <td>{{ miembro.fecha_registro.strftime('%d-%m-%Y %H:%M') }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
                     <tr>
-                        <th> Nombre </th>
-                        <th> Correo </th>
-                        <th> Tipo </th>
-                        <th> Información adicional </th>
+                        <td colspan = "5"> No hay miembros registrados </td>
                     </tr>
-                </thead>
-                <tbody id = "tabla-miembros-body"></tbody>
-            </table>
+                {% endif %}
+            </tbody>
+        </table>
+    </section>
 
-        </section>
+    <section class = "paginacion">
+        {% if page > 1 %}
+            <a href = "{{ url_for('miembros', page=page-1) }}"> Anterior </a>
+        {% endif %}
 
-        <section class = "paginacion">
-            <button id = "btn-anterior" type = "button"> Anterior </button>
-            <span id = "pagina-actual"> Página 1 </span>
-            <button id = "btn-siguiente" type = "button"> Siguiente </button>
-        </section>
-        
-    </main>
-    <script src = "{{ url_for('static', filename = 'js/miembros.js') }}"></script>
+        <span> Página {{ page }} de {{ total_pages }} </span>
+
+        {% if page < total_pages %}
+            <a href = "{{ url_for('miembros', page=page+1) }}"> Siguiente </a>
+        {% endif %}
+    </section>
+</main>
+
 </body>
 </html>

@@ -214,7 +214,6 @@ def registro():
                     "nombre_archivo": nombre_original
 
                 })
-
             miembro = Miembro(
 
                 nombre = nombre,
@@ -227,9 +226,7 @@ def registro():
 
             session.add(miembro)
             session.flush()
-
             duracion = calcular_duracion(hora_inicio, hora_termino)
-
             for dia in dias:
 
                 actividad = Actividad(
@@ -247,6 +244,8 @@ def registro():
                 session.add(actividad)
                 session.flush()
 
+ 
+
                 for archivo_guardado in archivos_guardados:
 
                     foto = Foto(
@@ -263,22 +262,24 @@ def registro():
             flash("Registro realizado correctamente.")
             return redirect(url_for("index"))
 
-        except Exception:
+        except Exception as e:
             session.rollback()
 
             for ruta in rutas_guardadas:
                 if ruta.exists():
                     ruta.unlink()
 
-            errores["general"] = "Ocurrió un error al guardar el registro."
+            app.logger.exception("Error al guardar el registro")
+
+            errores["general"] = f"{type(e).__name__}: {e}"
 
             return render_template(
                 "registro.html",
-                comunas = comunas,
-                errores = errores,
-                datos = request.form,
-                dias_seleccionados = dias
-            )
+                comunas=comunas,
+                errores=errores,
+                datos=request.form,
+                dias_seleccionados=dias
+        )
 
     finally:
         session.close()
@@ -289,7 +290,56 @@ def actividades():
 
 @app.route("/miembros")
 def miembros():
-    return render_template("miembros.html")
+    session = SessionLocal()
+
+    try:
+        page = request.args.get("page", 1, type=int)
+        per_page = 5
+
+        total_miembros = session.query(Miembro).count()
+        total_pages = max(1, ceil(total_miembros / per_page))
+
+        if page < 1:
+            page = 1
+        if page > total_pages:
+            page = total_pages
+
+        offset = (page - 1) * per_page
+
+        miembros = (
+            session.query(Miembro)
+            .order_by(Miembro.fecha_registro.desc())
+            .offset(offset)
+            .limit(per_page)
+            .all()
+        )
+
+        return render_template(
+            "miembros.html",
+            miembros=miembros,
+            page=page,
+            total_pages=total_pages
+        )
+
+    finally:
+        session.close()
+
+
+@app.route("/miembros/<int:id>")
+def detalle_miembro(id):
+    
+    session = SessionLocal()
+
+    try:
+        miembro = session.query(Miembro).filter(Miembro.id == id).first()
+
+        if not miembro:
+            return "<h1> Miembro no encontrado </h1>", 404
+
+        return render_template("detalle_miembro.html", miembro = miembro)
+
+    finally:
+        session.close()
 
 @app.route("/estadisticas")
 def estadisticas():

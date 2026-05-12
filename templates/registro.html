@@ -113,10 +113,10 @@
                 <select name = "tipo_actividad" id = "tipo_actividad">
 
                     <option value = ""> Seleccione una opción </option>
-                    <option value = "artística" {% if datos.get('tipo_actividad') == 'artística' %} selected {% endif %}> Artística </option>
-                    <option value = "deportiva" {% if datos.get('tipo_actividad') == 'deportiva' %} selected {% endif %}> Deportiva </option>
+                    <option value = "arte" {% if datos.get('tipo_actividad') == 'arte' %} selected {% endif %}> Artística </option>
+                    <option value = "deporte" {% if datos.get('tipo_actividad') == 'deporte' %} selected {% endif %}> Deportiva </option>
                     <option value = "social" {% if datos.get('tipo_actividad') == 'social' %} selected {% endif %}> Social </option>
-                    <option value = "tecnológica" {% if datos.get('tipo_actividad') == 'tecnológica' %} selected {% endif %}> Tecnológica </option>
+                    <option value = "tecnología" {% if datos.get('tipo_actividad') == 'tecnología' %} selected {% endif %}> Tecnológica </option>
 
                 </select>
                 {% if errores.get('tipo_actividad') %}
