@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang = "es">
+<head>
+    <meta charset = "UTF-8">
+    <title> Detalle de miembro </title>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='css/styles.css') }}">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='css/navbar.css') }}">
+</head>
+
+<body>
+
+<nav class = "navbar">
+    <a href = "{{ url_for('index') }}"> Inicio </a>
+    <a href = "{{ url_for('registro') }}"> Registro </a>
+    <a href = "{{ url_for('actividades') }}"> Actividades </a>
+    <a href = "{{ url_for('miembros') }}"> Miembros </a>
+    <a href = "{{ url_for('estadisticas') }}"> Estadísticas </a>
+    <a href = "{{ url_for('contacto') }}"> Contacto </a>
+</nav>
+
+<main class = "page-main">
+    
+    <section class = "section">
+
+        <h1> Detalle de miembro </h1>
+
+        <p><strong> Nombre: </strong> {{ miembro.nombre }}</p>
+        <p><strong> Correo: </strong> {{ miembro.email }}</p>
+        <p><strong> Teléfono: </strong> {{ miembro.telefono }}</p>
+        <p><strong> Comuna: </strong> {{ miembro.comuna.nombre }}</p>
+        <p><strong> Fecha de registro: </strong> {{ miembro.fecha_registro.strftime('%d-%m-%Y %H:%M') }}</p>
+
+    </section>
+
+    <section class = "section">
+        <h2> Actividades registradas </h2>
+
+        {% if miembro.actividades %}
+
+            {% for actividad in miembro.actividades %}
+
+                <article class="section">
+
+                    <p><strong> Nombre: </strong> {{ actividad.nombre }}</p>
+                    <p><strong> Tipo: </strong> {{ actividad.tipo }}</p>
+                    <p><strong> Día: </strong> {{ actividad.dia }}</p>
+                    <p><strong> Hora de inicio: </strong> {{ actividad.hora_inicio }}</p>
+                    <p><strong> Duración: </strong> {{ actividad.duracion }}</p>
+                    <p><strong> Descripción: </strong> {{ actividad.descripcion }}</p>
+
+                    {% if actividad.fotos %}
+
+                        <h3> Fotos </h3>
+
+                        <ul>
+                            {% for foto in actividad.fotos %}
+
+                                <li>
+
+                                    <a href = "{{ url_for('static', filename=foto.ruta_archivo) }}" target = "_blank">
+                                        {{ foto.nombre_archivo }}
+                                    </a>
+
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% endif %}
+
+                </article>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>Este miembro no tiene actividades registradas.</p>
+
+        {% endif %}
+    </section>
+</main>
+
+</body>
+</html>
