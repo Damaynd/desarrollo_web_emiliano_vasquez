@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
-
 from database.db import Base
 
 
@@ -35,3 +34,30 @@ class Miembro(Base):
     fecha_registro = Column(DateTime, nullable = False)
     comuna_id = Column(Integer, ForeignKey("comuna.id"), nullable = False)
     comuna = relationship("Comuna", back_populates = "miembros")
+    actividades = relationship("Actividad", back_populates = "miembro")
+
+class Actividad(Base):
+
+    __tablename__ = "actividad"
+
+    id = Column(Integer, primary_key = True)
+    miembro_id = Column(Integer, ForeignKey("miembro.id"), nullable = False)
+    dia = Column(String(20), nullable = False)
+    hora_inicio = Column(String(5), nullable = False)
+    duracion = Column(String(5), nullable = False)
+    tipo = Column(String(50), nullable = False)
+    nombre = Column(String(45), nullable = False)
+    descripcion = Column(Text, nullable = False)
+    miembro = relationship("Miembro", back_populates = "actividades")
+    fotos = relationship("Foto", back_populates = "actividad")
+
+
+class Foto(Base):
+
+    __tablename__ = "foto"
+
+    id = Column(Integer, primary_key = True)
+    ruta_archivo = Column(String(300), nullable = False)
+    nombre_archivo = Column(String(300), nullable = False)
+    actividad_id = Column(Integer, ForeignKey("actividad.id"), nullable = False)
+    actividad = relationship("Actividad", back_populates = "fotos")
