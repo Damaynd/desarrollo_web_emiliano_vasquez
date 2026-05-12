@@ -26,24 +26,19 @@
 
     <main>
 
-        <h1> Registro de usuarios </h1>
+        <h1> Registro de miembros y actividades </h1>
         <h2> Complete los siguientes campos para crear su cuenta </h2>
 
-        <form class = "formulario" id = "form-registro" action = "#" novalidate>
+        <form class = "formulario" method= "POST" enctype = "multipart/form-data" novalidate>
 
             <div>
 
                 <label for = "name"> Nombre Completo*: </label>
                 <input type = "text" name = "name" id = "name" required>
-                <p class = "error-message" id = "error-name" hidden> </p>
 
-            </div>
-
-            <div>
-
-                <label for = "rut"> Documento de identificación (RUT)*: </label>
-                <input type = "text" name = "rut" id = "rut" placeholder = "12.345.678-9" required>
-                <p class = "error-message" id = "error-rut" hidden></p>
+                {% if errores.get('nombre') %}
+                    <p class = "error-message"> {{ errores['nombre'] }} </p>
+                {% endif %}
 
             </div>
 
@@ -51,60 +46,155 @@
 
                 <label for = "email"> Dirección de correo electrónico*: </label>
                 <input type = "email" name = "email" id = "email" required>
-                <p class = "error-message" id = "error-email" hidden></p>
+
+                {% if errores.get('email') %}
+                    <p class = "error-message"> {{ errores['email'] }} </p>
+                {% endif %}
 
             </div>
 
             <div>
 
-                <label for = "rol"> Seleccione su rol*: </label>
-                <select name = "roles" id = "rol" required>
+                <label for = "telefono"> Ingrese su teléfono*: </label>
+                <input type = "text" name = "telefono" id = "telefono" required>
+
+                {% if errores.get('telefono') %}
+                    <p class = "error-message"> {{ errores['telefono'] }} </p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "comuna_id"> Comuna*: </label>
+                <select name = "comuna_id" id = "comuna_id" required>
+
                     <option value = ""> Seleccione una opción </option>
-                    <option value = "e_postgrado"> Estudiante post-grado </option>
-                    <option value = "e_pregrado"> Estudiante pre-grado </option>
-                    <option value = "docente"> Docente </option>
-                    <option value = "funcionario"> Funcionario/a </option>
+
+                    {% for comuna in comunas %}
+
+                        <option value = "{{ comuna.id }}"
+
+                        {% if datos.get('comuna_id') == comuna.id|string %}
+                            selected
+                        {% endif %}>
+
+                        {{ comuna.nombre }}
+
+                        </option>
+
+                    {% endfor %}
                 </select>
-                <p class = "error-message" id = "error-rol" hidden></p>
 
-            </div>
-
-            <div id = "campo-carrera-container" style = "display: none;">
-
-                <label for = "campo-carrera" id = "label-carrera"> Carrera o programa*: </label>
-                <input type = "text" name = "campo-carrera" id = "campo-carrera">
-                <p class = "error-message" id = "error-campo-carrera" hidden></p>
-
-            </div>
-
-            <div id = "campo-departamento-container" style = "display: none;">
-
-                <label for = "campo-departamento" id="label-departamento"> Departamento o unidad*: </label>
-                <input type = "text" name = "campo-departamento" id = "campo-departamento">
-                <p class = "error-message" id = "error-campo-departamento" hidden></p>
+                {% if errores.get('comuna_id') %}
+                    <p class = "error-message"> {{ errores.get('comuna_id') }} </p>
+                {% endif %}
 
             </div>
 
             <div>
 
-                <label for = "password"> Contraseña*: </label>
-                <input type = "password" name = "password" id = "password" required>
-                <p class = "error-message" id = "error-password" hidden></p>
+                <label for = "nombre_actividad"> Nombre de la actividad*: </label>
+                <input type = "text" name = "nombre_actividad" id = "nombre_actividad" required>
+
+                {% if errores.get('nombre_actividad') %}
+                    <p class = "error-message"> {{ errores['nombre_actividad'] }} </p>
+                {% endif %}
 
             </div>
 
             <div>
 
-                <label for = "pw_confirmation"> Confirme su contraseña*: </label>
-                <input type = "password" name = "pw_confirmation" id = "pw_confirmation" required>
-                <p class = "error-message" id = "error-pw_confirmation" hidden></p>
+                <label for = "tipo_actividad"> Tipo de actividad*: </label>
+                <select name = "tipo_actividad" id = "tipo_actividad">
+
+                    <option value = ""> Seleccione una opción </option>
+                    <option value = "artística" {% if datos.get('tipo_actividad') == 'artística' %} selected {% endif %}> Artística </option>
+                    <option value = "deportiva" {% if datos.get('tipo_actividad') == 'deportiva' %} selected {% endif %}> Deportiva </option>
+                    <option value = "social" {% if datos.get('tipo_actividad') == 'social' %} selected {% endif %}> Social </option>
+                    <option value = "tecnológica" {% if datos.get('tipo_actividad') == 'tecnológica' %} selected {% endif %}> Tecnológica </option>
+
+                </select>
+                {% if errores.get('tipo_actividad') %}
+                    <p class = "error-message">{{ errores.get('tipo_actividad') }}</p>
+                {% endif %}
+            </div>
+
+            <div>
+
+                <label for = "descripcion_actividad"> Descripción*: </label>
+                <textarea name = "descripcion_actividad" id = "descripcion_actividad">{{ datos.get('descripcion_actividad', '') }}</textarea>
+
+                {% if errores.get('descripcion_actividad') %}
+                    <p class="error-message">{{ errores.get('descripcion_actividad') }}</p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "dias"> Días* </label>
+                <fieldset class = "dias-fieldset">
+
+                    <legend> Días* </legend>
+
+                <label><input type = "checkbox" name = "dias" value = "lunes"
+                    {% if 'lunes' in dias_seleccionados %} checked {% endif %}> Lunes </label>
+
+                <label><input type = "checkbox" name = "dias" value = "martes"
+                    {% if 'martes' in dias_seleccionados %} checked {% endif %}> Martes </label>
+
+                <label><input type = "checkbox" name = "dias" value = "miércoles"
+                    {% if 'miércoles' in dias_seleccionados %} checked {% endif %}> Miércoles </label>
+                    
+                <label><input type = "checkbox" name = "dias" value = "jueves"
+                    {% if 'jueves' in dias_seleccionados %} checked {% endif %}> Jueves </label>
+
+                <label><input type = "checkbox" name = "dias" value = "viernes"
+                    {% if 'viernes' in dias_seleccionados %} checked {% endif %}> Viernes </label>
+
+                {% if errores.get('dias') %}
+                    <p class = "error-message">{{ errores.get('dias') }}</p>
+                {% endif %}
+
+            </fieldset>
+
+            <div>
+
+                <label for = "hora_inicio"> Hora de inicio*: </label>
+                <input type = "time" name = "hora_inicio" id = "hora_inicio" value = "{{ datos.get('hora_inicio', '') }}">
+
+                {% if errores.get('hora_inicio') %}
+                    <p class = "error-message">{{ errores.get('hora_inicio') }}</p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "hora_termino"> Hora de término*: </label>
+                <input type = "time" name = "hora_termino" id = "hora_termino" value = "{{ datos.get('hora_termino', '') }}">
+
+                {% if errores.get('hora_termino') %}
+                    <p class = "error-message">{{ errores.get('hora_termino') }}</p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "foto"> Foto(s)*: </label>
+                <input type = "file" name = "foto" id = "foto" multiple>
+
+                {% if errores.get('foto') %}
+                    <p class = "error-message">{{ errores.get('foto') }}</p>
+                {% endif %}
 
             </div>
 
             <div class = "register-button">
 
-                <input type = "submit" value = "Registrarme">
-
+                <input type = "submit" value = "Registrar">
             </div>
 
         </form>

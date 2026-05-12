@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from database.db import SessionLocal
 from database.models import Region, Comuna, Miembro, Actividad, Foto
+from sqlalchemy import text
 
 app = Flask(__name__)
 
@@ -74,13 +75,12 @@ def registro():
         if request.method == "GET":
 
             return render_template(
-
                 "registro.html",
                 comunas = comunas,
                 errores = {},
-                datos = {}
-
-            )
+                datos = {},
+                dias_seleccionados = []
+)
 
         errores = {}
         nombre = request.form.get("nombre", "").strip()
@@ -136,14 +136,13 @@ def registro():
             errores["foto"] = "Debe adjuntar al menos una foto."
 
         if errores:
-
+            
             return render_template(
-
                 "registro.html",
                 comunas = comunas,
                 errores = errores,
-                datos = request.form
-
+                datos = request.form,
+                dias_seleccionados = dias
             )
 
         return "<h1> Estamos listos papito !</h1>"
