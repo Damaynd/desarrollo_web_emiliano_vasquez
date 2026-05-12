@@ -74,13 +74,13 @@
 
             </article>
 
-            <article class = "section">
+            <article class = "section last-members">
 
                 <h2> Últimos cinco miembros registrados: </h2>
 
                 {% if miembros %}
 
-                    <ul class = "last-members">
+                    <ul class = "last-members-list">
                         {% for miembro in miembros %}
                             <li>
                                 <span class = "member-name"> {{ miembro.nombre }} </span>
