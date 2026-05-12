@@ -25,6 +25,19 @@
 </nav>
 
     <main class = "page-main">
+
+        {% with mensajes = get_flashed_messages() %}
+
+            {% if mensajes %}
+
+                <section class = "section">
+                    <p> {{ mensajes[0] }} </p>            
+                </section>
+
+            {% endif %}
+
+        {% endwith %}
+        
         <section class = "section">
 
             <h1> Sistema para organización de actividades para la comunidad DCC </h1>
