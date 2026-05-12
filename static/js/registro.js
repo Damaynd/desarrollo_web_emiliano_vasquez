@@ -63,7 +63,7 @@ function tValido(telefono) {
 
     const regex = /^\d{8,}$/;
     return regex.test(telefono);
-    
+
 }
 
 function diasSeleccionados() {
@@ -87,89 +87,91 @@ function archivosValidos(files) {
     return true;
 }
 
-form.addEventListener("submit", function (event) {
+if (form) {
+    form.addEventListener("submit", function (event) {
 
-    globalCleanErr();
-    let formEsValido = true;
+        globalCleanErr();
+        let formEsValido = true;
 
-    const nombre = nInput.value.trim();
-    const email = eInput.value.trim();
-    const telefono = tInput.value.trim();
-    const comuna = cSelect.value;
-    const nombreActividad = nActInput.value.trim();
-    const tipoActividad = tActSelect.value;
-    const descripcionActividad = dActInput.value.trim();
-    const horaInicio = h0Input.value;
-    const horaTermino = hfInput.value;
-    const archivos = fotoInput.files;
+        const nombre = nInput.value.trim();
+        const email = eInput.value.trim();
+        const telefono = tInput.value.trim();
+        const comuna = cSelect.value;
+        const nombreActividad = nActInput.value.trim();
+        const tipoActividad = tActSelect.value;
+        const descripcionActividad = dActInput.value.trim();
+        const horaInicio = h0Input.value;
+        const horaTermino = hfInput.value;
+        const archivos = fotoInput.files;
 
-    if (nombre.length < 3) {
-        showErr(nInput, "error-nombre", "Ingrese un nombre completo válido.");
-        formEsValido = false;
-    }
+        if (nombre.length < 3) {
+            showErr(nInput, "error-nombre", "Ingrese un nombre completo válido.");
+            formEsValido = false;
+        }
 
-    if (!eValido(email)) {
-        showErr(eInput, "error-email", "Ingrese un correo electrónico válido !");
-        formEsValido = false;
-    }
+        if (!eValido(email)) {
+            showErr(eInput, "error-email", "Ingrese un correo electrónico válido !");
+            formEsValido = false;
+        }
 
-    if (!telefono) {
-        showErr(tInput, "error-telefono", "Ingrese un teléfono !");
-        formEsValido = false;
-    } else if (!tValido(telefono)) {
-        showErr(tInput, "error-telefono", "Ingrese un teléfono válido !");
-        formEsValido = false;
-    }
+        if (!telefono) {
+            showErr(tInput, "error-telefono", "Ingrese un teléfono !");
+            formEsValido = false;
+        } else if (!tValido(telefono)) {
+            showErr(tInput, "error-telefono", "Ingrese un teléfono válido !");
+            formEsValido = false;
+        }
 
-    if (comuna === "") {
-        showErr(cSelect, "error-comuna_id", "Seleccione una comuna !");
-        formEsValido = false;
-    }
+        if (comuna === "") {
+            showErr(cSelect, "error-comuna_id", "Seleccione una comuna !");
+            formEsValido = false;
+        }
 
-    if (nombreActividad.length < 3) {
-        showErr(nActInput, "error-nombre_actividad", "Ingrese un nombre de actividad válido !");
-        formEsValido = false;
-    }
+        if (nombreActividad.length < 3) {
+            showErr(nActInput, "error-nombre_actividad", "Ingrese un nombre de actividad válido !");
+            formEsValido = false;
+        }
 
-    if (tipoActividad === "") {
-        showErr(tActSelect, "error-tipo_actividad", "Seleccione un tipo de actividad !");
-        formEsValido = false;
-    }
+        if (tipoActividad === "") {
+            showErr(tActSelect, "error-tipo_actividad", "Seleccione un tipo de actividad !");
+            formEsValido = false;
+        }
 
-    if (descripcionActividad.length < 10) {
-        showErr(dActInput, "error-descripcion_actividad", "Ingrese una descripción más completa !");
-        formEsValido = false;
-    }
+        if (descripcionActividad.length < 10) {
+            showErr(dActInput, "error-descripcion_actividad", "Ingrese una descripción más completa !");
+            formEsValido = false;
+        }
 
-    if (!diasSeleccionados()) {
-        showErr(null, "error-dias", "Seleccione al menos un día !");
-        formEsValido = false;
-    }
+        if (!diasSeleccionados()) {
+            showErr(null, "error-dias", "Seleccione al menos un día !");
+            formEsValido = false;
+        }
 
-    if (horaInicio === "") {
-        showErr(h0Input, "error-hora_inicio", "Ingrese una hora de inicio !");
-        formEsValido = false;
-    }
+        if (horaInicio === "") {
+            showErr(h0Input, "error-hora_inicio", "Ingrese una hora de inicio !");
+            formEsValido = false;
+        }
 
-    if (horaTermino === "") {
-        showErr(hfInput, "error-hora_termino", "Ingrese una hora de término !");
-        formEsValido = false;
-    }
+        if (horaTermino === "") {
+            showErr(hfInput, "error-hora_termino", "Ingrese una hora de término !");
+            formEsValido = false;
+        }
 
-    if (horaInicio !== "" && horaTermino !== "" && horaTermino <= horaInicio) {
-        showErr(hfInput, "error-hora_termino", "La hora de término debe ser posterior a la de inicio !");
-        formEsValido = false;
-    }
+        if (horaInicio !== "" && horaTermino !== "" && horaTermino <= horaInicio) {
+            showErr(hfInput, "error-hora_termino", "La hora de término debe ser posterior a la de inicio !");
+            formEsValido = false;
+        }
 
-    if (archivos.length === 0) {
-        showErr(fotoInput, "error-foto", "Debe adjuntar al menos una foto !");
-        formEsValido = false;
-    } else if (!archivosValidos(archivos)) {
-        showErr(fotoInput, "error-foto", "Formato de archivo no permitido !");
-        formEsValido = false;
-    }
+        if (archivos.length === 0) {
+            showErr(fotoInput, "error-foto", "Debe adjuntar al menos una foto !");
+            formEsValido = false;
+        } else if (!archivosValidos(archivos)) {
+            showErr(fotoInput, "error-foto", "Formato de archivo no permitido !");
+            formEsValido = false;
+        }
 
-    if (!formEsValido) {
-        event.preventDefault();
-    }
-});
+        if (!formEsValido) {
+            event.preventDefault();
+        }
+    });
+}

@@ -39,6 +39,8 @@
                 <label for = "nombre"> Nombre Completo*: </label>
                 <input type = "text" name = "nombre" id = "nombre" value = "{{ datos.get('nombre', '') }}" required>
 
+                <p class = "error-message" id = "error-nombre" hidden></p>
+
                 {% if errores.get('nombre') %}
                     <p class = "error-message"> {{ errores['nombre'] }} </p>
                 {% endif %}
@@ -49,6 +51,8 @@
 
                 <label for = "email"> Dirección de correo electrónico*: </label>
                 <input type = "email" name = "email" id = "email" value = "{{ datos.get('email', '') }}" required>
+
+                <p class = "error-message" id = "error-email" hidden></p>
 
                 {% if errores.get('email') %}
                     <p class = "error-message"> {{ errores['email'] }} </p>
@@ -61,7 +65,9 @@
                 <label for = "telefono"> Ingrese su teléfono*: </label>
                 <input type = "text" name = "telefono" id = "telefono" value = "{{ datos.get('telefono', '') }}" required>
 
-                {% if errores.get('telefono') %}
+                <p class = "error-message" id = "error-telefono" hidden></p>
+
+                 {% if errores.get('telefono') %}
                     <p class = "error-message"> {{ errores['telefono'] }} </p>
                 {% endif %}
 
@@ -89,6 +95,8 @@
                     {% endfor %}
                 </select>
 
+                <p class="error-message" id="error-comuna_id" hidden></p>
+
                 {% if errores.get('comuna_id') %}
                     <p class = "error-message"> {{ errores.get('comuna_id') }} </p>
                 {% endif %}
@@ -99,6 +107,8 @@
 
                 <label for = "nombre_actividad"> Nombre de la actividad*: </label>
                 <input type = "text" name = "nombre_actividad" id = "nombre_actividad" value = "{{ datos.get('nombre_actividad', '') }}" required>
+
+                <p class="error-message" id="error-nombre_actividad" hidden></p>
 
                 {% if errores.get('nombre_actividad') %}
                     <p class = "error-message"> {{ errores['nombre_actividad'] }} </p>
@@ -118,6 +128,9 @@
                     <option value = "tecnología" {% if datos.get('tipo_actividad') == 'tecnología' %} selected {% endif %}> Tecnológica </option>
 
                 </select>
+
+                <p class="error-message" id="error-tipo_actividad" hidden></p>
+
                 {% if errores.get('tipo_actividad') %}
                     <p class = "error-message">{{ errores.get('tipo_actividad') }}</p>
                 {% endif %}
@@ -128,9 +141,12 @@
                 <label for = "descripcion_actividad"> Descripción*: </label>
                 <textarea name = "descripcion_actividad" id = "descripcion_actividad">{{ datos.get('descripcion_actividad', '') }}</textarea>
 
-                {% if errores.get('descripcion_actividad') %}
-                    <p class="error-message">{{ errores.get('descripcion_actividad') }}</p>
+                <p class = "error-message" id = "error-descripcion_actividad" hidden></p>
+
+                 {% if errores.get('descripcion_actividad') %}
+                    <p class = "error-message">{{ errores.get('descripcion_actividad') }}</p>
                 {% endif %}
+
 
             </div>
 
@@ -152,6 +168,8 @@
                     <label><input type = "checkbox" name = "dias" value = "viernes"
                         {% if 'viernes' in dias_seleccionados %} checked {% endif %}> Viernes </label>
 
+                    <p class = "error-message" id = "error-dias" hidden></p>
+
                     {% if errores.get('dias') %}
                         <p class = "error-message">{{ errores.get('dias') }}</p>
                     {% endif %}                
@@ -161,6 +179,8 @@
 
                 <label for = "hora_inicio"> Hora de inicio*: </label>
                 <input type = "time" name = "hora_inicio" id = "hora_inicio" value = "{{ datos.get('hora_inicio', '') }}">
+
+                <p class = "error-message" id = "error-hora_inicio" hidden></p>
 
                 {% if errores.get('hora_inicio') %}
                     <p class = "error-message">{{ errores.get('hora_inicio') }}</p>
@@ -173,6 +193,8 @@
                 <label for = "hora_termino"> Hora de término*: </label>
                 <input type = "time" name = "hora_termino" id = "hora_termino" value = "{{ datos.get('hora_termino', '') }}">
 
+                <p class = "error-message" id = "error-hora_termino" hidden></p>
+
                 {% if errores.get('hora_termino') %}
                     <p class = "error-message">{{ errores.get('hora_termino') }}</p>
                 {% endif %}
@@ -183,6 +205,8 @@
 
                 <label for = "foto"> Foto(s)*: </label>
                 <input type = "file" name = "foto" id = "foto" multiple>
+
+                <p class = "error-message" id = "error-foto" hidden></p>
 
                 {% if errores.get('foto') %}
                     <p class = "error-message">{{ errores.get('foto') }}</p>
@@ -197,6 +221,6 @@
 
         </form>
     </main>
-    <!--script src = "{{ url_for('static', filename = 'js/registro.js') }}" ></script-->
+    <script src = "{{ url_for('static', filename = 'js/registro.js') }}" ></script>
 </body>
 </html>
