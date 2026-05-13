@@ -22,7 +22,7 @@
             <div>
 
                 <label for = "nombre"> Nombre Completo*: </label>
-                <input type = "text" name = "nombre" id = "nombre" value = "{{ datos.get('nombre', '') }}" required>
+                <input type = "text" name = "nombre" id = "nombre" value = "{{ datos.get('nombre', '') }}" placeholder = "Juan Pérez" required>
 
                 <p class = "error-message" id = "error-nombre" hidden></p>
 
@@ -35,7 +35,7 @@
             <div>
 
                 <label for = "email"> Dirección de correo electrónico*: </label>
-                <input type = "email" name = "email" id = "email" value = "{{ datos.get('email', '') }}" required>
+                <input type = "email" name = "email" id = "email" value = "{{ datos.get('email', '') }}" placeholder = "juanperez@example.com" required>
 
                 <p class = "error-message" id = "error-email" hidden></p>
 
@@ -48,7 +48,7 @@
             <div>
 
                 <label for = "telefono"> Ingrese su teléfono*: </label>
-                <input type = "text" name = "telefono" id = "telefono" value = "{{ datos.get('telefono', '') }}" required>
+                <input type = "text" name = "telefono" id = "telefono" value = "{{ datos.get('telefono', '') }}" placeholder = "98765432" required>
 
                 <p class = "error-message" id = "error-telefono" hidden></p>
 
@@ -91,7 +91,7 @@
             <div>
 
                 <label for = "nombre_actividad"> Nombre de la actividad*: </label>
-                <input type = "text" name = "nombre_actividad" id = "nombre_actividad" value = "{{ datos.get('nombre_actividad', '') }}" required>
+                <input type = "text" name = "nombre_actividad" id = "nombre_actividad" value = "{{ datos.get('nombre_actividad', '') }}" placeholder = "Ingrese el nombre de la actividad" required>
 
                 <p class="error-message" id="error-nombre_actividad" hidden></p>
 
@@ -124,7 +124,7 @@
             <div>
 
                 <label for = "descripcion_actividad"> Descripción*: </label>
-                <textarea name = "descripcion_actividad" id = "descripcion_actividad">{{ datos.get('descripcion_actividad', '') }}</textarea>
+                <textarea name = "descripcion_actividad" id = "descripcion_actividad" placeholder = "Ingrese una descripción de la actividad">{{ datos.get('descripcion_actividad', '') }}</textarea>
 
                 <p class = "error-message" id = "error-descripcion_actividad" hidden></p>
 
@@ -189,7 +189,7 @@
             <div>
 
                 <label for = "foto"> Foto(s)*: </label>
-                <input type = "file" name = "foto" id = "foto" multiple>
+                <input type = "file" name = "foto" id = "foto" placeholder = "Ingrese sus foto(s)" required>
 
                 <p class = "error-message" id = "error-foto" hidden></p>
 
