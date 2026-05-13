@@ -12,6 +12,8 @@
 
 
 ## Estructura del proyecto
+
+```text
 T1/
 ├── app.py
 ├── requirements.txt
@@ -45,6 +47,7 @@ T1/
 │   └── partials/
 │       └── navbar.html
 └── .gitignore
+```
 
 ## Cómo ejecutar el proyecto
 
