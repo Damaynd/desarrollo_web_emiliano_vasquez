@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %} Registro de usuarios {% endblock %}
+
+{% block extra_css %}
+<link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/forms.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <main>
+
+        <h1> Registro de miembros y actividades </h1>
+        <h2> Complete los siguientes campos para crear su cuenta </h2>
+
+        {% if errores.get('general') %}
+            <p class = "error-message"> {{ errores['general'] }} </p>
+        {% endif %}
+
+        <form class = "formulario" method= "POST" enctype = "multipart/form-data" novalidate>
+
+            <div>
+
+                <label for = "nombre"> Nombre Completo*: </label>
+                <input type = "text" name = "nombre" id = "nombre" value = "{{ datos.get('nombre', '') }}" placeholder = "Juan Pérez" required>
+
+                <p class = "error-message" id = "error-nombre" hidden></p>
+
+                {% if errores.get('nombre') %}
+                    <p class = "error-message"> {{ errores['nombre'] }} </p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "email"> Dirección de correo electrónico*: </label>
+                <input type = "email" name = "email" id = "email" value = "{{ datos.get('email', '') }}" placeholder = "juanperez@example.com" required>
+
+                <p class = "error-message" id = "error-email" hidden></p>
+
+                {% if errores.get('email') %}
+                    <p class = "error-message"> {{ errores['email'] }} </p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "telefono"> Ingrese su teléfono*: </label>
+                <input type = "text" name = "telefono" id = "telefono" value = "{{ datos.get('telefono', '') }}" placeholder = "98765432" required>
+
+                <p class = "error-message" id = "error-telefono" hidden></p>
+
+                 {% if errores.get('telefono') %}
+                    <p class = "error-message"> {{ errores['telefono'] }} </p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "comuna_id"> Comuna*: </label>
+                <select name = "comuna_id" id = "comuna_id" required>
+
+                    <option value = ""> Seleccione una opción </option>
+
+                    {% for comuna in comunas %}
+
+                        <option value = "{{ comuna.id }}"
+
+                        {% if datos.get('comuna_id') == comuna.id|string %}
+                            selected
+                        {% endif %}>
+
+                        {{ comuna.nombre }}
+
+                        </option>
+
+                    {% endfor %}
+                </select>
+
+                <p class="error-message" id="error-comuna_id" hidden></p>
+
+                {% if errores.get('comuna_id') %}
+                    <p class = "error-message"> {{ errores.get('comuna_id') }} </p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "nombre_actividad"> Nombre de la actividad*: </label>
+                <input type = "text" name = "nombre_actividad" id = "nombre_actividad" value = "{{ datos.get('nombre_actividad', '') }}" placeholder = "Ingrese el nombre de la actividad" required>
+
+                <p class="error-message" id="error-nombre_actividad" hidden></p>
+
+                {% if errores.get('nombre_actividad') %}
+                    <p class = "error-message"> {{ errores['nombre_actividad'] }} </p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "tipo_actividad"> Tipo de actividad*: </label>
+                <select name = "tipo_actividad" id = "tipo_actividad">
+
+                    <option value = ""> Seleccione una opción </option>
+                    <option value = "arte" {% if datos.get('tipo_actividad') == 'arte' %} selected {% endif %}> Artística </option>
+                    <option value = "deporte" {% if datos.get('tipo_actividad') == 'deporte' %} selected {% endif %}> Deportiva </option>
+                    <option value = "social" {% if datos.get('tipo_actividad') == 'social' %} selected {% endif %}> Social </option>
+                    <option value = "tecnología" {% if datos.get('tipo_actividad') == 'tecnología' %} selected {% endif %}> Tecnológica </option>
+
+                </select>
+
+                <p class="error-message" id="error-tipo_actividad" hidden></p>
+
+                {% if errores.get('tipo_actividad') %}
+                    <p class = "error-message">{{ errores.get('tipo_actividad') }}</p>
+                {% endif %}
+            </div>
+
+            <div>
+
+                <label for = "descripcion_actividad"> Descripción*: </label>
+                <textarea name = "descripcion_actividad" id = "descripcion_actividad" placeholder = "Ingrese una descripción de la actividad">{{ datos.get('descripcion_actividad', '') }}</textarea>
+
+                <p class = "error-message" id = "error-descripcion_actividad" hidden></p>
+
+                 {% if errores.get('descripcion_actividad') %}
+                    <p class = "error-message">{{ errores.get('descripcion_actividad') }}</p>
+                {% endif %}
+
+
+            </div>
+
+            <div>
+                <fieldset class = "dias-fieldset">
+                    <legend> Días* </legend>
+                    <label><input type = "checkbox" name = "dias" value = "lunes"
+                        {% if 'lunes' in dias_seleccionados %} checked {% endif %}> Lunes </label>
+
+                    <label><input type = "checkbox" name = "dias" value = "martes"
+                        {% if 'martes' in dias_seleccionados %} checked {% endif %}> Martes </label>
+
+                    <label><input type = "checkbox" name = "dias" value = "miércoles"
+                        {% if 'miércoles' in dias_seleccionados %} checked {% endif %}> Miércoles </label>
+                    
+                    <label><input type = "checkbox" name = "dias" value = "jueves"
+                        {% if 'jueves' in dias_seleccionados %} checked {% endif %}> Jueves </label>
+
+                    <label><input type = "checkbox" name = "dias" value = "viernes"
+                        {% if 'viernes' in dias_seleccionados %} checked {% endif %}> Viernes </label>
+
+                    <p class = "error-message" id = "error-dias" hidden></p>
+
+                    {% if errores.get('dias') %}
+                        <p class = "error-message">{{ errores.get('dias') }}</p>
+                    {% endif %}                
+                </fieldset>
+            </div>
+            <div>
+
+                <label for = "hora_inicio"> Hora de inicio*: </label>
+                <input type = "time" name = "hora_inicio" id = "hora_inicio" value = "{{ datos.get('hora_inicio', '') }}">
+
+                <p class = "error-message" id = "error-hora_inicio" hidden></p>
+
+                {% if errores.get('hora_inicio') %}
+                    <p class = "error-message">{{ errores.get('hora_inicio') }}</p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "hora_termino"> Hora de término*: </label>
+                <input type = "time" name = "hora_termino" id = "hora_termino" value = "{{ datos.get('hora_termino', '') }}">
+
+                <p class = "error-message" id = "error-hora_termino" hidden></p>
+
+                {% if errores.get('hora_termino') %}
+                    <p class = "error-message">{{ errores.get('hora_termino') }}</p>
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <label for = "foto"> Foto(s)*: </label>
+                <input type = "file" name = "foto" id = "foto" placeholder = "Ingrese sus foto(s)" required>
+
+                <p class = "error-message" id = "error-foto" hidden></p>
+
+                {% if errores.get('foto') %}
+                    <p class = "error-message">{{ errores.get('foto') }}</p>
+                {% endif %}
+
+            </div>
+
+            <div class = "register-button">
+
+                <input type = "submit" value = "Registrar">
+            </div>
+
+        </form>
+    </main>
+    <script src = "{{ url_for('static', filename = 'js/registro.js') }}" ></script>
+{% endblock %}

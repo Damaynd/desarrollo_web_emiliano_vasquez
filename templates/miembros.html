@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %} Miembros {% endblock %}
+
+{% block extra_css %}
+<link rel = "stylesheet" href = "{{ url_for('static', filename='css/tables.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main>
+    <h1> Listado de miembros </h1>
+    <h2> Consulta de miembros registrados </h2>
+
+    <section class = "tabla-section">
+        <table class = "tabla-miembros">
+            <thead>
+                <tr>
+                    <th> Nombre </th>
+                    <th> Correo </th>
+                    <th> Teléfono </th>
+                    <th> Comuna </th>
+                    <th> Fecha de registro </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if miembros %}
+                    {% for miembro in miembros %}
+                        <tr>
+                            <td>
+                                <a href = "{{ url_for('detalle_miembro', id=miembro.id) }}">
+                                    {{ miembro.nombre }}
+                                </a>
+                            </td>
+                            <td>{{ miembro.email }}</td>
+                            <td>{{ miembro.telefono }}</td>
+                            <td>{{ miembro.comuna.nombre }}</td>
+                            <td>{{ miembro.fecha_registro.strftime('%d-%m-%Y %H:%M') }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan = "5"> No hay miembros registrados </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class = "paginacion">
+        {% if page > 1 %}
+            <a href = "{{ url_for('miembros', page = page - 1) }}"> Anterior </a>
+        {% endif %}
+
+        <span> Página {{ page }} de {{ total_pages }} </span>
+
+        {% if page < total_pages %}
+            <a href = "{{ url_for('miembros', page = page + 1) }}"> Siguiente </a>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}
