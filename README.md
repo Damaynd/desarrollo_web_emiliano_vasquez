@@ -10,6 +10,42 @@
 - **Correo:** evasquez@dcc.uchile.cl*
 - **Teléfono:** +56 9 7874 9167
 
+
+## Estructura del proyecto
+T1/
+├── app.py
+├── requirements.txt
+├── README.md
+├── database/
+│   ├── db.py
+│   ├── models.py
+│   └── sql/
+│       ├── tarea2.sql
+│       └── region-comuna.sql
+├── static/
+│   ├── css/
+│   │   ├── styles.css
+│   │   ├── navbar.css
+│   │   ├── forms.css
+│   │   ├── tables.css
+│   │   ├── stats.css
+│   │   └── index.css
+│   ├── js/
+│   │   ├── registro.js
+│   │   └── estadisticas.js
+│   └── uploads/
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── registro.html
+│   ├── miembros.html
+│   ├── detalle_miembro.html
+│   ├── estadisticas.html
+│   ├── contacto.html
+│   └── partials/
+│       └── navbar.html
+└── .gitignore
+
 ## Cómo ejecutar el proyecto
 
 1. Crear y activar entorno virtual
@@ -294,39 +330,6 @@ La decisión fue adaptar esa lógica anterior modificando lo menos posible, cosa
 - Información del autor
 - Estadísticas
 
-## Estructura del proyecto
-T1/
-├── app.py
-├── requirements.txt
-├── README.md
-├── database/
-│   ├── db.py
-│   ├── models.py
-│   └── sql/
-│       ├── tarea2.sql
-│       └── region-comuna.sql
-├── static/
-│   ├── css/
-│   │   ├── styles.css
-│   │   ├── navbar.css
-│   │   ├── forms.css
-│   │   ├── tables.css
-│   │   ├── stats.css
-│   │   └── index.css
-│   ├── js/
-│   │   ├── registro.js
-│   │   └── estadisticas.js
-│   └── uploads/
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── registro.html
-│   ├── miembros.html
-│   ├── detalle_miembro.html
-│   ├── estadisticas.html
-│   ├── contacto.html
-│   └── partials/
-│       └── navbar.html
-└── .gitignore
+
 
 
