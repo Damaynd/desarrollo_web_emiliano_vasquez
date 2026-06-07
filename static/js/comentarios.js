@@ -47,7 +47,91 @@ async function cargarComentarios(actividadId, lista) {
     }
 
     datos.comentarios.forEach(comentario => {
-        
+
         lista.appendChild(crearComentarioHTML(comentario));
     });
 }
+
+function validarComentario(nombre, texto) {
+
+    const errores = [];
+
+    if (nombre.length < 3 || nombre.length > 80) {
+
+        errores.push("El nombre debe tener entre 3 y 80 caracteres >:(");
+
+    }
+
+    if (texto.length < 5) {
+
+        errores.push("El comentario debe tener al menos 5 caracteres >:/ ");
+    }
+
+    if (texto.length > 300) {
+
+        errores.push("El comentario no puede superar los 300 caracteres >:|");
+    }
+
+    return errores;
+}
+
+document.querySelectorAll(".comentarios-actividad").forEach(seccion => {
+
+    const actividadId = seccion.dataset.actividadId;
+    const lista = seccion.querySelector(".comentarios-lista");
+    const form = seccion.querySelector(".comentario-form");
+    const mensaje = seccion.querySelector(".comentario-mensaje");
+
+    cargarComentarios(actividadId, lista).catch(error => {
+
+        console.error(error);
+        lista.innerHTML = "<p>No se pudieron cargar los comentarios u u </p>";
+    });
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        const nombre = form.nombre.value.trim();
+        const texto = form.texto.value.trim();
+        const errores = validarComentario(nombre, texto);
+
+        if (errores.length > 0) {
+
+            mostrarMensaje(mensaje, errores[0]);
+
+            return;
+        }
+
+        try {
+
+            const respuesta = await fetch(`/api/actividades/${actividadId}/comentarios`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"},
+
+                body: JSON.stringify({ nombre, texto })});
+
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok) {
+
+                const error = datos.errores
+                
+                    ? Object.values(datos.errores)[0]
+                    : "No se pudo agregar el comentario.";
+
+                mostrarMensaje(mensaje, error);
+                return;
+            }
+
+            form.reset();
+            mostrarMensaje(mensaje, datos.mensaje, false);
+            await cargarComentarios(actividadId, lista);
+
+        } catch (error) {
+            console.error(error);
+            mostrarMensaje(mensaje, "No se pudo conectar con el servidor.");
+        }
+    });
+});
