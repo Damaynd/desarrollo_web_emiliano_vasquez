@@ -81,3 +81,14 @@ function graficoActividadesPorComuna(datos) {
         }]
     });
 }
+
+function mostrarError(mensaje) {
+    
+    const contenedores = document.querySelectorAll(".grafico");
+
+    contenedores.forEach(contenedor => {
+        contenedor.innerHTML = `<p class = "error-grafico">${mensaje}</p>`;
+    });
+}
+
+cargarEstadisticas();
