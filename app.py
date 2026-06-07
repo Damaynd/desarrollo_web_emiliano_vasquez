@@ -9,9 +9,7 @@ from werkzeug.utils import secure_filename
 from math import ceil
 
 app = Flask(__name__)
-
 app.secret_key = "key-tarea2"
-
 UPLOAD_FOLDER = Path("static/uploads")
 UPLOAD_FOLDER.mkdir(parents = True, exist_ok = True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
