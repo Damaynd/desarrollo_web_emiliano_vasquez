@@ -45,3 +45,18 @@ function graficoMiembrosPorDia(datos) {
             data: datos.map(item => item.cantidad)}]
     });
 }
+
+function graficoActividadesPorTipo(datos) {
+
+    Highcharts.chart("grafico-actividades-tipo", {
+        chart: { type: "pie" },
+        title: { text: "" },
+
+        series: [{
+            name: "Actividades",
+            data: datos.map(item => ({
+                name: item.tipo,
+                y: item.cantidad}))
+        }]
+    });
+}
