@@ -50,6 +50,7 @@ class Actividad(Base):
     descripcion = Column(Text, nullable = False)
     miembro = relationship("Miembro", back_populates = "actividades")
     fotos = relationship("Foto", back_populates = "actividad")
+    comentarios = relationship("Comentario", back_populates = "actividad")
 
 
 class Foto(Base):
