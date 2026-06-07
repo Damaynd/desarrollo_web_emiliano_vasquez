@@ -60,3 +60,24 @@ function graficoActividadesPorTipo(datos) {
         }]
     });
 }
+
+function graficoActividadesPorComuna(datos) {
+
+    Highcharts.chart("grafico-actividades-comuna", {
+        chart: { type: "column" },
+        title: { text: "" },
+
+        xAxis: {
+            categories: datos.map(item => item.comuna),
+            title: { text: "Comuna" }},
+
+        yAxis: {
+            allowDecimals: false,
+            title: { text: "Cantidad de actividades" }},
+
+        series: [{
+            name: "Actividades",
+            data: datos.map(item => item.cantidad)
+        }]
+    });
+}
