@@ -37,6 +37,14 @@ def calcular_duracion(hora_inicio, hora_termino):
     minutos = minutos_totales % 60
     return f"{horas:02d}:{minutos:02d}"
 
+def serializar_comentario(comentario):
+
+    return {
+        "id": comentario.id,
+        "nombre": comentario.nombre,
+        "texto": comentario.texto,
+        "fecha": comentario.fecha.strftime("%d-%m-%Y %H:%M")}
+
 @app.route("/")
 def index():
     
