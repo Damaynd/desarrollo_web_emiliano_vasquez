@@ -62,3 +62,14 @@ class Foto(Base):
     nombre_archivo = Column(String(300), nullable = False)
     actividad_id = Column(Integer, ForeignKey("actividad.id"), nullable = False)
     actividad = relationship("Actividad", back_populates = "fotos")
+
+class Comentario(Base):
+
+    __tablename__ = "comentario"
+
+    id = Column(Integer, primary_key = True)
+    nombre = Column(String(80), nullable = False)
+    texto = Column(String(300), nullable = False)
+    fecha = Column(DateTime, nullable = False)
+    actividad_id = Column(Integer, ForeignKey("actividad.id"), nullable = False)
+    actividad = relationship("Actividad", back_populates = "comentarios")
