@@ -11,9 +11,9 @@ async function cargarEstadisticas() {
         }
 
         const datos = await respuesta.json();
-        crearGraficoMiembrosPorDia(datos.miembros_por_dia);
-        crearGraficoActividadesPorTipo(datos.actividades_por_tipo);
-        crearGraficoActividadesPorComuna(datos.actividades_por_comuna);
+        graficoMiembrosPorDia(datos.miembros_por_dia);
+        graficoActividadesPorTipo(datos.actividades_por_tipo);
+        graficoActividadesPorComuna(datos.actividades_por_comuna);
 
     } 
     
@@ -83,7 +83,7 @@ function graficoActividadesPorComuna(datos) {
 }
 
 function mostrarError(mensaje) {
-    
+
     const contenedores = document.querySelectorAll(".grafico");
 
     contenedores.forEach(contenedor => {

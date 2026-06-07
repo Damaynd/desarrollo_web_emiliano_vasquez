@@ -10,5 +10,5 @@ CREATE TABLE IF NOT EXISTS `tarea2`.`comentario` (
     FOREIGN KEY (`actividad_id`)
     REFERENCES `tarea2`.`actividad` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;

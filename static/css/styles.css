@@ -119,3 +119,80 @@ main {
         grid-template-columns: 1fr;
     }
 }
+
+.comentarios-actividad {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+}
+
+.comentarios-lista {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.comentario-item {
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #181818;
+}
+
+.comentario-meta {
+    color: #c8d7ff;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.comentario-texto {
+    text-align: left;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.comentario-form {
+    display: grid;
+    gap: 12px;
+}
+
+.comentario-form label {
+    display: grid;
+    gap: 6px;
+    color: white;
+}
+
+.comentario-form input,
+.comentario-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background-color: #111;
+    color: white;
+}
+
+.comentario-form button {
+    width: fit-content;
+    padding: 10px 16px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background-color: #0057b8;
+    color: white;
+    cursor: pointer;
+}
+
+.comentario-form button:hover {
+    background-color: #00448f;
+}
+
+.comentario-error {
+    color: #ff8080;
+    text-align: left;
+}
+
+.comentario-exito {
+    color: #8fff9f;
+    text-align: left;
+}
