@@ -70,6 +70,35 @@
 
                         {% endif %}
 
+                        <section class = "comentarios-actividad" data-actividad-id = "{{ actividad.id }}">
+                            <h4> Comentarios </h4>
+
+                            <div class = "comentarios-lista">
+                                <p> Cargando comentarios... </p>
+                            </div>
+
+                            <form class = "comentario-form">
+
+                                <label>
+
+                                    Nombre
+                                    <input type = "text" name = "nombre" minlength = "3" maxlength = "80" required>
+
+                                </label>
+                                <label>
+
+                                    Comentario
+                                    <textarea name = "texto" rows = "4" cols = "50" minlength = "5" maxlength = "300" required></textarea>
+
+                                </label>
+                                <p class = "comentario-mensaje" hidden></p>
+
+                                <button type = "submit"> Agregar comentario </button>
+
+                            </form>
+
+                        </section>
+
                     </article>
 
                 {% endfor %}
@@ -86,4 +115,8 @@
     </section>
 </main>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src = "{{ url_for('static', filename = 'js/comentarios.js') }}"></script>
 {% endblock %}
