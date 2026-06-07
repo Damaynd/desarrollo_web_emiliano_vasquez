@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from sqlalchemy import func
 from database.db import SessionLocal
-from database.models import Comuna, Miembro, Actividad, Foto
+from database.models import Comuna, Miembro, Actividad, Foto, Comentario
 from datetime import datetime
 from pathlib import Path
 import uuid
@@ -305,6 +306,134 @@ def detalle_miembro(id):
         return render_template("detalle_miembro.html", miembro = miembro)
 
     finally:
+        session.close()
+
+
+@app.route("/api/estadisticas")
+def api_estadisticas():
+    session = SessionLocal()
+
+    try:
+        fecha_registro = func.date(Miembro.fecha_registro)
+
+        miembros_por_dia = (
+            session.query(fecha_registro, func.count(Miembro.id))
+            .group_by(fecha_registro)
+            .order_by(fecha_registro.asc())
+            .all()
+        )
+
+        actividades_por_tipo = (
+            session.query(Actividad.tipo, func.count(Actividad.id))
+            .group_by(Actividad.tipo)
+            .order_by(Actividad.tipo.asc())
+            .all()
+        )
+
+        actividades_por_comuna = (
+            session.query(Comuna.nombre, func.count(Actividad.id))
+            .join(Miembro, Miembro.comuna_id == Comuna.id)
+            .join(Actividad, Actividad.miembro_id == Miembro.id)
+            .group_by(Comuna.id, Comuna.nombre)
+            .order_by(Comuna.nombre.asc())
+            .all()
+        )
+
+        return jsonify({
+            "miembros_por_dia": [
+                {"fecha": str(fecha), "cantidad": cantidad}
+                for fecha, cantidad in miembros_por_dia
+            ],
+            "actividades_por_tipo": [
+                {"tipo": tipo, "cantidad": cantidad}
+                for tipo, cantidad in actividades_por_tipo
+            ],
+            "actividades_por_comuna": [
+                {"comuna": comuna, "cantidad": cantidad}
+                for comuna, cantidad in actividades_por_comuna
+            ]
+        })
+
+    finally:
+        session.close()
+
+
+@app.route("/api/actividades/<int:actividad_id>/comentarios", methods = ["GET", "POST"])
+def comentarios_actividad(actividad_id):
+
+    session = SessionLocal()
+
+    try:
+        actividad = session.get(Actividad, actividad_id)
+
+        if not actividad:
+
+            return jsonify({"error": "Actividad no encontrada"}), 404
+
+        if request.method == "GET":
+
+            comentarios = (
+
+                session.query(Comentario)
+                .filter(Comentario.actividad_id == actividad_id)
+                .order_by(Comentario.fecha.desc())
+                .all()
+
+            )
+
+            return jsonify({
+
+                "comentarios": [
+
+                    serializar_comentario(comentario)
+                    for comentario in comentarios
+
+                ]
+
+            })
+
+        datos = request.get_json(silent = True) or {}
+        nombre = datos.get("nombre", "").strip()
+        texto = datos.get("texto", "").strip()
+        errores = {}
+
+        if len(nombre) < 3 or len(nombre) > 80:
+
+            errores["nombre"] = "El nombre debe tener entre 3 y 80 caracteres."
+
+        if len(texto) < 5:
+
+            errores["texto"] = "El comentario debe tener al menos 5 caracteres."
+
+        elif len(texto) > 300:
+
+            errores["texto"] = "El comentario no puede superar los 300 caracteres."
+
+        if errores:
+
+            return jsonify({"errores": errores}), 400
+
+        comentario = Comentario(
+
+            nombre = nombre,
+            texto = texto,
+            fecha = datetime.now(),
+            actividad_id = actividad_id
+
+        )
+
+        session.add(comentario)
+        session.commit()
+
+        return jsonify({
+
+            "mensaje": "Comentario agregado correctamente.",
+            "comentario": serializar_comentario(comentario)
+
+        }), 201
+
+    finally:
+
         session.close()
 
 @app.route("/estadisticas")
