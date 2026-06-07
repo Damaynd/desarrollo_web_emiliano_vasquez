@@ -12,5 +12,14 @@ function crearComentarioHTML(comentario) {
     article.appendChild(texto);
 
     return article;
+
+}
+
+function mostrarMensaje(elemento, mensaje, esError = true) {
+
+    elemento.textContent = mensaje;
+    elemento.hidden = false;
+    elemento.classList.toggle("comentario-error", esError);
+    elemento.classList.toggle("comentario-exito", !esError);
     
 }
