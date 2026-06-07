@@ -18,9 +18,30 @@ async function cargarEstadisticas() {
     } 
     
     catch (error) {
-        
+
         console.error(error);
         mostrarError("No se pudieron cargar los gráficos D:");
 
     }
+}
+
+function graficoMiembrosPorDia(datos) {
+
+    Highcharts.chart("grafico-miembros-dia", {
+
+        chart: { type: "line" },
+        title: { text: "" },
+        xAxis: {
+
+            categories: datos.map(item => item.fecha),
+            title: { text: "Día" }},
+
+        yAxis: {
+            allowDecimals: false,
+            title: { text: "Cantidad de miembros" }},
+
+        series: [{
+            name: "Miembros",
+            data: datos.map(item => item.cantidad)}]
+    });
 }
