@@ -15,6 +15,7 @@ const fotoInput = document.getElementById("foto");
 function showErr(input, errorId, mensaje) {
 
     const errorElement = document.getElementById(errorId);
+
     if (!errorElement) return;
 
     errorElement.textContent = mensaje;
@@ -76,10 +77,12 @@ function archivosValidos(files) {
     const extensionesValidas = ["png", "jpg", "jpeg", "webp", "gif"];
 
     for (const file of files) {
+
         const partes = file.name.split(".");
         const extension = partes[partes.length - 1].toLowerCase();
 
         if (!extensionesValidas.includes(extension)) {
+
             return false;
         }
     }
@@ -88,6 +91,7 @@ function archivosValidos(files) {
 }
 
 if (form) {
+    
     form.addEventListener("submit", function (event) {
 
         globalCleanErr();

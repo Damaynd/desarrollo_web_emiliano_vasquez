@@ -19,10 +19,8 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
 def archivo_permitido(filename):
 
     return (
-
         "." in filename and
         filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
     )
 
 def calcular_duracion(hora_inicio, hora_termino):
@@ -55,7 +53,8 @@ def index():
             session.query(Miembro)
             .order_by(Miembro.fecha_registro.desc())
             .limit(5)
-            .all())
+            .all()
+        )
 
         return render_template("index.html", miembros = miembros)
 
@@ -77,13 +76,11 @@ def registro():
         if request.method == "GET":
 
             return render_template(
-
                 "registro.html",
                 comunas = comunas,
                 errores = {},
                 datos = {},
                 dias_seleccionados = []
-
             )
 
         errores = {}
@@ -100,67 +97,79 @@ def registro():
         hora_termino = request.form.get("hora_termino", "").strip()
 
         archivos = [
-
             archivo for archivo in request.files.getlist("foto")
             if archivo and archivo.filename.strip() != ""
-
         ]
 
         if len(nombre) < 3:
+
             errores["nombre"] = "Ingrese un nombre válido >8("
 
         if "@" not in email or "." not in email:
+
             errores["email"] = "Ingrese un correo válido >8("
 
         if not telefono:
+
             errores["telefono"] = "Ingrese un teléfono >8("
+
         elif not telefono.isdigit() or len(telefono) < 8:
+
             errores["telefono"] = "Ingrese un teléfono válido >8("
 
         if not comuna_id:
             errores["comuna_id"] = "Seleccione una comuna >8("
 
         if len(nombre_actividad) < 3:
+
             errores["nombre_actividad"] = "Ingrese un nombre de actividad válido >8("
 
         if not tipo_actividad:
+
             errores["tipo_actividad"] = "Seleccione un tipo de actividad >8("
 
         if len(descripcion_actividad) < 10:
+
             errores["descripcion_actividad"] = "Ingrese una descripción más completa >8("
 
         if not dias:
+
             errores["dias"] = "Seleccione al menos un día para la actividad >8("
 
         if not hora_inicio:
+
             errores["hora_inicio"] = "Ingrese una hora de inicio >8("
 
         if not hora_termino:
+
             errores["hora_termino"] = "Ingrese una hora de término >8("
 
         if hora_inicio and hora_termino and hora_termino <= hora_inicio:
+
             errores["hora_termino"] = "La hora de término debe ser posterior a la de inicio >8("
 
         if not archivos:
+
             errores["foto"] = "Debe adjuntar al menos una foto >8("
+
         else:
 
             for archivo in archivos:
 
                 if not archivo_permitido(archivo.filename):
+
                     errores["foto"] = "Formato de archivo no permitido >8("
+
                     break
 
         if errores:
 
             return render_template(
-
                 "registro.html",
                 comunas = comunas,
                 errores = errores,
                 datos = request.form,
                 dias_seleccionados = dias
-
             )
 
         rutas_guardadas = []
@@ -177,19 +186,16 @@ def registro():
                 rutas_guardadas.append(ruta_abs)
 
                 archivos_guardados.append({
-
                     "ruta_archivo": f"uploads/{nombre_unico}",
                     "nombre_archivo": nombre_original
-
                 })
-            miembro = Miembro(
 
+            miembro = Miembro(
                 nombre = nombre,
                 email = email,
                 telefono = telefono,
                 fecha_registro = datetime.now(),
                 comuna_id = int(comuna_id)
-
             )
 
             session.add(miembro)
@@ -198,7 +204,6 @@ def registro():
             for dia in dias:
 
                 actividad = Actividad(
-
                     miembro_id = miembro.id,
                     dia = dia,
                     hora_inicio = hora_inicio,
@@ -206,7 +211,6 @@ def registro():
                     tipo = tipo_actividad,
                     nombre = nombre_actividad,
                     descripcion = descripcion_actividad
-
                 )
 
                 session.add(actividad)
@@ -217,11 +221,9 @@ def registro():
                 for archivo_guardado in archivos_guardados:
 
                     foto = Foto(
-
                         ruta_archivo = archivo_guardado["ruta_archivo"],
                         nombre_archivo = archivo_guardado["nombre_archivo"],
                         actividad_id = actividad.id
-
                     )
 
                     session.add(foto)
@@ -371,23 +373,18 @@ def comentarios_actividad(actividad_id):
         if request.method == "GET":
 
             comentarios = (
-
                 session.query(Comentario)
                 .filter(Comentario.actividad_id == actividad_id)
                 .order_by(Comentario.fecha.desc())
                 .all()
-
             )
 
             return jsonify({
 
                 "comentarios": [
-
                     serializar_comentario(comentario)
                     for comentario in comentarios
-
                 ]
-
             })
 
         datos = request.get_json(silent = True) or {}
@@ -412,12 +409,10 @@ def comentarios_actividad(actividad_id):
             return jsonify({"errores": errores}), 400
 
         comentario = Comentario(
-
             nombre = nombre,
             texto = texto,
             fecha = datetime.now(),
             actividad_id = actividad_id
-
         )
 
         session.add(comentario)

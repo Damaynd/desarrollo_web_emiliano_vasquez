@@ -30,7 +30,7 @@ async function cargarComentarios(actividadId, lista) {
 
     if (!respuesta.ok) {
 
-        throw new Error("No se pudieron cargar los comentarios.");
+        throw new Error("No se pudieron cargar los comentarios u u");
 
     }
 
@@ -40,7 +40,7 @@ async function cargarComentarios(actividadId, lista) {
     if (datos.comentarios.length === 0) {
 
         const vacio = document.createElement("p");
-        vacio.textContent = "Esta actividad todavía no tiene comentarios.";
+        vacio.textContent = "Esta actividad todavía no tiene comentarios OwO";
         lista.appendChild(vacio);
         return;
 
@@ -106,6 +106,7 @@ document.querySelectorAll(".comentarios-actividad").forEach(seccion => {
         try {
 
             const respuesta = await fetch(`/api/actividades/${actividadId}/comentarios`, {
+
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"},
@@ -119,7 +120,7 @@ document.querySelectorAll(".comentarios-actividad").forEach(seccion => {
                 const error = datos.errores
                 
                     ? Object.values(datos.errores)[0]
-                    : "No se pudo agregar el comentario.";
+                    : "No se pudo agregar el comentario D:";
 
                 mostrarMensaje(mensaje, error);
                 return;
@@ -129,9 +130,11 @@ document.querySelectorAll(".comentarios-actividad").forEach(seccion => {
             mostrarMensaje(mensaje, datos.mensaje, false);
             await cargarComentarios(actividadId, lista);
 
-        } catch (error) {
+        }
+        catch (error) {
+
             console.error(error);
-            mostrarMensaje(mensaje, "No se pudo conectar con el servidor.");
+            mostrarMensaje(mensaje, "No se pudo conectar con el servidor !");
         }
     });
 });
