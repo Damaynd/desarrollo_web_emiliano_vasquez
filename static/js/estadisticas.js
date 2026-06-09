@@ -7,7 +7,6 @@ async function cargarEstadisticas() {
         if (!respuesta.ok) {
 
             throw new Error("No se pudieron cargar las estadísticas D:");
-
         }
 
         const datos = await respuesta.json();
