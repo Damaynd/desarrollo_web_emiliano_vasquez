@@ -408,21 +408,3 @@ GET  /api/actividades/<id>/comentarios -> Comentarios de una actividad
 POST /api/actividades/<id>/comentarios -> Crear comentario en una actividad
 GET  /contacto -> Página de contacto
 ```
-
-## Pruebas sugeridas
-
-Antes de entregar se recomienda revisar:
-
-- ejecutar `python app.py` sin errores;
-- abrir `http://127.0.0.1:5000`;
-- registrar un miembro con actividad y foto;
-- revisar `/miembros`;
-- entrar al detalle de un miembro;
-- agregar un comentario invalido y verificar mensajes de error;
-- agregar un comentario valido y confirmar que aparece sin recargar la pagina;
-- recargar el detalle y confirmar que el comentario persiste;
-- abrir `/estadisticas` y verificar los tres graficos;
-- abrir `/api/estadisticas` y confirmar que retorna JSON;
-- validar HTML y CSS con las herramientas W3C indicadas en el enunciado.
-
-
