@@ -43,6 +43,23 @@ def serializar_comentario(comentario):
         "texto": comentario.texto,
         "fecha": comentario.fecha.strftime("%d-%m-%Y %H:%M")}
 
+
+def resumen_nota_desde_notas(notas):
+
+    cantidad = len(notas)
+
+    if cantidad == 0:
+
+        return {
+            "nota": "-",
+            "cantidad_notas": 0}
+
+    promedio = sum(nota.nota for nota in notas) / cantidad
+
+    return {
+        "nota": f"{promedio:.1f}",
+        "cantidad_notas": cantidad}
+
 @app.route("/")
 def index():
     
