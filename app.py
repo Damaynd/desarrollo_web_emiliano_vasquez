@@ -94,6 +94,22 @@ def serializar_actividad_busqueda(actividad):
         "nota": resumen["nota"],
         "cantidad_notas": resumen["cantidad_notas"]}
 
+def convertir_nota(valor):
+
+    if isinstance(valor, bool):
+
+        return None
+
+    if isinstance(valor, int):
+
+        return valor
+
+    if isinstance(valor, str) and valor.strip().isdigit():
+
+        return int(valor.strip())
+
+    return None
+
 @app.route("/")
 def index():
     
