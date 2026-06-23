@@ -60,6 +60,25 @@ def resumen_nota_desde_notas(notas):
         "nota": f"{promedio:.1f}",
         "cantidad_notas": cantidad}
 
+def obtener_resumen_nota(session, actividad_id):
+
+    cantidad, promedio = (
+        session.query(func.count(Nota.id), func.avg(Nota.nota))
+        .filter(Nota.actividad_id == actividad_id)
+        .one())
+
+    cantidad = int(cantidad or 0)
+
+    if cantidad == 0:
+
+        return {
+            "nota": "-",
+            "cantidad_notas": 0}
+
+    return {
+        "nota": f"{float(promedio):.1f}",
+        "cantidad_notas": cantidad}
+
 @app.route("/")
 def index():
     
