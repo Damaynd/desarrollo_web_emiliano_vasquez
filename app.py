@@ -503,6 +503,47 @@ def comentarios_actividad(actividad_id):
 
         session.close()
 
+@app.route("/api/actividades/buscar")
+def buscar_actividades():
+
+    session = SessionLocal()
+
+    try:
+
+        busqueda = request.args.get("q", "").strip()
+
+        if len(busqueda) < 3:
+
+            return jsonify({"actividades": []})
+
+        patron = f"%{busqueda}%"
+
+        actividades = (
+            session.query(Actividad)
+            .join(Actividad.miembro)
+            .join(Miembro.comuna)
+            .options(
+                joinedload(Actividad.miembro).joinedload(Miembro.comuna),
+                selectinload(Actividad.notas))
+            .filter(
+                or_(
+                    Actividad.nombre.ilike(patron),
+                    Actividad.descripcion.ilike(patron),
+                    Comuna.nombre.ilike(patron)))
+            .order_by(Actividad.nombre.asc())
+            .limit(30)
+            .all())
+
+        return jsonify({
+            "actividades": [
+                serializar_actividad_busqueda(actividad)
+                for actividad in actividades]})
+
+    finally:
+
+        session.close()
+
+
 @app.route("/estadisticas")
 def estadisticas():
     return render_template("estadisticas.html")
