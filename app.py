@@ -79,6 +79,21 @@ def obtener_resumen_nota(session, actividad_id):
         "nota": f"{float(promedio):.1f}",
         "cantidad_notas": cantidad}
 
+def serializar_actividad_busqueda(actividad):
+
+    resumen = resumen_nota_desde_notas(actividad.notas)
+
+    return {
+        "id": actividad.id,
+        "miembro": actividad.miembro.nombre,
+        "dia": actividad.dia,
+        "tipo": actividad.tipo,
+        "comuna": actividad.miembro.comuna.nombre,
+        "nombre": actividad.nombre,
+        "descripcion": actividad.descripcion,
+        "nota": resumen["nota"],
+        "cantidad_notas": resumen["cantidad_notas"]}
+
 @app.route("/")
 def index():
     
