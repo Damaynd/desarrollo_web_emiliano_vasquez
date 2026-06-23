@@ -377,6 +377,12 @@ def detalle_miembro(id):
         session.close()
 
 
+@app.route("/buscador")
+def buscador():
+
+    return render_template("buscador.html")
+
+
 @app.route("/api/estadisticas")
 def api_estadisticas():
     session = SessionLocal()
