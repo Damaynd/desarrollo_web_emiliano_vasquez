@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-from sqlalchemy import func
+from sqlalchemy import func, or_
+from sqlalchemy.orm import joinedload, selectinload
 from database.db import SessionLocal
-from database.models import Comuna, Miembro, Actividad, Foto, Comentario
+from database.models import Comuna, Miembro, Actividad, Foto, Comentario, Nota
 from datetime import datetime
 from pathlib import Path
 import uuid
