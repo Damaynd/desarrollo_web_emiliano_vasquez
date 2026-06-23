@@ -544,6 +544,46 @@ def buscar_actividades():
         session.close()
 
 
+@app.route("/api/actividades/<int:actividad_id>/notas", methods = ["POST"])
+def agregar_nota(actividad_id):
+
+    session = SessionLocal()
+
+    try:
+
+        actividad = session.get(Actividad, actividad_id)
+
+        if not actividad:
+
+            return jsonify({"error": "Actividad no encontrada."}), 404
+
+        datos = request.get_json(silent = True) or {}
+        nota_int = convertir_nota(datos.get("nota"))
+
+        if nota_int is None or nota_int < 1 or nota_int > 7:
+
+            return jsonify({
+                "error": "La nota debe ser un numero entero entre 1 y 7."}), 400
+
+        nota = Nota(
+            actividad_id = actividad_id,
+            nota = nota_int)
+
+        session.add(nota)
+        session.commit()
+
+        resumen = obtener_resumen_nota(session, actividad_id)
+
+        return jsonify({
+            "mensaje": "Nota agregada correctamente.",
+            "nota": resumen["nota"],
+            "cantidad_notas": resumen["cantidad_notas"]}), 201
+
+    finally:
+
+        session.close()
+
+
 @app.route("/estadisticas")
 def estadisticas():
     return render_template("estadisticas.html")
