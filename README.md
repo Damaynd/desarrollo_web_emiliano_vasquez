@@ -1,10 +1,10 @@
 # Sistema de Gestion de Actividades DCC
 
-## AppWeb Tarea 3 CC5002-2 - Desarrollo de Aplicaciones Web
+## AppWeb Tarea 4 CC5002-2 - Desarrollo de Aplicaciones Web
 
-El sistema permite registrar miembros de la comunidad DCC junto con las actividades que realizan, almacenar archivos asociados a estas actividades, consultar un listado de miembros, revisar el detalle de cada miembro con sus actividades y fotos, visualizar estadíssticas del sistema y agregar comentarios a las actividades registradas.
+El sistema permite registrar miembros de la comunidad DCC junto con las actividades que realizan, almacenar archivos asociados a estas actividades, consultar un listado de miembros, revisar el detalle de cada miembro con sus actividades y fotos, visualizar estadíssticas del sistema, agregar comentarios a las actividades registradas, buscar actividades y evaluarlas con notas.
 
-Esta versión corresponde a la evolución del proyecto entregado en Tarea 2, complementado con las funcionalidades solicitadas para Tarea 3.
+Esta versión corresponde a la evolución del proyecto entregado en Tarea 2 y Tarea 3, complementado con las funcionalidades solicitadas para Tarea 4. El desarrollo se mantiene en el directorio `Tareas/T1` porque la tarea fue acumulativa y preferí no mover la estructura del proyecto.
 
 ## Autor
 
@@ -25,6 +25,7 @@ T1/
 │   └── sql/
 │       ├── tarea2.sql
 │       ├── tabla-comentario.sql
+│       ├── tabla-nota.sql
 │       └── region-comuna.sql
 ├── static/
 │   ├── css/
@@ -33,11 +34,13 @@ T1/
 │   │   ├── forms.css
 │   │   ├── tables.css
 │   │   ├── stats.css
-│   │   └── index.css
+│   │   ├── index.css
+│   │   └── buscador.css
 │   ├── js/
 │   │   ├── registro.js
 │   │   ├── estadisticas.js
-│   │   └── comentarios.js
+│   │   ├── comentarios.js
+│   │   └── buscador.js
 │   └── uploads/
 ├── templates/
 │   ├── base.html
@@ -46,6 +49,7 @@ T1/
 │   ├── miembros.html
 │   ├── detalle_miembro.html
 │   ├── estadisticas.html
+│   ├── buscador.html
 │   ├── contacto.html
 │   └── partials/
 │       └── navbar.html
@@ -81,6 +85,7 @@ Cargar en la base los archivos:
 - `database/sql/tarea2.sql`
 - `database/sql/region-comuna.sql`
 - `database/sql/tabla-comentario.sql`
+- `database/sql/tabla-nota.sql`
 
 El archivo `tarea2.sql` crea la estructura base de Tarea 2. Si la base ya tiene datos que se quieren conservar, no se debe ejecutar nuevamente porque elimina y recrea el esquema `tarea2`.
 
@@ -113,6 +118,11 @@ La Tarea 3 agrega dos bloques principales:
 - Estadísticas generadas en el cliente con JS, obteniendo los datos desde Flask;
 - Comentarios asíncronos asociados a cada actividad extraprogramática.
 
+La Tarea 4 agrega sobre eso:
+
+- Un buscador de actividades que consulta por nombre, descripción o comuna cuando el usuario escribe al menos 3 caracteres;
+- Un sistema de notas para evaluar actividades de forma asíncrona y actualizar la nota mostrada sin recargar la página.
+
 La idea general del diseño fue mantener la estructura cercana a la que ya existia, pero separando claramente:
 
 - Rutas HTML renderizadas con Jinja;
@@ -134,6 +144,14 @@ La lógica del proyecto esta organizada en cuatro capas:
     - `/api/estadisticas`, que entrega en una sola respuesta los datos de los tres gráficos;
     - `/api/actividades/<int:actividad_id>/comentarios`, que permite listar y crear comentarios asociados a una actividad.
 
+    Para Tarea 4 se agregaron:
+
+    - `serializar_actividad_busqueda(actividad)`, que prepara los datos que necesita el buscador;
+    - `convertir_nota(valor)`, que ayuda a validar que la nota sea un entero entre 1 y 7;
+    - `/buscador`, que muestra la interfaz de búsqueda;
+    - `/api/actividades/buscar`, que retorna actividades filtradas en formato JSON;
+    - `/api/actividades/<int:actividad_id>/notas`, que permite agregar una nota y recalcular el promedio.
+
 - `models.py`: representación del dominio.
 
     Modela las tablas:
@@ -144,6 +162,7 @@ La lógica del proyecto esta organizada en cuatro capas:
     - `Actividad`
     - `Foto`
     - `Comentario`
+    - `Nota`
 
     Sus relaciones principales son:
 
@@ -151,17 +170,18 @@ La lógica del proyecto esta organizada en cuatro capas:
     - una comuna tiene muchos miembros;
     - un miembro tiene muchas actividades;
     - una actividad tiene muchas fotos;
-    - una actividad tiene muchos comentarios.
+    - una actividad tiene muchos comentarios;
+    - una actividad tiene muchas notas.
 
 - `templates/`: capa de presentación renderizada por Flask.
 
     Los templates usan herencia desde `base.html` y reutilizan `partials/navbar.html` para evitar duplicación de estructura común.
 
-    Para Tarea 3, `estadisticas.html` define los contenedores de los tres gráficos y carga Highcharts junto con `estadisticas.js`. Además, `detalle_miembro.html` incluye el listado y formulario de comentarios dentro de cada actividad.
+    Para Tarea 3, `estadisticas.html` define los contenedores de los tres gráficos y carga Highcharts junto con `estadisticas.js`. Además, `detalle_miembro.html` incluye el listado y formulario de comentarios dentro de cada actividad. Para Tarea 4 se agrega `buscador.html`, que contiene el formulario de búsqueda y un contenedor que JavaScript rellena con los resultados.
 
 - `static/`: recursos estáticos.
 
-    Aquí se agrupan hojas de estilo, scripts de cliente y archivos subidos por usuarios. Para Tarea 3 se agregó `comentarios.js` y se actualizó `estadisticas.js` para trabajar con datos reales desde Flask.
+    Aquí se agrupan hojas de estilo, scripts de cliente y archivos subidos por usuarios. Para Tarea 3 se agregó `comentarios.js` y se actualizó `estadisticas.js` para trabajar con datos reales desde Flask. Para Tarea 4 se agrega `buscador.js` y `buscador.css`.
 
 ## Decisiones de diseño importantes
 
@@ -284,6 +304,52 @@ Como los comentarios pueden contener texto arbitrario, se evitó insertar HTML d
 
 Esta decisión ayuda a reducir riesgos asociados a entradas maliciosas, ya que el texto se interpreta como contenido textual y no como etiquetas HTML ejecutables.
 
+### Buscador como vista separada
+
+Para Tarea 4 se decidió crear una vista nueva, `/buscador`, en vez de mezclar la búsqueda dentro del listado de miembros o dentro del detalle de miembro.
+
+La razón fue que el buscador trabaja sobre actividades, no sobre miembros, y necesitaba mostrar resultados que mezclan datos de distintas tablas:
+
+- Miembro asociado;
+- Día de la actividad;
+- Tipo;
+- Comuna;
+- Nombre;
+- Descripción;
+- Nota.
+
+Esto se refleja en `templates/buscador.html`, que contiene el input de búsqueda, y en `static/js/buscador.js`, que se encarga de pedir los resultados y construir las tarjetas en el navegador.
+
+### Búsqueda automática desde 3 caracteres
+
+El enunciado pide buscar automáticamente cuando el usuario haya escrito 3 caracteres. Por eso `buscador.js` escucha el evento `input` y llama al servidor sólo cuando el texto tiene largo suficiente.
+
+También se dejó un pequeño retraso antes de buscar, para evitar hacer demasiadas consultas mientras el usuario sigue escribiendo. Si el texto tiene menos de 3 caracteres, se limpian los resultados y se muestra un mensaje indicando que todavía no se puede buscar.
+
+### Tabla independiente para notas
+
+Las notas se guardan en una tabla nueva, `nota`, asociada a `actividad`. Se decidió mantenerla como una tabla separada porque una actividad puede recibir más de una evaluación.
+
+En vez de guardar una única nota dentro de `actividad`, la tabla `nota` permite registrar varias evaluaciones y luego calcular un resumen. Por eso la interfaz muestra:
+
+- `-`, si la actividad todavía no tiene notas;
+- El promedio de las notas, si ya fue evaluada;
+- La cantidad de evaluaciones registradas.
+
+Esta decisión se refleja en `database/models.py`, donde `Actividad` tiene una relación con `Nota`, y en `app.py`, donde se recalcula el promedio después de insertar una nota nueva.
+
+### Validación de notas en cliente y servidor
+
+En el cliente se muestra un selector con valores entre 1 y 7 para evitar entradas inválidas desde la interfaz.
+
+De todas formas, el servidor vuelve a validar la nota antes de insertarla. Esta validación es necesaria porque una petición HTTP puede construirse manualmente, sin pasar por el formulario del navegador. Por eso `/api/actividades/<int:actividad_id>/notas` rechaza cualquier valor que no sea un número entero entre 1 y 7.
+
+### Actualizar la nota sin recargar
+
+Al agregar una nota, el servidor responde con el promedio actualizado y la cantidad de notas asociadas a la actividad. Con eso, `buscador.js` actualiza solamente la tarjeta correspondiente.
+
+La razón fue mantener la intercción asíncrona pedida por el enunciado: el usuario evalúa una actividad y ve el cambio inmediatamente, sin perder la búsqueda que ya tenía en pantalla.
+
 ## Explicación por archivos principales
 
 `app.py`:
@@ -294,10 +360,13 @@ Esta decisión ayuda a reducir riesgos asociados a entradas maliciosas, ya que e
 - En `/miembros/<id>` muestra el detalle de un miembro.
 - En `/api/estadisticas` calcula y retorna datos agregados para los tres gráficos.
 - En `/api/actividades/<int:actividad_id>/comentarios` lista comentarioss con `GET` y crea comentarios con `POST`.
+- En `/buscador` muestra la página para buscar actividades.
+- En `/api/actividades/buscar` busca actividades por nombre, descripción o comuna.
+- En `/api/actividades/<int:actividad_id>/notas` valida y guarda notas asociadas a una actividad.
 
 `models.py`:
 
-Representa las entidades principales del sistema y sus relaciones. Para Tarea 3 se agrego `Comentario`, relacionado con `Actividad` mediante `actividad_id`.
+Representa las entidades principales del sistema y sus relaciones. Para Tarea 3 se agrego `Comentario`, relacionado con `Actividad` mediante `actividad_id`. Para Tarea 4 se agregó `Nota`, también relacionada con `Actividad`.
 
 `base.html`:
 
@@ -310,7 +379,7 @@ Define la estructura común del sitio:
 
 `partials/navbar.html`:
 
-Contiene la barra de navegacion compartida entre vistas.
+Contiene la barra de navegacion compatida entre vistas.
 
 `index.html`:
 
@@ -338,6 +407,10 @@ Define los contenedores de los tres gráficos de Tarea 3:
 
 Tambien carga Highcharts y `static/js/estadisticas.js`.
 
+`buscador.html`:
+
+Contiene el formulario de búsqueda de actividades. La vista parte sin resultados y luego `static/js/buscador.js` se encarga de consultar al servidor, mostrar actividades encontradas, destacar el texto que coincide con la búsqueda y permitir evaluarlas.
+
 `contacto.html`:
 
 Vista simple con información de contacto.
@@ -345,6 +418,10 @@ Vista simple con información de contacto.
 `database/sql/tabla-comentario.sql`:
 
 Script entregado para agregar la tabla `comentario` a la base `tarea2`.
+
+`database/sql/tabla-nota.sql`:
+
+Script entregado para agregar la tabla `nota` a la base `tarea2`. Esta tabla guarda las evaluaciones de las actividades.
 
 ## Organización del CSS
 
@@ -356,16 +433,18 @@ Se separó la presentación por responsabilidades:
 - `tables.css`: estilos de tabla de miembros y paginación.
 - `index.css`: estilos de portada y últimos miembros.
 - `stats.css`: estilos de la pagina de estadísticas y contenedores de gráficos.
+- `buscador.css`: estilos de la página de búsqueda, resultados y formulario de evaluación.
 
-Los estilos de comentarios se dejaron en `styles.css` porque forman parte del detalle de miembro, que ya usaba reglas generales de tarjetas y actividades. Los estilos de gráficás se mantuvieron en `stats.css` porque sólo pertenecen a la vista `/estadisticas`.
+Los estilos de comentarios se dejaron en `styles.css` porque forman parte del detalle de miembro, que ya úsaba reglas generales de tarjetas y actividades. Los estilos de gráficás se mantuvieron en `stats.css` porque sólo pertenecen a la vista `/estadisticas`. Los estilos del buscador se dejaron en `buscador.css` porque sólo pertenecen a `/buscador`.
 
 ## Organización del frontend con JS
 
-El frontend queda dividido en tres archivos principales:
+El frontend queda dividido en cuatro archivos principales:
 
 - `registro.js`: valida el formulario de registro antes del submit tradicional.
 - `estadisticas.js`: usa `fetch("/api/estadisticas")`, recibe datos JSON desde Flask y genera los tres gráficos usando Highcharts.
 - `comentarios.js`: usa `fetch` para cargar comentarios por actividad, validar nuevos comentarios en cliente, enviarlos con `POST` y actualizar el listado sin recargar la página.
+- `buscador.js`: usa `fetch` para buscar actividades, destacar coincidencias, enviar notas con `POST` y actualizar el promedio sin recargar la página.
 
 Esta separación evita mezclar lógicas distintas en un solo archivo y deja cada script asociado a una vista o funcionalidad concreta.
 
@@ -392,6 +471,14 @@ Esta separación evita mezclar lógicas distintas en un solo archivo y deja cada
 - Listado asíncrono de comentarios por actividad.
 - Formulario asíncrono para agregar comentarios.
 - Validación cliente/servidor para comentarios.
+- Tabla `nota`.
+- Modelo `Nota`.
+- Buscador asíncrono de actividades.
+- Búsqueda por nombre, descripción o comuna.
+- Destacado del texto que coincide con la búsqueda.
+- Formulario asíncrono para evaluar actividades.
+- Validación cliente/servidor para notas entre 1 y 7.
+- Recálculo de nota promedio y contador de evaluaciones sin recargar la página.
 - Contacto.
 
 ## Rutas principales
@@ -403,8 +490,11 @@ POST /registro -> Procesamiento de registro
 GET  /miembros -> Listado paginado de miembros
 GET  /miembros/<id> -> Detalle de miembro
 GET  /estadisticas -> Página de estadísticas
+GET  /buscador -> Buscador de actividades
 GET  /api/estadisticas -> Datos JSON para gráficos
 GET  /api/actividades/<id>/comentarios -> Comentarios de una actividad
 POST /api/actividades/<id>/comentarios -> Crear comentario en una actividad
+GET  /api/actividades/buscar?q=texto -> Buscar actividades
+POST /api/actividades/<id>/notas -> Crear nota en una actividad
 GET  /contacto -> Página de contacto
 ```
