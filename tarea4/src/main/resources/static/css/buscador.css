@@ -132,24 +132,69 @@ select {
 }
 
 .actividad-fotos-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
-.actividad-fotos-lista a {
+.foto-miniatura {
     display: block;
+    width: 140px;
+    padding: 0;
     border: 1px solid #666;
     border-radius: 6px;
     overflow: hidden;
     background-color: #050505;
+    cursor: pointer;
 }
 
-.actividad-fotos-lista img {
+.foto-miniatura img {
     display: block;
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 96px;
     object-fit: cover;
+}
+
+.foto-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.foto-modal-contenido {
+    display: grid;
+    justify-items: end;
+    gap: 12px;
+    max-width: 95vw;
+    max-height: 90vh;
+}
+
+.foto-modal-contenido img {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    border: 1px solid #666;
+    border-radius: 8px;
+    background-color: #050505;
+    object-fit: contain;
+}
+
+.foto-modal-cerrar {
+    padding: 10px 16px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background-color: #0057b8;
+    color: white;
+    cursor: pointer;
+}
+
+.foto-modal-cerrar:hover {
+    background-color: #00448f;
 }
 
 .evaluacion {

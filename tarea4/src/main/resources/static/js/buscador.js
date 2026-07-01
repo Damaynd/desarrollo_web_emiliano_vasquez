@@ -224,18 +224,56 @@ function crearGaleriaFotos(actividad) {
 
     fotos.forEach(foto => {
 
-        const enlace = document.createElement("a");
-        enlace.href = foto.url;
-        enlace.target = "_blank";
-        enlace.rel = "noopener noreferrer";
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.className = "foto-miniatura";
+        boton.title = "Ampliar foto";
         const imagen = document.createElement("img");
         imagen.src = foto.url;
         imagen.alt = foto.nombre || "Foto de la actividad";
-        enlace.appendChild(imagen);
-        lista.appendChild(enlace);
+        boton.appendChild(imagen);
+        boton.addEventListener("click", () => {
+
+            mostrarFotoAmpliada(foto);
+        });
+        lista.appendChild(boton);
     });
 
     return contenedor;
+}
+
+function mostrarFotoAmpliada(foto) {
+
+    const modal = document.createElement("div");
+    modal.className = "foto-modal";
+    const contenido = document.createElement("div");
+    contenido.className = "foto-modal-contenido";
+    const botonCerrar = document.createElement("button");
+    botonCerrar.type = "button";
+    botonCerrar.className = "foto-modal-cerrar";
+    botonCerrar.textContent = "Cerrar";
+    const imagen = document.createElement("img");
+    imagen.src = foto.url;
+    imagen.alt = foto.nombre || "Foto de la actividad";
+
+    function cerrarModal() {
+
+        modal.remove();
+    }
+
+    botonCerrar.addEventListener("click", cerrarModal);
+    modal.addEventListener("click", event => {
+
+        if (event.target === modal) {
+
+            cerrarModal();
+        }
+    });
+
+    contenido.appendChild(botonCerrar);
+    contenido.appendChild(imagen);
+    modal.appendChild(contenido);
+    document.body.appendChild(modal);
 }
 
 function crearResultadoActividad(actividad, patron) {
