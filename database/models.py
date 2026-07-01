@@ -51,7 +51,6 @@ class Actividad(Base):
     miembro = relationship("Miembro", back_populates = "actividades")
     fotos = relationship("Foto", back_populates = "actividad")
     comentarios = relationship("Comentario", back_populates = "actividad")
-    notas = relationship("Nota", back_populates = "actividad")
 
 
 class Foto(Base):
@@ -74,13 +73,3 @@ class Comentario(Base):
     fecha = Column(DateTime, nullable = False)
     actividad_id = Column(Integer, ForeignKey("actividad.id"), nullable = False)
     actividad = relationship("Actividad", back_populates = "comentarios")
-
-
-class Nota(Base):
-
-    __tablename__ = "nota"
-
-    id = Column(Integer, primary_key = True)
-    actividad_id = Column(Integer, ForeignKey("actividad.id"), nullable = False)
-    nota = Column(Integer, nullable = False)
-    actividad = relationship("Actividad", back_populates = "notas")
