@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 uploads/
 .env
+target/
+*.class
+.idea/workspace.xml
