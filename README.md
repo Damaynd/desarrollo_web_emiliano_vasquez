@@ -4,8 +4,6 @@
 
 El sistema permite registrar miembros de la comunidad DCC junto con las actividades que realizan, almacenar archivos asociados a estas actividades, consultar un listado de miembros, revisar el detalle de cada miembro con sus actividades y fotos, visualizar estadíssticas del sistema, agregar comentarios a las actividades registradas, buscar actividades y evaluarlas con notas.
 
-Esta versión corresponde a la evolución del proyecto entregado en Tarea 2 y Tarea 3, complementado con las funcionalidades solicitadas para Tarea 4. El desarrollo se mantiene en el directorio `Tareas/T1` porque la tarea fue acumulativa y preferí no mover la estructura del proyecto.
-
 ## Autor
 
 - **Nombre:** Emiliano Vasquez Parada
@@ -34,13 +32,11 @@ T1/
 │   │   ├── forms.css
 │   │   ├── tables.css
 │   │   ├── stats.css
-│   │   ├── index.css
-│   │   └── buscador.css
+│   │   └── index.css
 │   ├── js/
 │   │   ├── registro.js
 │   │   ├── estadisticas.js
-│   │   ├── comentarios.js
-│   │   └── buscador.js
+│   │   └── comentarios.js
 │   └── uploads/
 ├── templates/
 │   ├── base.html
@@ -49,10 +45,15 @@ T1/
 │   ├── miembros.html
 │   ├── detalle_miembro.html
 │   ├── estadisticas.html
-│   ├── buscador.html
 │   ├── contacto.html
 │   └── partials/
 │       └── navbar.html
+├── tarea4/
+│   ├── pom.xml
+│   └── src/
+│       └── main/
+│           ├── java/com/tarea4/
+│           └── resources/
 └── .gitignore
 ```
 
@@ -111,6 +112,19 @@ Luego abrir:
 http://127.0.0.1:5000
 ```
 
+5. Ejecutar la parte de Tarea 4 con Spring Boot:
+
+```powershell
+cd tarea4
+.\mvnw.cmd spring-boot:run
+```
+
+Luego abrir:
+
+```text
+http://localhost:8080/buscador
+```
+
 ## Descripción general del proyecto
 
 La Tarea 3 agrega dos bloques principales:
@@ -118,10 +132,12 @@ La Tarea 3 agrega dos bloques principales:
 - Estadísticas generadas en el cliente con JS, obteniendo los datos desde Flask;
 - Comentarios asíncronos asociados a cada actividad extraprogramática.
 
-La Tarea 4 agrega sobre eso:
+La Tarea 4 agrega sobre eso, pero en un proyecto Spring Boot separado dentro de `tarea4/`:
 
 - Un buscador de actividades que consulta por nombre, descripción o comuna cuando el usuario escribe al menos 3 caracteres;
-- Un sistema de notas para evaluar actividades de forma asíncrona y actualizar la nota mostrada sin recargar la página.
+- Un sistema de notas para evaluar actividades de forma asíncrona y actualizar la nota mostrada sin recargar la página
+
+Flask se mantiene como la aplicación principal paa las funcionalidades anteriores. Spring Boot se conecta a la misma base `tarea2`, lee las actividades ya registradas y guarda las notas en la tabla `nota`.
 
 La idea general del diseño fue mantener la estructura cercana a la que ya existia, pero separando claramente:
 
@@ -136,23 +152,17 @@ La lógica del proyecto esta organizada en cuatro capas:
 
 - `app.py`: capa principal del servidor.
 
-    Aquí se definen las rutas HTML, los endpoints JSON, las validaciones server-side, la apertura y cierre de sesiones de base de datos, la inserción de registros y la serialización de datos que luego consume JS.
+    Aquí se definen las rutas HTML, los endpoints JSON, las validaciones server-side, la apertura y cierre de sesiones de base de datos, la inserción de registros y la serialización de datos que luego consume JS
 
     Para Tarea 3 se agregaron:
 
     - `serializar_comentario(comentario)`, que transforma un comentario SQLAlchemy en un objeto JSON simple;
     - `/api/estadisticas`, que entrega en una sola respuesta los datos de los tres gráficos;
-    - `/api/actividades/<int:actividad_id>/comentarios`, que permite listar y crear comentarios asociados a una actividad.
+    - `/api/actividades/<int:actividad_id>/comentarios`, que permite listar y crear comentarios asociados a una actividad
 
-    Para Tarea 4 se agregaron:
+    La Tarea 4 no se implementa en Flask para evitar duplicar rutas y lógica. Desde Flask sólo se deja el enlace hacia el buscador de Spring Boot
 
-    - `serializar_actividad_busqueda(actividad)`, que prepara los datos que necesita el buscador;
-    - `convertir_nota(valor)`, que ayuda a validar que la nota sea un entero entre 1 y 7;
-    - `/buscador`, que muestra la interfaz de búsqueda;
-    - `/api/actividades/buscar`, que retorna actividades filtradas en formato JSON;
-    - `/api/actividades/<int:actividad_id>/notas`, que permite agregar una nota y recalcular el promedio.
-
-- `models.py`: representación del dominio.
+- `models.py`: representación del dominio
 
     Modela las tablas:
 
@@ -162,26 +172,24 @@ La lógica del proyecto esta organizada en cuatro capas:
     - `Actividad`
     - `Foto`
     - `Comentario`
-    - `Nota`
 
     Sus relaciones principales son:
 
-    - una región tiene muchas comunas;
-    - una comuna tiene muchos miembros;
-    - un miembro tiene muchas actividades;
-    - una actividad tiene muchas fotos;
-    - una actividad tiene muchos comentarios;
-    - una actividad tiene muchas notas.
+    - Una región tiene muchas comunas;
+    - Una comuna tiene muchos miembros;
+    - Un miembro tiene muchas actividades;
+    - Una actividad tiene muchas fotos;
+    - Una actividad tiene muchos comentarios
 
 - `templates/`: capa de presentación renderizada por Flask.
 
     Los templates usan herencia desde `base.html` y reutilizan `partials/navbar.html` para evitar duplicación de estructura común.
 
-    Para Tarea 3, `estadisticas.html` define los contenedores de los tres gráficos y carga Highcharts junto con `estadisticas.js`. Además, `detalle_miembro.html` incluye el listado y formulario de comentarios dentro de cada actividad. Para Tarea 4 se agrega `buscador.html`, que contiene el formulario de búsqueda y un contenedor que JavaScript rellena con los resultados.
+    Para Tarea 3, `estadisticas.html` define los contenedores de los tres gráficos y carga Highcharts junto con `estadisticas.js`. Además, `detalle_miembro.html` incluye el listado y formulario de comentarios dentro de cada actividad. La vista de Tarea 4 queda en `tarea4/src/main/resources/templates/buscador.html`.
 
 - `static/`: recursos estáticos.
 
-    Aquí se agrupan hojas de estilo, scripts de cliente y archivos subidos por usuarios. Para Tarea 3 se agregó `comentarios.js` y se actualizó `estadisticas.js` para trabajar con datos reales desde Flask. Para Tarea 4 se agrega `buscador.js` y `buscador.css`.
+    Aquí se agrupan hojas de estilo, scripts de cliente y archivos subidos por usuarios. Para Tarea 3 se agregó `comentarios.js` y se actualizó `estadisticas.js` para trabajar con datos reales desde Flask. Los estáticos de Tarea 4 quedan dentro de `tarea4/src/main/resources/static`.
 
 ## Decisiones de diseño importantes
 
@@ -189,7 +197,7 @@ La lógica del proyecto esta organizada en cuatro capas:
 
 En la Tarea 1 existían formularios separados para registrar miembros y actividades. En esta versión se mantiene una sola vista (`registro.html`) y una sola ruta (`/registro`) para registrar ambos datos.
 
-La razón fue evitar tener que implementar autenticación, selección posterior de usuario o manejo de sesión para saber a qué miembro asociar una actividad. Como el enunciado original no exigía usuarios autenticados, se eligió una operación de registro completa:
+La razón fue evitar tener que implementar autenticación, selección posterior de usuario o manejo de sesión para saber a qué miembro asociar una actividad. Como el enunciado original no exigía usuarios autenticados, se eligió un operación de registro completa:
 
 - Se crea un miembro;
 - Se crean sus actividades;
@@ -214,7 +222,7 @@ Se decidió calcular la duración en el servidor porque:
 
 - Evita depender del cliente para una transformación relevante;
 - Mantiene la base coherente con el formato esperado;
-- Centraliza la lógica antes de insertar la actividad.
+- Centraliza la lógica antes de insertar la actividad
 
 ### Validación doble: cliente y servidor
 
@@ -316,13 +324,13 @@ La razón fue que el buscador trabaja sobre actividades, no sobre miembros, y ne
 - Comuna;
 - Nombre;
 - Descripción;
-- Nota.
+- Nota
 
-Esto se refleja en `templates/buscador.html`, que contiene el input de búsqueda, y en `static/js/buscador.js`, que se encarga de pedir los resultados y construir las tarjetas en el navegador.
+Esto se refleja en `tarea4/src/main/resources/templates/buscador.html`, que contiene el input de búsqueda, y en `tarea4/src/main/resources/static/js/buscador.js`, que se encarga de pedir los resultados y construir las tarjetas en el navegador.
 
 ### Búsqueda automática desde 3 caracteres
 
-El enunciado pide buscar automáticamente cuando el usuario haya escrito 3 caracteres. Por eso `buscador.js` escucha el evento `input` y llama al servidor sólo cuando el texto tiene largo suficiente.
+El enunciado pide buscar automáticamente cuando el usuario haya escrito 3 caracteres. Por eso `tarea4/src/main/resources/static/js/buscador.js` escucha el evento `input` y llama al servidor sólo cuando el texto tiene largo suficiente.
 
 También se dejó un pequeño retraso antes de buscar, para evitar hacer demasiadas consultas mientras el usuario sigue escribiendo. Si el texto tiene menos de 3 caracteres, se limpian los resultados y se muestra un mensaje indicando que todavía no se puede buscar.
 
@@ -336,17 +344,17 @@ En vez de guardar una única nota dentro de `actividad`, la tabla `nota` permite
 - El promedio de las notas, si ya fue evaluada;
 - La cantidad de evaluaciones registradas.
 
-Esta decisión se refleja en `database/models.py`, donde `Actividad` tiene una relación con `Nota`, y en `app.py`, donde se recalcula el promedio después de insertar una nota nueva.
+Esta decisión se refleja en los modelos JPA de `tarea4/src/main/java/com/tarea4/models`, donde `Nota` se relaciona con `Actividad`, y en `ApiService`, donde se recalcula el promedio después de insertar una nota nueva.
 
 ### Validación de notas en cliente y servidor
 
 En el cliente se muestra un selector con valores entre 1 y 7 para evitar entradas inválidas desde la interfaz.
 
-De todas formas, el servidor vuelve a validar la nota antes de insertarla. Esta validación es necesaria porque una petición HTTP puede construirse manualmente, sin pasar por el formulario del navegador. Por eso `/api/actividades/<int:actividad_id>/notas` rechaza cualquier valor que no sea un número entero entre 1 y 7.
+De todas formas, el servidor vuelve a validar la nota antes de insertarla. Esta validación es necesaria porque una petición HTTP puede construirse manualmente, sin pasar por el formulario del navegador. Por eso Spring Boot rechaza cualquier valor que no sea un número entero entre 1 y 7 en `/api/actividades/{id}/notas`.
 
 ### Actualizar la nota sin recargar
 
-Al agregar una nota, el servidor responde con el promedio actualizado y la cantidad de notas asociadas a la actividad. Con eso, `buscador.js` actualiza solamente la tarjeta correspondiente.
+Al agregar una nota, el servidor responde con el promedio actualizado y la cantidad de notas asociadas a la actividad. Con eso, `tarea4/src/main/resources/static/js/buscador.js` actualiza solamente la tarjeta correspondiente.
 
 La razón fue mantener la intercción asíncrona pedida por el enunciado: el usuario evalúa una actividad y ve el cambio inmediatamente, sin perder la búsqueda que ya tenía en pantalla.
 
@@ -360,13 +368,10 @@ La razón fue mantener la intercción asíncrona pedida por el enunciado: el usu
 - En `/miembros/<id>` muestra el detalle de un miembro.
 - En `/api/estadisticas` calcula y retorna datos agregados para los tres gráficos.
 - En `/api/actividades/<int:actividad_id>/comentarios` lista comentarioss con `GET` y crea comentarios con `POST`.
-- En `/buscador` muestra la página para buscar actividades.
-- En `/api/actividades/buscar` busca actividades por nombre, descripción o comuna.
-- En `/api/actividades/<int:actividad_id>/notas` valida y guarda notas asociadas a una actividad.
 
 `models.py`:
 
-Representa las entidades principales del sistema y sus relaciones. Para Tarea 3 se agrego `Comentario`, relacionado con `Actividad` mediante `actividad_id`. Para Tarea 4 se agregó `Nota`, también relacionada con `Actividad`.
+Representa las entidades principales del sistema y sus relaciones para Flask. Para Tarea 3 se agrego `Comentario`, relacionado con `Actividad` mediante `actividad_id`. La entidad `Nota` queda implementada en el módulo Spring Boot de Tarea 4.
 
 `base.html`:
 
@@ -407,9 +412,9 @@ Define los contenedores de los tres gráficos de Tarea 3:
 
 Tambien carga Highcharts y `static/js/estadisticas.js`.
 
-`buscador.html`:
+`tarea4/src/main/resources/templates/buscador.html`:
 
-Contiene el formulario de búsqueda de actividades. La vista parte sin resultados y luego `static/js/buscador.js` se encarga de consultar al servidor, mostrar actividades encontradas, destacar el texto que coincide con la búsqueda y permitir evaluarlas.
+Contiene el formulario de búsqueda de actividades. La vista parte sin resultados y luego `tarea4/src/main/resources/static/js/buscador.js` se encarga de consultar al servidor, mostrar actividades encontradas, destacar el texto que coincide con la búsqueda y permitir evaluarlas.
 
 `contacto.html`:
 
@@ -433,20 +438,18 @@ Se separó la presentación por responsabilidades:
 - `tables.css`: estilos de tabla de miembros y paginación.
 - `index.css`: estilos de portada y últimos miembros.
 - `stats.css`: estilos de la pagina de estadísticas y contenedores de gráficos.
-- `buscador.css`: estilos de la página de búsqueda, resultados y formulario de evaluación.
 
-Los estilos de comentarios se dejaron en `styles.css` porque forman parte del detalle de miembro, que ya úsaba reglas generales de tarjetas y actividades. Los estilos de gráficás se mantuvieron en `stats.css` porque sólo pertenecen a la vista `/estadisticas`. Los estilos del buscador se dejaron en `buscador.css` porque sólo pertenecen a `/buscador`.
+Los estilos de comentarios se dejaron en `styles.css` porque forman parte del detalle de miembro, que ya úsaba reglas generales de tarjetas y actividades. Los estilos de gráficás se mantuvieron en `stats.css` porque sólo pertenecen a la vista `/estadisticas`. Los estilos del buscador de Tarea 4 quedan en `tarea4/src/main/resources/static/css/buscador.css`.
 
 ## Organización del frontend con JS
 
-El frontend queda dividido en cuatro archivos principales:
+El frontend Flask queda dividido en tres archivos principales:
 
 - `registro.js`: valida el formulario de registro antes del submit tradicional.
 - `estadisticas.js`: usa `fetch("/api/estadisticas")`, recibe datos JSON desde Flask y genera los tres gráficos usando Highcharts.
 - `comentarios.js`: usa `fetch` para cargar comentarios por actividad, validar nuevos comentarios en cliente, enviarlos con `POST` y actualizar el listado sin recargar la página.
-- `buscador.js`: usa `fetch` para buscar actividades, destacar coincidencias, enviar notas con `POST` y actualizar el promedio sin recargar la página.
 
-Esta separación evita mezclar lógicas distintas en un solo archivo y deja cada script asociado a una vista o funcionalidad concreta.
+Esta separación evita mezclar lógicas distintas en un solo archivo y deja cada script asociado a una vista o funcionalidad concreta. Para Tarea 4, el script del buscador queda dentro del proyecto Spring Boot.
 
 ## Funcionalidades implementadas
 
@@ -472,7 +475,7 @@ Esta separación evita mezclar lógicas distintas en un solo archivo y deja cada
 - Formulario asíncrono para agregar comentarios.
 - Validación cliente/servidor para comentarios.
 - Tabla `nota`.
-- Modelo `Nota`.
+- Modelo `Nota` en Spring Boot.
 - Buscador asíncrono de actividades.
 - Búsqueda por nombre, descripción o comuna.
 - Destacado del texto que coincide con la búsqueda.
@@ -490,11 +493,16 @@ POST /registro -> Procesamiento de registro
 GET  /miembros -> Listado paginado de miembros
 GET  /miembros/<id> -> Detalle de miembro
 GET  /estadisticas -> Página de estadísticas
-GET  /buscador -> Buscador de actividades
 GET  /api/estadisticas -> Datos JSON para gráficos
 GET  /api/actividades/<id>/comentarios -> Comentarios de una actividad
 POST /api/actividades/<id>/comentarios -> Crear comentario en una actividad
-GET  /api/actividades/buscar?q=texto -> Buscar actividades
-POST /api/actividades/<id>/notas -> Crear nota en una actividad
 GET  /contacto -> Página de contacto
+```
+
+Las rutas de Tarea 4 están en Spring Boot:
+
+```text
+GET  http://localhost:8080/buscador -> Buscador de actividades
+GET  http://localhost:8080/api/actividades/buscar?q=texto -> Buscar actividades
+POST http://localhost:8080/api/actividades/<id>/notas -> Crear nota en una actividad
 ```
