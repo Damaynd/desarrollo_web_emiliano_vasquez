@@ -8,7 +8,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "actividad")
+
 public class Actividad {
+    
     @Id
     private Integer id;
 
@@ -28,7 +30,7 @@ public class Actividad {
 
     @ManyToOne
     @JoinColumn(name = "miembro_id")
-    
+
     private Miembro miembro;
 
     public Actividad() {
