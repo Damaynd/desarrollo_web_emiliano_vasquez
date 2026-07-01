@@ -63,6 +63,18 @@ function crearParrafo(etiqueta, texto) {
     return parrafo;
 }
 
+function capitalizarPrimeraLetra(texto) {
+
+    const valor = texto || "";
+
+    if (valor.length === 0) {
+
+        return valor;
+    }
+
+    return valor.charAt(0).toUpperCase() + valor.slice(1);
+}
+
 function crearParrafoDestacado(etiqueta, texto, patron) {
 
     const parrafo = document.createElement("p");
@@ -217,8 +229,8 @@ function crearResultadoActividad(actividad, patron) {
     nota.appendChild(notaCierre);
     articulo.appendChild(titulo);
     articulo.appendChild(crearParrafo("Miembro", actividad.miembro));
-    articulo.appendChild(crearParrafo("Día", actividad.dia));
-    articulo.appendChild(crearParrafo("Tipo", actividad.tipo));
+    articulo.appendChild(crearParrafo("Día", capitalizarPrimeraLetra(actividad.dia)));
+    articulo.appendChild(crearParrafo("Tipo", capitalizarPrimeraLetra(actividad.tipo)));
     articulo.appendChild(crearParrafoDestacado("Comuna", actividad.comuna, patron));
     articulo.appendChild(crearParrafoDestacado("Descripción", actividad.descripcion, patron));
     articulo.appendChild(nota);

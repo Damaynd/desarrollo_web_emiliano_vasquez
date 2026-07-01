@@ -44,6 +44,22 @@ select {
     gap: 24px;
 }
 
+.volver-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    padding: 10px 16px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background-color: #0057b8;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.volver-link:hover {
+    background-color: #00448f;
+}
+
 .buscador-form {
     display: grid;
     gap: 10px;
