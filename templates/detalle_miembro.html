@@ -52,21 +52,19 @@
 
                             <h4> Fotos </h4>
 
-                            <ul class = "activity-files">
+                            <div class = "activity-photos">
 
                                 {% for foto in actividad.fotos %}
 
-                                    <li>
-
-                                        <a href = "{{ url_for('static', filename=foto.ruta_archivo) }}" target = "_blank">
-                                            {{ foto.nombre_archivo }}
-                                        </a>
-
-                                    </li>
+                                    <a href = "{{ url_for('static', filename=foto.ruta_archivo) }}" target = "_blank">
+                                        <img
+                                            src = "{{ url_for('static', filename=foto.ruta_archivo) }}"
+                                            alt = "{{ foto.nombre_archivo }}">
+                                    </a>
 
                                 {% endfor %}
 
-                            </ul>
+                            </div>
 
                         {% endif %}
 
