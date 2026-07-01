@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset = "UTF-8">
+    <title>Buscador de actividades</title>
+    <link rel = "stylesheet" th:href = "@{/css/buscador.css}">
+</head>
+
+<body>
+    <main class = "page-main buscador-main">
+
+        <section class = "section">
+
+            <h1>Buscador de actividades</h1>
+
+            <form id = "buscador-form" class = "buscador-form">
+                <label for = "busqueda">Buscar por nombre, descripción o comuna</label>
+                <input
+                    id = "busqueda"
+                    name = "q"
+                    type = "text"
+                    minlength = "3"
+                    autocomplete = "off"
+                    placeholder = "Escribe al menos 3 caracteres :D">
+            </form>
+
+            <p id = "buscador-mensaje" class = "buscador-mensaje">
+                Escribe al menos 3 caracteres para buscar !
+            </p>
+
+        </section>
+
+        <section id = "resultados-busqueda" class = "resultados-busqueda" aria-live = "polite"></section>
+
+    </main>
+
+    <script th:src = "@{/js/buscador.js}"></script>
+</body>
+</html>
