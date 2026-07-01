@@ -66,13 +66,6 @@ python -m venv .venv
 .\.venv\Scripts\activate
 ```
 
-Si PowerShell bloquea la activacion del entorno:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv\Scripts\activate
-```
-
 2. Instalar dependencias:
 
 ```powershell

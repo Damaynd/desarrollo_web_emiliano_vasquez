@@ -134,8 +134,7 @@ function crearFormularioEvaluacion(actividad, notaValor, notaContador) {
     botonMostrar.className = "evaluar-toggle";
     botonMostrar.textContent = "Evaluar";
     const form = document.createElement("form");
-    form.className = "evaluacion-form";
-    form.hidden = true;
+    form.className = "evaluacion-form evaluacion-form-oculto";
     const label = document.createElement("label");
     label.textContent = "Seleccione nota";
     const select = document.createElement("select");
@@ -163,9 +162,10 @@ function crearFormularioEvaluacion(actividad, notaValor, notaContador) {
 
     botonMostrar.addEventListener("click", () => {
 
-        form.hidden = !form.hidden;
+        const estaOculto = form.classList.toggle("evaluacion-form-oculto");
+        botonMostrar.textContent = estaOculto ? "Evaluar" : "Ocultar evaluación";
 
-        if (!form.hidden) {
+        if (!estaOculto) {
 
             select.focus();
         }
