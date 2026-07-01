@@ -439,7 +439,7 @@ Se separó la presentación por responsabilidades:
 - `index.css`: estilos de portada y últimos miembros.
 - `stats.css`: estilos de la pagina de estadísticas y contenedores de gráficos.
 
-Los estilos de comentarios se dejaron en `styles.css` porque forman parte del detalle de miembro, que ya úsaba reglas generales de tarjetas y actividades. Los estilos de gráficás se mantuvieron en `stats.css` porque sólo pertenecen a la vista `/estadisticas`. Los estilos del buscador de Tarea 4 quedan en `tarea4/src/main/resources/static/css/buscador.css`.
+Los estilos de comentarios se dejaron en `styles.css` porque forman parte del detalle de miembro, que ya úsaba reglas generales de tarjetas y actividades. Los estilos de gráficas se mantuvieron en `stats.css` porque sólo pertenecen a la vista `/estadisticas`. Los estilos del buscador de Tarea 4 quedan en `tarea4/src/main/resources/static/css/buscador.css`.
 
 ## Organización del frontend con JS
 
@@ -487,22 +487,22 @@ Esta separación evita mezclar lógicas distintas en un solo archivo y deja cada
 ## Rutas principales
 
 ```text
-GET  / -> Portada
-GET  /registro -> Formulario de registro
+GET / -> Portada
+GET /registro -> Formulario de registro
 POST /registro -> Procesamiento de registro
-GET  /miembros -> Listado paginado de miembros
-GET  /miembros/<id> -> Detalle de miembro
-GET  /estadisticas -> Página de estadísticas
-GET  /api/estadisticas -> Datos JSON para gráficos
-GET  /api/actividades/<id>/comentarios -> Comentarios de una actividad
+GET /miembros -> Listado paginado de miembros
+GET /miembros/<id> -> Detalle de miembro
+GET /estadisticas -> Página de estadísticas
+GET /api/estadisticas -> Datos JSON para gráficos
+GET /api/actividades/<id>/comentarios -> Comentarios de una actividad
 POST /api/actividades/<id>/comentarios -> Crear comentario en una actividad
-GET  /contacto -> Página de contacto
+GET /contacto -> Página de contacto
 ```
 
 Las rutas de Tarea 4 están en Spring Boot:
 
 ```text
-GET  http://localhost:8080/buscador -> Buscador de actividades
-GET  http://localhost:8080/api/actividades/buscar?q=texto -> Buscar actividades
+GET http://localhost:8080/buscador -> Buscador de actividades
+GET http://localhost:8080/api/actividades/buscar?q=texto -> Buscar actividades
 POST http://localhost:8080/api/actividades/<id>/notas -> Crear nota en una actividad
 ```
