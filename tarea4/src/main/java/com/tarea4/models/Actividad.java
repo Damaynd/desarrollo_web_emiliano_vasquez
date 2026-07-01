@@ -1,9 +1,12 @@
 package com.tarea4.models;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,6 +35,9 @@ public class Actividad {
     @JoinColumn(name = "miembro_id")
 
     private Miembro miembro;
+
+    @OneToMany(mappedBy = "actividad")
+    private List<Foto> fotos;
 
     public Actividad() {
     }
@@ -66,5 +72,9 @@ public class Actividad {
 
     public Miembro getMiembro() {
         return miembro;
+    }
+
+    public List<Foto> getFotos() {
+        return fotos;
     }
 }

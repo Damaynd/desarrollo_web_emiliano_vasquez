@@ -204,6 +204,40 @@ function crearFormularioEvaluacion(actividad, notaValor, notaContador) {
     return contenedor;
 }
 
+function crearGaleriaFotos(actividad) {
+
+    const fotos = actividad.fotos || [];
+
+    if (fotos.length === 0) {
+
+        return null;
+    }
+
+    const contenedor = document.createElement("div");
+    contenedor.className = "actividad-fotos";
+    const titulo = document.createElement("h3");
+    titulo.textContent = "Fotos";
+    const lista = document.createElement("div");
+    lista.className = "actividad-fotos-lista";
+    contenedor.appendChild(titulo);
+    contenedor.appendChild(lista);
+
+    fotos.forEach(foto => {
+
+        const enlace = document.createElement("a");
+        enlace.href = foto.url;
+        enlace.target = "_blank";
+        enlace.rel = "noopener noreferrer";
+        const imagen = document.createElement("img");
+        imagen.src = foto.url;
+        imagen.alt = foto.nombre || "Foto de la actividad";
+        enlace.appendChild(imagen);
+        lista.appendChild(enlace);
+    });
+
+    return contenedor;
+}
+
 function crearResultadoActividad(actividad, patron) {
 
     const articulo = document.createElement("article");
@@ -233,6 +267,13 @@ function crearResultadoActividad(actividad, patron) {
     articulo.appendChild(crearParrafo("Tipo", capitalizarPrimeraLetra(actividad.tipo)));
     articulo.appendChild(crearParrafoDestacado("Comuna", actividad.comuna, patron));
     articulo.appendChild(crearParrafoDestacado("Descripción", actividad.descripcion, patron));
+    const galeriaFotos = crearGaleriaFotos(actividad);
+
+    if (galeriaFotos) {
+
+        articulo.appendChild(galeriaFotos);
+    }
+
     articulo.appendChild(nota);
     articulo.appendChild(crearFormularioEvaluacion(actividad, notaValor, notaContador));
 

@@ -7,14 +7,18 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tarea4.models.Actividad;
 import com.tarea4.models.ActividadRepository;
+import com.tarea4.models.Foto;
 import com.tarea4.models.Nota;
 import com.tarea4.models.NotaRepository;
 
 @Service
 public class ApiService {
+    private static final String FLASK_STATIC_URL = "http://127.0.0.1:5000/static/";
+
     private final ActividadRepository actividadRepository;
     private final NotaRepository notaRepository;
 
@@ -23,8 +27,9 @@ public class ApiService {
         this.notaRepository = notaRepository;
     }
 
-    public List<Map<String, String>> buscarActividades(String busqueda) {
-        List<Map<String, String>> resultado = new ArrayList<>();
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> buscarActividades(String busqueda) {
+        List<Map<String, Object>> resultado = new ArrayList<>();
 
         if (busqueda == null || busqueda.trim().length() < 3) {
             return resultado;
@@ -68,8 +73,8 @@ public class ApiService {
         return resumen;
     }
 
-    private Map<String, String> serializarActividad(Actividad actividad) {
-        Map<String, String> data = new HashMap<>();
+    private Map<String, Object> serializarActividad(Actividad actividad) {
+        Map<String, Object> data = new HashMap<>();
         Map<String, String> resumen = obtenerResumenNota(actividad.getId());
 
         data.put("id", actividad.getId().toString());
@@ -81,8 +86,26 @@ public class ApiService {
         data.put("descripcion", actividad.getDescripcion());
         data.put("nota", resumen.get("nota"));
         data.put("cantidad_notas", resumen.get("cantidad_notas"));
+        data.put("fotos", serializarFotos(actividad));
 
         return data;
+    }
+
+    private List<Map<String, String>> serializarFotos(Actividad actividad) {
+        List<Map<String, String>> fotos = new ArrayList<>();
+
+        if (actividad.getFotos() == null) {
+            return fotos;
+        }
+
+        for (Foto foto : actividad.getFotos()) {
+            Map<String, String> data = new HashMap<>();
+            data.put("nombre", foto.getNombreArchivo());
+            data.put("url", FLASK_STATIC_URL + foto.getRutaArchivo());
+            fotos.add(data);
+        }
+
+        return fotos;
     }
 
     private Map<String, String> obtenerResumenNota(Integer actividadId) {

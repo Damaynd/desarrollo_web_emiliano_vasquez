@@ -20,8 +20,8 @@ public class ApiController {
     }
 
     @GetMapping("/api/actividades/buscar")
-    public Map<String, List<Map<String, String>>> buscarActividadesEndpoint(@RequestParam("q") String busqueda) {
-        List<Map<String, String>> actividades = apiService.buscarActividades(busqueda);
+    public Map<String, List<Map<String, Object>>> buscarActividadesEndpoint(@RequestParam("q") String busqueda) {
+        List<Map<String, Object>> actividades = apiService.buscarActividades(busqueda);
         return Map.of("actividades", actividades);
     }
 
