@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-from sqlalchemy import func, or_
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy import func
 from database.db import SessionLocal
-from database.models import Comuna, Miembro, Actividad, Foto, Comentario, Nota
+from database.models import Comuna, Miembro, Actividad, Foto, Comentario
 from datetime import datetime
 from pathlib import Path
 import uuid
@@ -43,72 +42,6 @@ def serializar_comentario(comentario):
         "texto": comentario.texto,
         "fecha": comentario.fecha.strftime("%d-%m-%Y %H:%M")}
 
-
-def resumen_nota_desde_notas(notas):
-
-    cantidad = len(notas)
-
-    if cantidad == 0:
-
-        return {
-            "nota": "-",
-            "cantidad_notas": 0}
-
-    promedio = sum(nota.nota for nota in notas) / cantidad
-
-    return {
-        "nota": f"{promedio:.1f}",
-        "cantidad_notas": cantidad}
-
-def obtener_resumen_nota(session, actividad_id):
-
-    cantidad, promedio = (
-        session.query(func.count(Nota.id), func.avg(Nota.nota))
-        .filter(Nota.actividad_id == actividad_id)
-        .one())
-
-    cantidad = int(cantidad or 0)
-
-    if cantidad == 0:
-
-        return {
-            "nota": "-",
-            "cantidad_notas": 0}
-
-    return {
-        "nota": f"{float(promedio):.1f}",
-        "cantidad_notas": cantidad}
-
-def serializar_actividad_busqueda(actividad):
-
-    resumen = resumen_nota_desde_notas(actividad.notas)
-
-    return {
-        "id": actividad.id,
-        "miembro": actividad.miembro.nombre,
-        "dia": actividad.dia,
-        "tipo": actividad.tipo,
-        "comuna": actividad.miembro.comuna.nombre,
-        "nombre": actividad.nombre,
-        "descripcion": actividad.descripcion,
-        "nota": resumen["nota"],
-        "cantidad_notas": resumen["cantidad_notas"]}
-
-def convertir_nota(valor):
-
-    if isinstance(valor, bool):
-
-        return None
-
-    if isinstance(valor, int):
-
-        return valor
-
-    if isinstance(valor, str) and valor.strip().isdigit():
-
-        return int(valor.strip())
-
-    return None
 
 @app.route("/")
 def index():
@@ -377,12 +310,6 @@ def detalle_miembro(id):
         session.close()
 
 
-@app.route("/buscador")
-def buscador():
-
-    return render_template("buscador.html")
-
-
 @app.route("/api/estadisticas")
 def api_estadisticas():
     session = SessionLocal()
@@ -502,87 +429,6 @@ def comentarios_actividad(actividad_id):
     finally:
 
         session.close()
-
-@app.route("/api/actividades/buscar")
-def buscar_actividades():
-
-    session = SessionLocal()
-
-    try:
-
-        busqueda = request.args.get("q", "").strip()
-
-        if len(busqueda) < 3:
-
-            return jsonify({"actividades": []})
-
-        patron = f"%{busqueda}%"
-
-        actividades = (
-            session.query(Actividad)
-            .join(Actividad.miembro)
-            .join(Miembro.comuna)
-            .options(
-                joinedload(Actividad.miembro).joinedload(Miembro.comuna),
-                selectinload(Actividad.notas))
-            .filter(
-                or_(
-                    Actividad.nombre.ilike(patron),
-                    Actividad.descripcion.ilike(patron),
-                    Comuna.nombre.ilike(patron)))
-            .order_by(Actividad.nombre.asc())
-            .limit(30)
-            .all())
-
-        return jsonify({
-            "actividades": [
-                serializar_actividad_busqueda(actividad)
-                for actividad in actividades]})
-
-    finally:
-
-        session.close()
-
-
-@app.route("/api/actividades/<int:actividad_id>/notas", methods = ["POST"])
-def agregar_nota(actividad_id):
-
-    session = SessionLocal()
-
-    try:
-
-        actividad = session.get(Actividad, actividad_id)
-
-        if not actividad:
-
-            return jsonify({"error": "Actividad no encontrada."}), 404
-
-        datos = request.get_json(silent = True) or {}
-        nota_int = convertir_nota(datos.get("nota"))
-
-        if nota_int is None or nota_int < 1 or nota_int > 7:
-
-            return jsonify({
-                "error": "La nota debe ser un numero entero entre 1 y 7."}), 400
-
-        nota = Nota(
-            actividad_id = actividad_id,
-            nota = nota_int)
-
-        session.add(nota)
-        session.commit()
-
-        resumen = obtener_resumen_nota(session, actividad_id)
-
-        return jsonify({
-            "mensaje": "Nota agregada correctamente.",
-            "nota": resumen["nota"],
-            "cantidad_notas": resumen["cantidad_notas"]}), 201
-
-    finally:
-
-        session.close()
-
 
 @app.route("/estadisticas")
 def estadisticas():
